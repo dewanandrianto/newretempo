@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "domain": "retempo.xyz",
+  "cloudflare": {
+    "accountId": null,
+    "publicDatabaseId": null,
+    "chainDatabaseId": null,
+    "publicWorkerName": "retempo",
+    "chainWorkerName": "retempo-chain"
+  },
+  "arc": {
+    "chainId": 5042,
+    "rpcUrl": "https://rpc.mainnet.arc.io",
+    "explorerUrl": "https://explorer.arc.io",
+    "usdc": "0x3600000000000000000000000000000000000000",
+    "manager": null,
+    "escrow": null,
+    "startBlock": null,
+    "genesisHash": null,
+    "managerCodeHash": null,
+    "escrowCodeHash": null
+  }
+}

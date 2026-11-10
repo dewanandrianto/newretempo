@@ -1,0 +1,51 @@
+{
+  "scope": "Local complete scoped history pagination; synthetic canonical-event fixtures in real workerd/D1 plus genuinely signed fresh loopback Arc/two-Worker recovery",
+  "passed": true,
+  "tests": {
+    "private": {"passed": 91, "exitCode": 0, "log": "history-private-verified.log"},
+    "public": {"passed": 124, "exitCode": 0, "log": "history-public-complete.log"},
+    "sdkAndCollector": {"passed": 39, "exitCode": 0, "log": "history-sdk-verified.log"}
+  },
+  "staticChecks": {
+    "frontendTypes": {"exitCode": 0, "log": "history-frontend-types-complete.log"},
+    "privateTypes": {"exitCode": 0, "log": "history-private-types-complete.log"},
+    "publicTypes": {"exitCode": 0, "log": "history-public-types-complete.log"},
+    "sdkTypes": {"exitCode": 0, "log": "history-sdk-types-complete.log"},
+    "fullTypedLint": {"exitCode": 0, "log": "history-full-typed-lint.log"},
+    "fullLint": {"exitCode": 0, "log": "history-full-lint.log"}
+  },
+  "signedSystem": {"passed": true, "exitCode": 0, "signedTransactions": 13, "canonicalEvents": 21, "coldRecovery": true, "cloudflareTimeTravelTested": false, "log": "history-system-verified.log", "result": "history-system-verified/signed-worker-integration.json"},
+  "densePageFixture": {"rpcCalls": 40, "d1Invocations": 8, "batchedRowsRead": 1692, "storedRelevantEvents": 1820, "returnedEvents": 64, "log": "history-capacity-metrics.log"},
+  "exact300PaymentBaseUnits": "2702159776422297900",
+  "sourceFileCount": 25,
+  "sourceSetSha256": "d07ff9aab4c0fbac5a2c284257fdb37cd43c2bedc158b9c9f3b19d0600062341",
+  "sourceSetEncoding": "SHA256 of Python json.dumps(sourceSha256,sort_keys=True,separators=(',',':')).encode()",
+  "sourceSha256": {
+    "chain-worker/migrations/0001_chain.sql": "775d6c775a37452aea83b9f3646fce425c162b3b9892ccd044d9c7059c6946f0",
+    "chain-worker/migrations/0002_unique_binding_identity.sql": "1e6fc3d29983bce5cde4d69572d9d19ad476a89d7b2717fadc38e02357047513",
+    "chain-worker/migrations/0003_binding_capacity.sql": "5dbf59980c516974f8140c69052a6b7ce2f90847abb223bb5a48788bf584b84e",
+    "chain-worker/migrations/0004_history_pages.sql": "7dfdbceee7e593f732e86fde4ffbc229b7f436b70339c62ba184125c76fb064d",
+    "chain-worker/src/bindings.ts": "dc3f424a48966a3a440f59eb65e1374fa6464db00e5f48f135ad26876f4d21dd",
+    "chain-worker/src/customer.ts": "7981ebc8a1e6c6e45c20f0e64c476dec63c522003067749a26e52506dd663d81",
+    "chain-worker/src/history.ts": "c14d1aa58ddcd6e4bd2bbb3f8d916547ec82aa2f99f55f006d4cf95a1141f8ca",
+    "chain-worker/src/index.ts": "be5deb09df1786ce1b57ce05aee340f63dabbcc6b773de1f606b83c81c17aa8f",
+    "chain-worker/src/indexer.ts": "f8b1910315b8eb9373d5de2a897cc6b15ca8564c089c2b77c9d6bb4cb5ef9f01",
+    "chain-worker/src/projections.ts": "1fdb07aed0fc59b181c821cf9924ba727e699fd22f895bff683d71dbb55fd943",
+    "chain-worker/src/service.ts": "e155168ca85d5359a60bdce0bfb8873f143e6a4841848b6a282a6e17d8ee224a",
+    "chain-worker/tests/capacity.test.ts": "4f61a19c00aeee08a241a17554450f4ad93a9411369a5d246718f8cd35c9f14d",
+    "chain-worker/tests/history.test.ts": "959a1672c4f7d585894b4e07725d689bba053fe168439d0517df88dc82ad5cb4",
+    "chain-worker/tests/security.test.ts": "5df7b9e3b49cf44c6fe5bf90b171592e294234b0a539a1507651ea533332d94c",
+    "chain-worker/tests/setup.ts": "da33bac9ea3cee2cd7dbbd12d54a4bcaf2eaba2cb021c97be046aa43000c3757",
+    "chain-worker/tests/wallet.test.ts": "17196384607aa1a6fa5ed075b6aa15e9b89ed39f1e50b8802ff38770c33085ce",
+    "shared/chain.ts": "77191e211b904f0e997f29f8e3ae45043456c9e7118a079524e601e33b76c522",
+    "shared/chainPages.ts": "f3303b8d3f334c816ab7e0930e8c42fc90f33c80760313d2e85616ea0ff564c6",
+    "src/services/billing/liveBillingService.ts": "3f550fcf77089b1beb2ba3c24b3b52c68861ab08a3e59153ede37745b4721d40",
+    "src/services/blockchain/arcService.ts": "abf7d90b713e59a2ed72b71e082e4afa8c02a9ef25c732b9df45b2ebd5084a53",
+    "tests/onchain/historyPages.test.ts": "2d920855dcde5a46c421ae442f185656110d207c66e202142a75b70f3329b911",
+    "worker/src/chain/client.ts": "983ae0c74867f3346d26fc9d6e19fd7cbb5d6cdafb93156469bc56cfb0dd2f17",
+    "worker/src/chain/customer.ts": "d26dd2bc4df06016e341f08f4626100b70e8cf99cbf8656ec073d407fb67298d",
+    "worker/src/chain/routes.ts": "b82f7fbf98982b92e27d514793454bbe9ef79c89deef59dca6ef6866a1d75de0",
+    "worker/tests/history-pages.test.ts": "645835b40948e74862916717fb3b41f286fd1ea09dc79947ab918f9c5d0ac516"
+  },
+  "remainingGates": ["Actual Cloudflare Free-plan 10ms CPU acceptance remains unproven", "Parent-owned final signed browser matrix and independent delta review", "Existing production deployment/custody/code-pin/quotas/operational gates remain; no remote writes authorized"]
+}

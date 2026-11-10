@@ -1,0 +1,17 @@
+{
+  "scope": "Explicit synthetic resource identifiers exercise packaging only; neither resource existence nor deployment is claimed",
+  "productionResourcesVerified": false,
+  "deploymentPerformed": false,
+  "results": [
+    {
+      "worker": "private",
+      "exitCode": 0,
+      "log": "docs/phase-5-evidence/ops-private-dry-run.log"
+    },
+    {
+      "worker": "public",
+      "exitCode": 0,
+      "log": "docs/phase-5-evidence/ops-public-dry-run.log"
+    }
+  ]
+}

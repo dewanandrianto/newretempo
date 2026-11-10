@@ -1,0 +1,8 @@
+{
+  "scope": "Read-only public npm advisory audit in isolated scratch HOME/config; exact copied package.json and bun.lock; no installation or lifecycle execution",
+  "exitCode": 1,
+  "inputSha256": {
+    "package.json": "02ef91f0ec5e075b4550b2c82b02a4ef7537f6bb9037340095fc4b396d4f8efd",
+    "bun.lock": "2df71760be28936457751a1f2f603686add23dfabbd9ad20b995e7e50f0e5db7"
+  }
+}

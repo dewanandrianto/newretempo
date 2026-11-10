@@ -1,0 +1,17 @@
+{
+  "name": "indexer",
+  "command": [
+    "node",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "--config",
+    "chain-worker/vitest.config.ts",
+    "chain-worker/tests/indexer-review.test.ts",
+    "chain-worker/tests/indexer-overflow.test.ts",
+    "chain-worker/tests/indexer-ancestor-budget.test.ts",
+    "--disableConsoleIntercept"
+  ],
+  "exitCode": 0,
+  "seconds": 54.135,
+  "log": "docs/phase-5-evidence/session-fence-final-review-probes/indexer.log"
+}

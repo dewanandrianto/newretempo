@@ -1,0 +1,27 @@
+{
+  "lint-readonly": {
+    "exit_code": 1,
+    "seconds": 14.39,
+    "log": "/home/deseti/.hermes/cache/scratch/retempo-phase1/lint-readonly.log"
+  },
+  "typecheck": {
+    "exit_code": 1,
+    "seconds": 14.93,
+    "log": "/home/deseti/.hermes/cache/scratch/retempo-phase1/typecheck.log"
+  },
+  "frontend-build": {
+    "exit_code": 0,
+    "seconds": 95.65,
+    "log": "/home/deseti/.hermes/cache/scratch/retempo-phase1/frontend-build.log"
+  },
+  "contract-build": {
+    "exit_code": 0,
+    "seconds": 60.94,
+    "log": "/home/deseti/.hermes/cache/scratch/retempo-phase1/contract-build.log"
+  },
+  "contract-tests": {
+    "exit_code": 124,
+    "seconds": 600.13,
+    "log": "/home/deseti/.hermes/cache/scratch/retempo-phase1/contract-tests.log"
+  }
+}

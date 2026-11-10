@@ -1,0 +1,26 @@
+{
+  "exit_code": 0,
+  "duration_seconds": 704.23,
+  "command": [
+    "/home/deseti/.local/share/retempo/toolchains/arc-foundry-v0.8.0-4/arc-forge",
+    "test",
+    "--network",
+    "arc",
+    "--chain-id",
+    "5042",
+    "--offline",
+    "--out",
+    "/home/deseti/.hermes/cache/scratch/retempo-phase3/escrow-invariants-approved-out",
+    "--cache-path",
+    "/home/deseti/.hermes/cache/scratch/retempo-phase3/escrow-invariants-approved-cache",
+    "--fuzz-seed",
+    "0x1",
+    "--summary",
+    "--match-contract",
+    "EscrowInvariantTest"
+  ],
+  "source_sha256": {
+    "contracts/RetempoSubscriptionManager.sol": "8990ffbcad248a0032ff21976ee6cb79487a0809d8ce14cc0b461a2c4acbd28a",
+    "contracts/RetempoEscrow.sol": "d9fbf5367cf33c5d00d06bd913942a05780c38cde3cfb60520117152ac17ac34"
+  }
+}

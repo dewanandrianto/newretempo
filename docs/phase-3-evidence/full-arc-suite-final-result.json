@@ -1,0 +1,12 @@
+{
+  "exit_code": 1,
+  "duration_seconds": 32.76,
+  "network": "arc",
+  "chain_id": 5042,
+  "seed": "0x1",
+  "source_sha256": {
+    "contracts/RetempoSubscriptionManager.sol": "26cabacf5725858e69631b653ae8781545e2f406969a5af2e131276725c6f453",
+    "contracts/RetempoEscrow.sol": "0be1e5bfcd21b8f23175d19afcbe64442b9a5998e095fb000509e7a3ea1bc73a"
+  },
+  "log": "docs/phase-3-evidence/full-arc-suite-final.log"
+}

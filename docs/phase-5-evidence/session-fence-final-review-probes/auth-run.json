@@ -1,0 +1,22 @@
+{
+  "name": "auth",
+  "command": [
+    "node",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "--config",
+    "worker/vitest.config.ts",
+    "worker/tests/session-fence.test.ts",
+    "worker/tests/recovery-security.test.ts",
+    "worker/tests/membership-security.test.ts",
+    "worker/tests/auth.test.ts",
+    "worker/tests/auth-account.test.ts",
+    "--disableConsoleIntercept",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=/home/deseti/projects/retempo/docs/phase-5-evidence/session-fence-final-review-probes/auth-tests.json"
+  ],
+  "exitCode": 0,
+  "seconds": 192.522,
+  "log": "docs/phase-5-evidence/session-fence-final-review-probes/auth.log"
+}

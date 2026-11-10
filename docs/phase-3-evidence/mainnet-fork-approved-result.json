@@ -1,0 +1,11 @@
+{
+  "exit_code": 0,
+  "chain_id": 5042,
+  "block": 30197082,
+  "local_simulation_only": true,
+  "broadcast": false,
+  "source_sha256": {
+    "RetempoEscrow.sol": "d9fbf5367cf33c5d00d06bd913942a05780c38cde3cfb60520117152ac17ac34",
+    "RetempoSubscriptionManager.sol": "6d5375fc28cbaeb4561c4e0b6bcde707e15009f9df48bc923d12745c21dacff9"
+  }
+}

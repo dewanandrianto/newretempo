@@ -1,0 +1,57 @@
+{
+  "status": "INCOMPLETE_DO_NOT_DEPLOY",
+  "purpose": "Public deployment inputs only. Null fields require explicit operator verification and owner approval; this file never authorizes a transaction.",
+  "network": {
+    "chainId": 5042,
+    "rpcUrl": "https://rpc.mainnet.arc.io",
+    "explorerUrl": "https://explorer.arc.io",
+    "usdc": "0x3600000000000000000000000000000000000000",
+    "erc20Decimals": 6,
+    "nativeDecimals": 18
+  },
+  "admin": {
+    "address": null,
+    "approvedRuntimeCodeHash": null,
+    "approvedImplementationAddress": null,
+    "approvedImplementationCodeHash": null,
+    "orderedOwners": [],
+    "threshold": null,
+    "transferDelaySeconds": null,
+    "modulesGuardAndFallbackReviewed": false,
+    "signerCustodyVerified": false
+  },
+  "roles": {
+    "defaultAdmin": "approved admin contract",
+    "configRole": "approved admin contract",
+    "arbitratorManagerRole": "approved admin contract",
+    "separatePauserAddress": null,
+    "deployerRetainsAnyRole": false
+  },
+  "deployer": {
+    "publicAddress": null,
+    "expectedNonceBeforeEscrow": null,
+    "pendingTransactionsReviewed": false
+  },
+  "limits": {
+    "unit": "Canonical integer decimal strings in USDC ERC-20 base units (6 decimals)",
+    "maxAggregateExposure": null,
+    "launchMaxPaymentAmount": null,
+    "initialCanaryAmount": null
+  },
+  "arbitrators": [],
+  "contracts": {
+    "escrowAddress": null,
+    "managerAddress": null,
+    "deploymentBlock": null,
+    "escrowDeploymentTransaction": null,
+    "managerDeploymentTransaction": null,
+    "sourceVerificationComplete": false,
+    "startPaused": true
+  },
+  "releaseApproval": {
+    "independentSecurityReviewAccepted": false,
+    "broadcastApproved": false,
+    "smallValueCanaryApproved": false,
+    "unpauseApproved": false
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "exitCode": 2,
+  "scope": "Intentionally incomplete owner template must fail closed; no resource creation",
+  "result": {
+    "configurationValid": false,
+    "productionResourcesVerified": false,
+    "deploymentAuthorized": false,
+    "errors": "cloudflare.accountId is required and must be a 32-hex identifier; cloudflare.publicDatabaseId must be an actual UUID identifier; cloudflare.chainDatabaseId must be an actual UUID identifier; arc.manager requires an approved deployment address; arc.escrow requires an approved deployment address; arc.startBlock must be a canonical positive decimal block; arc.genesisHash requires an approved exact hash; arc.managerCodeHash requires an approved exact hash; arc.escrowCodeHash requires an approved exact hash"
+  }
+}

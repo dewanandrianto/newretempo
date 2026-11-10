@@ -1,0 +1,11 @@
+{
+  "name": "lint-full",
+  "command": [
+    "node_modules/.bin/oxlint",
+    "."
+  ],
+  "exitCode": 0,
+  "seconds": 1.174,
+  "startedUTC": "2026-11-10T12:56:34.558965+00:00",
+  "log": "docs/phase-5-evidence/session-fence-lint-full.log"
+}

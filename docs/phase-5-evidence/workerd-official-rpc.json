@@ -1,0 +1,29 @@
+{
+  "scope": "Local workerd actual production Rpc read-only transport; no deployment or transactions; not provider CPU proof",
+  "observations": [
+    {
+      "method": "eth_chainId",
+      "ok": true,
+      "result": "0x13b2"
+    },
+    {
+      "method": "eth_blockNumber",
+      "ok": true,
+      "result": "0x1d0f480"
+    },
+    {
+      "method": "eth_getCode",
+      "ok": true,
+      "result": {
+        "nonemptyCode": true,
+        "codeBytes": 1798
+      }
+    },
+    {
+      "method": "eth_call",
+      "ok": true,
+      "result": "0x0000000000000000000000000000000000000000000000000000000000000006"
+    }
+  ],
+  "passed": true
+}

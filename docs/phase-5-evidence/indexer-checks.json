@@ -1,0 +1,106 @@
+{
+  "recordedAt": "2026-11-10T05:27:51.974612+00:00",
+  "scope": "Local private indexer capacity hardening; no production CPU or mainnet write proof",
+  "baselineTests": 46,
+  "currentWorkerdTests": 79,
+  "addedTests": 33,
+  "verification": {
+    "workerdTests": {
+      "exitCode": 0,
+      "log": "indexer-tests.log"
+    },
+    "typecheck": {
+      "exitCode": 0,
+      "log": "indexer-typecheck.log"
+    },
+    "lint": {
+      "exitCode": 0,
+      "log": "indexer-lint.log"
+    },
+    "baselineRestart": {
+      "exitCode": 0,
+      "log": "indexer-baseline-restart.log"
+    },
+    "capacityRestart": {
+      "exitCode": 0,
+      "log": "indexer-capacity-restart.log"
+    },
+    "realArcWorkerdConfig": {
+      "exitCode": 0,
+      "log": "indexer-real-config-node-green.log"
+    },
+    "signedApiColdRecovery": {
+      "exitCode": 0,
+      "log": "indexer-signed-cold-recovery.log"
+    },
+    "signedBrowserColdRecovery": {
+      "exitCode": 0,
+      "log": "indexer-signed-browser-recovery.log"
+    }
+  },
+  "assertedFixtureCounts": {
+    "sixteenEventsOneTransaction": {
+      "rpc": 16,
+      "d1Invocations": 6,
+      "receipts": 1,
+      "combined": 22
+    },
+    "sixteenSparseEventBlocks": {
+      "rpc": 39,
+      "processedEvents": 8,
+      "cursor": "8"
+    },
+    "twentySixPlanSnapshot": {
+      "rpc": 40,
+      "getterCalls": 26
+    },
+    "peakRpcConcurrency": 3,
+    "onePlanOneSubscriptionEscrowAdmission": {
+      "acceptedEscrows": 7,
+      "rejectedEscrow": 8
+    },
+    "eventOnlyPaymentAdmission": {
+      "acceptedPayments": 30,
+      "totalBindings": 32
+    }
+  },
+  "hardLimits": {
+    "rpcCallsPerRequest": 40,
+    "rpcResponseBytes": 524288,
+    "scanBlocks": 32,
+    "scanUniqueEvents": 16,
+    "scanReturnedLogs": 256,
+    "tenantBindings": 32,
+    "snapshotGetters": 26,
+    "globalCompleteHistoryEvents": 256
+  },
+  "sourceSha256": {
+    "chain-worker/README.md": "484f4525c2105194efd26eedeb3cb6d456f827738a0e9ab402facbc0cc8463da",
+    "chain-worker/migrations/0001_chain.sql": "775d6c775a37452aea83b9f3646fce425c162b3b9892ccd044d9c7059c6946f0",
+    "chain-worker/migrations/0002_unique_binding_identity.sql": "1e6fc3d29983bce5cde4d69572d9d19ad476a89d7b2717fadc38e02357047513",
+    "chain-worker/migrations/0003_binding_capacity.sql": "5dbf59980c516974f8140c69052a6b7ce2f90847abb223bb5a48788bf584b84e",
+    "chain-worker/src/bindings.ts": "dc3f424a48966a3a440f59eb65e1374fa6464db00e5f48f135ad26876f4d21dd",
+    "chain-worker/src/index.ts": "be5deb09df1786ce1b57ce05aee340f63dabbcc6b773de1f606b83c81c17aa8f",
+    "chain-worker/src/indexer.ts": "b60719d2b97a611ffee083392c42c3be0ed1aa6e547fc9c15e14c47ea1b9d801",
+    "chain-worker/src/projections.ts": "99f89330ed87b8fdb5cb447656048c0d49f74a681f4b0a6c33b42ddc6aefdc5f",
+    "chain-worker/src/service.ts": "fa993cf7f647423284a69f7d37fff7e52b0dff65fd42ae9baeb3432045b2a02b",
+    "chain-worker/tests/capacity-restart-acceptance.ts": "179aabff6376b8cd414195bf16d83e0951c6df4fde9bebd0365aece94b0ea246",
+    "chain-worker/tests/capacity.test.ts": "b9ca61955ca39080269f590570048bd37c98267c2ebd53e5330fd84f2e877654",
+    "chain-worker/tests/config-worker.ts": "7d5e61b3823dbf7d10c03e0ac3b9ac710d7fd09cdc5ac6f44685b8a47304a41c",
+    "chain-worker/tests/escrow.test.ts": "7a7986326ecd1509fbf3ca1f176f082cc6964e39672d63ef7ce34e942c98ec9e",
+    "chain-worker/tests/fixtures.ts": "beecf92801c4ce6221b34fb47622790863d9b6ef534832926feb6187eac2ec76",
+    "chain-worker/tests/indexer.test.ts": "82cdcf79195441aba1a17447e10b493fbee1bae1d50ba42476f90020d0efef30",
+    "chain-worker/tests/local-config-acceptance.mjs": "18383b777967f8de87cda0aa05e6186a3e3ec6a7517a51eab13d05316f195e71",
+    "chain-worker/tests/production.test.ts": "f721c708d494cbfd3d61de5d160f5cd45a87e8f057f90c534d959122ecb6905d",
+    "chain-worker/tests/recovery.test.ts": "236888306c962e2eea9db1620e93cb634f9f0c52bd74e4599974aa2bd94999a6",
+    "chain-worker/tests/restart-acceptance.ts": "204e91c5aa51dd9008aa391dcc40247aea66ea21a0b96cace2b1be3fb4fa325d",
+    "chain-worker/tests/scheduled.test.ts": "32a789c5cbe7989b279b5ec425c4ca0ff26b93b4bb9e82f64cb38609dc57774f",
+    "chain-worker/tests/security.test.ts": "f8f535c3753e385154f30204a8b6cb89ebac8b0e5a6947c75a6b2a197af32ddb",
+    "chain-worker/tests/service.test.ts": "b9e4d1363ca6380f706da62f99300d74e0ac321e98d07d7546a48ae0a39ca07e",
+    "chain-worker/tests/setup.ts": "d2e28eee59a7bd13cdf46c2ea3c97ecb65aa525c601588c435c5c1718c10c8dc",
+    "chain-worker/tests/wallet.test.ts": "03637902005709aa5540bbba5d8210375c870d2a0ba174aeff4a726264459504",
+    "chain-worker/tsconfig.json": "2703a684414a5f82f0de935c4a86554ef7924fb02ac7c1a247773020d438af9f",
+    "chain-worker/vitest.config.ts": "c15c5ebdc1ac3c8976f861f62f0c16f93e63b3a4937e9ec8e4025cebb59460d0",
+    "chain-worker/wrangler.jsonc": "8405bb9785fd87e8c5f4c360bffc224144ee7c7597d8814888bbe7f383c9fe21"
+  }
+}

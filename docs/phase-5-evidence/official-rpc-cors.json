@@ -1,0 +1,26 @@
+{
+  "scope": "Read-only HTTP CORS-header observation with proposed production Origin; not an actual deployed-browser or Cloudflare-hosted request",
+  "rpcUrl": "https://rpc.mainnet.arc.io",
+  "origin": "https://retempo.xyz",
+  "observations": [
+    {
+      "method": "OPTIONS",
+      "httpStatus": 204,
+      "allowOrigin": "https://retempo.xyz",
+      "allowMethods": "GET, POST, OPTIONS",
+      "allowHeaders": "content-type, authorization"
+    },
+    {
+      "method": "POST",
+      "httpStatus": 200,
+      "allowOrigin": "https://retempo.xyz",
+      "allowMethods": "GET, POST, OPTIONS",
+      "allowHeaders": "content-type, authorization",
+      "chainIdResponse": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "0x13b2"
+      }
+    }
+  ]
+}

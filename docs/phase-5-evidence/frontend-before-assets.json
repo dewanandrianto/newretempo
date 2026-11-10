@@ -1,0 +1,1003 @@
+{
+  "method": "index.html scripts/modulepreloads plus recursive manifest static imports; gzip per asset, default zlib level; excludes deferred route requests, CSS, HTTP headers and cache effects",
+  "roots": [
+    "assets/index-CXRhTkK5.js"
+  ],
+  "edges": [],
+  "files": [
+    {
+      "file": "assets/index-CXRhTkK5.js",
+      "bytes": 2245401,
+      "gzipBytes": 641353,
+      "sha256": "442f0496e8467c69c31f7af5193e80544b76a9cb42009edbc5f59a8344c2dad8"
+    }
+  ],
+  "initialJsCount": 1,
+  "initialBytes": 2245401,
+  "initialGzipBytes": 641353,
+  "emittedJsCount": 82,
+  "emittedJsBytes": 3495709,
+  "manifest": {
+    "_core-C3qBbxdY.js": {
+      "file": "assets/core-C3qBbxdY.js",
+      "name": "core",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ],
+      "dynamicImports": [
+        "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/basic.js",
+        "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/w3m-modal.js"
+      ]
+    },
+    "_index-DhiRAWzV.js": {
+      "file": "assets/index-DhiRAWzV.js",
+      "name": "index",
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html"
+      ],
+      "dynamicImports": [
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/add.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/all-wallets.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom-circle.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/app-store.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/apple.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-left.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-right.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-top.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/bank.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/browser.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/card.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark-bold.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-bottom.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-left.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-right.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-top.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chrome-store.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/clock.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/close.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/compass.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/coinPlaceholder.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/copy.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor-transparent.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/desktop.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/disconnect.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/discord.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/etherscan.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/extension.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/external-link.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/facebook.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/farcaster.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/filters.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/github.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/google.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/help-circle.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/image.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/id.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info-circle.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/lightbulb.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mail.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mobile.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/more.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/network-placeholder.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/nftPlaceholder.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/off.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/play-store.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/plus.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/qr-code.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/recycle-horizontal.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/refresh.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/search.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/send.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontal.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalMedium.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalBold.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalRoundedBold.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapVertical.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/telegram.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/three-dots.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitch.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/x.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitterIcon.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify-filled.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/walletconnect.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/walletconnect.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/walletconnect.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet-placeholder.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/warning-circle.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/x.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/exclamation-triangle.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/reown-logo.js"
+      ]
+    },
+    "_index.es-C7ycJs8x.js": {
+      "file": "assets/index.es-C7ycJs8x.js",
+      "name": "index.es",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html"
+      ],
+      "dynamicImports": [
+        "_core-C3qBbxdY.js"
+      ]
+    },
+    "index.html": {
+      "file": "assets/index-CXRhTkK5.js",
+      "name": "index",
+      "src": "index.html",
+      "isEntry": true,
+      "dynamicImports": [
+        "node_modules/viem/_esm/utils/ccip.js",
+        "_index.es-C7ycJs8x.js",
+        "node_modules/@aave/account/lib/index-DrAshLsx.js"
+      ],
+      "css": [
+        "assets/index-DzxoIwAU.css"
+      ]
+    },
+    "node_modules/@aave/account/lib/index-DrAshLsx.js": {
+      "file": "assets/index-DrAshLsx-BFXEhcz7.js",
+      "name": "index-DrAshLsx",
+      "src": "node_modules/@aave/account/lib/index-DrAshLsx.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html"
+      ]
+    },
+    "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/basic.js": {
+      "file": "assets/basic-B-H2F1yq.js",
+      "name": "basic",
+      "src": "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/basic.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "_index-DhiRAWzV.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/w3m-modal.js": {
+      "file": "assets/w3m-modal-BUFQxh5M.js",
+      "name": "w3m-modal",
+      "src": "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/w3m-modal.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "_index-DhiRAWzV.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/add.js": {
+      "file": "assets/add-DXxDVLs0.js",
+      "name": "add",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/add.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/all-wallets.js": {
+      "file": "assets/all-wallets-D39eh8t6.js",
+      "name": "all-wallets",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/all-wallets.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/app-store.js": {
+      "file": "assets/app-store-7B3MfMjW.js",
+      "name": "app-store",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/app-store.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/apple.js": {
+      "file": "assets/apple-CtE2PRsR.js",
+      "name": "apple",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/apple.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom-circle.js": {
+      "file": "assets/arrow-bottom-circle-CprC40tT.js",
+      "name": "arrow-bottom-circle",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom-circle.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom.js": {
+      "file": "assets/arrow-bottom-Sj0YMwZX.js",
+      "name": "arrow-bottom",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-left.js": {
+      "file": "assets/arrow-left-Crzj_-_i.js",
+      "name": "arrow-left",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-left.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-right.js": {
+      "file": "assets/arrow-right-6BxwTSeS.js",
+      "name": "arrow-right",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-right.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-top.js": {
+      "file": "assets/arrow-top-CWR7DoFX.js",
+      "name": "arrow-top",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-top.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/bank.js": {
+      "file": "assets/bank-CddFXgDh.js",
+      "name": "bank",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/bank.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/browser.js": {
+      "file": "assets/browser-BLNbXc9h.js",
+      "name": "browser",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/browser.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/card.js": {
+      "file": "assets/card-BMHyfW0X.js",
+      "name": "card",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/card.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark-bold.js": {
+      "file": "assets/checkmark-bold-DpQ6DO3t.js",
+      "name": "checkmark-bold",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark-bold.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark.js": {
+      "file": "assets/checkmark-Cvuywnig.js",
+      "name": "checkmark",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-bottom.js": {
+      "file": "assets/chevron-bottom-Cm_o0c2Y.js",
+      "name": "chevron-bottom",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-bottom.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-left.js": {
+      "file": "assets/chevron-left-DCRydq1k.js",
+      "name": "chevron-left",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-left.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-right.js": {
+      "file": "assets/chevron-right-C0zibF9t.js",
+      "name": "chevron-right",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-right.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-top.js": {
+      "file": "assets/chevron-top-CiiK5NbH.js",
+      "name": "chevron-top",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-top.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chrome-store.js": {
+      "file": "assets/chrome-store-tlTfQz8t.js",
+      "name": "chrome-store",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chrome-store.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/clock.js": {
+      "file": "assets/clock-Caw86_4z.js",
+      "name": "clock",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/clock.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/close.js": {
+      "file": "assets/close-CERUvdUu.js",
+      "name": "close",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/close.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/coinPlaceholder.js": {
+      "file": "assets/coinPlaceholder-BVCXfiHb.js",
+      "name": "coinPlaceholder",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/coinPlaceholder.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/compass.js": {
+      "file": "assets/compass-BGUK4_nY.js",
+      "name": "compass",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/compass.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/copy.js": {
+      "file": "assets/copy-DB9Nb4ZX.js",
+      "name": "copy",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/copy.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor-transparent.js": {
+      "file": "assets/cursor-transparent-gfzZgw6V.js",
+      "name": "cursor-transparent",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor-transparent.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor.js": {
+      "file": "assets/cursor-D6YBBNCe.js",
+      "name": "cursor",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/desktop.js": {
+      "file": "assets/desktop-B6-_B_nA.js",
+      "name": "desktop",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/desktop.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/disconnect.js": {
+      "file": "assets/disconnect-EFh-L7iR.js",
+      "name": "disconnect",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/disconnect.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/discord.js": {
+      "file": "assets/discord-CfC1FDuC.js",
+      "name": "discord",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/discord.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/etherscan.js": {
+      "file": "assets/etherscan-CEdSoTwE.js",
+      "name": "etherscan",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/etherscan.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/exclamation-triangle.js": {
+      "file": "assets/exclamation-triangle-uP28YxSu.js",
+      "name": "exclamation-triangle",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/exclamation-triangle.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/extension.js": {
+      "file": "assets/extension-BEbY8mRt.js",
+      "name": "extension",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/extension.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/external-link.js": {
+      "file": "assets/external-link-_iwRmV8N.js",
+      "name": "external-link",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/external-link.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/facebook.js": {
+      "file": "assets/facebook-CQE0OCmu.js",
+      "name": "facebook",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/facebook.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/farcaster.js": {
+      "file": "assets/farcaster-CTgri0qZ.js",
+      "name": "farcaster",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/farcaster.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/filters.js": {
+      "file": "assets/filters-DrCuGOSw.js",
+      "name": "filters",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/filters.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/github.js": {
+      "file": "assets/github-D9ImFrMf.js",
+      "name": "github",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/github.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/google.js": {
+      "file": "assets/google-CVc7bl5E.js",
+      "name": "google",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/google.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/help-circle.js": {
+      "file": "assets/help-circle-BldbTh3A.js",
+      "name": "help-circle",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/help-circle.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/id.js": {
+      "file": "assets/id-BmVgbhNV.js",
+      "name": "id",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/id.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/image.js": {
+      "file": "assets/image-CQ1ubQvd.js",
+      "name": "image",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/image.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info-circle.js": {
+      "file": "assets/info-circle-D14mTeki.js",
+      "name": "info-circle",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info-circle.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info.js": {
+      "file": "assets/info-jiJ_NKQK.js",
+      "name": "info",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/lightbulb.js": {
+      "file": "assets/lightbulb-BwaGRsMR.js",
+      "name": "lightbulb",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/lightbulb.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mail.js": {
+      "file": "assets/mail-B2rjDj6e.js",
+      "name": "mail",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mail.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mobile.js": {
+      "file": "assets/mobile-Bd5XvSMY.js",
+      "name": "mobile",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mobile.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/more.js": {
+      "file": "assets/more-BRklpv_F.js",
+      "name": "more",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/more.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/network-placeholder.js": {
+      "file": "assets/network-placeholder-CMQTTJU5.js",
+      "name": "network-placeholder",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/network-placeholder.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/nftPlaceholder.js": {
+      "file": "assets/nftPlaceholder-CeVDQTCN.js",
+      "name": "nftPlaceholder",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/nftPlaceholder.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/off.js": {
+      "file": "assets/off-DzQuOiQ3.js",
+      "name": "off",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/off.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/play-store.js": {
+      "file": "assets/play-store-DdYrbYYJ.js",
+      "name": "play-store",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/play-store.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/plus.js": {
+      "file": "assets/plus-CAKEsMkO.js",
+      "name": "plus",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/plus.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/qr-code.js": {
+      "file": "assets/qr-code-oSHTeTQv.js",
+      "name": "qr-code",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/qr-code.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/recycle-horizontal.js": {
+      "file": "assets/recycle-horizontal-BxvF0WKn.js",
+      "name": "recycle-horizontal",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/recycle-horizontal.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/refresh.js": {
+      "file": "assets/refresh-BnPbus0b.js",
+      "name": "refresh",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/refresh.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/reown-logo.js": {
+      "file": "assets/reown-logo-C2BSedtk.js",
+      "name": "reown-logo",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/reown-logo.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/search.js": {
+      "file": "assets/search-X7Ux4X4i.js",
+      "name": "search",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/search.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/send.js": {
+      "file": "assets/send-CnaXuyvk.js",
+      "name": "send",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/send.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontal.js": {
+      "file": "assets/swapHorizontal-DqKNUYpS.js",
+      "name": "swapHorizontal",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontal.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalBold.js": {
+      "file": "assets/swapHorizontalBold-BACbIkot.js",
+      "name": "swapHorizontalBold",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalBold.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalMedium.js": {
+      "file": "assets/swapHorizontalMedium-CheStCLm.js",
+      "name": "swapHorizontalMedium",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalMedium.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalRoundedBold.js": {
+      "file": "assets/swapHorizontalRoundedBold-DZuqj2CJ.js",
+      "name": "swapHorizontalRoundedBold",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalRoundedBold.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapVertical.js": {
+      "file": "assets/swapVertical-CREw4whR.js",
+      "name": "swapVertical",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapVertical.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/telegram.js": {
+      "file": "assets/telegram-UpfU1h1K.js",
+      "name": "telegram",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/telegram.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/three-dots.js": {
+      "file": "assets/three-dots-DyNQcJn2.js",
+      "name": "three-dots",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/three-dots.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitch.js": {
+      "file": "assets/twitch-Z8yEV5vZ.js",
+      "name": "twitch",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitch.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitterIcon.js": {
+      "file": "assets/twitterIcon-XBk_26hK.js",
+      "name": "twitterIcon",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitterIcon.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify-filled.js": {
+      "file": "assets/verify-filled-DxQ1-wUZ.js",
+      "name": "verify-filled",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify-filled.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify.js": {
+      "file": "assets/verify-WDUy4FaY.js",
+      "name": "verify",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet-placeholder.js": {
+      "file": "assets/wallet-placeholder-CZwqIZOv.js",
+      "name": "wallet-placeholder",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet-placeholder.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet.js": {
+      "file": "assets/wallet-CUqNcdjT.js",
+      "name": "wallet",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/walletconnect.js": {
+      "file": "assets/walletconnect-D_bXZ0XC.js",
+      "name": "walletconnect",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/walletconnect.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/warning-circle.js": {
+      "file": "assets/warning-circle-DTjBEws9.js",
+      "name": "warning-circle",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/warning-circle.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/x.js": {
+      "file": "assets/x-BbHnhEEn.js",
+      "name": "x",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/x.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-C3qBbxdY.js",
+        "index.html",
+        "_index.es-C7ycJs8x.js"
+      ]
+    },
+    "node_modules/viem/_esm/utils/ccip.js": {
+      "file": "assets/ccip-DL8ChT17.js",
+      "name": "ccip",
+      "src": "node_modules/viem/_esm/utils/ccip.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html"
+      ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "scope": "Passing regression baseline before newly approved session-issuance architecture correction; NOT Phase 5 completion",
+  "knownOpenSecurityFinding": "P5-SEC-003",
+  "sourceDrift": [],
+  "phase5Complete": false,
+  "productionDeploymentAuthorized": false,
+  "archivedSha256": {
+    "final-lint.log": "fa163890cda999070019ddd4ddc1253b0bbfa557b938bc2c0d9c2f6426748123",
+    "final-wallet-tests.log": "5ca2229c897a6c4044f00cd99dacdbb6c6c72677178498516ee701ef9e5e24e4",
+    "final-frontend-routes.log": "7da77aaca6d6a6062135476b2acde523c4887e22761d0685dd3627b37533e131",
+    "final-production-build.log": "af5bfc51977c3b95280fad67cfe27b1aec0722353ee127f928fc4413faa56d88",
+    "signed-worker-integration.json": "59990ed1249a1eb646ab645424b11d102211c632bfc99549d8a2c0aed0e83823",
+    "final-typecheck.log": "5b8bd2e65abcbac2730aee0d9bec99f5f58e1058415d12a4cc1b9bf3ba603bbd",
+    "final-ops-tests.log": "423bb07593da87f7d25aef109094d4757ef356940c9a45b598a6cc3970b703c1",
+    "final-checks.json": "139abcf22ca29d5191334992e16c229f1ed2f113da4e27f19942628b2f521633",
+    "signed-sdk-integration.json": "b07fcd6ca6f62d1b51a180c37f1f871059a0cbd9de3a5ee75b2a4b8609deebac",
+    "final-indexer-typecheck.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "final-signed-browser-workers.log": "f4c32ab0fcf1b6dd4ef399907bbce2037713be2a587a06d90432b6a7fec6bc30",
+    "final-script-tests.log": "298e146c8a0e312649d2b9c35ea8897bb73ac5b3c075c6e3e731011630b6a3c3",
+    "final-public-worker-tests.log": "3c1e7b98b47fead531ecb38850cc25edb57a8b29de99e40b02654dd2b8c3d6f1",
+    "final-private-worker-tests.log": "df948e59221eb5754bd7c435eccdbe51272fbdb8dd9c10402048ae8cd4560245",
+    "final-signed-sdk.log": "d8fcb9a176cc893803eb18237aca9b3b1a54455a404561a8288116a310db4e2d"
+  }
+}

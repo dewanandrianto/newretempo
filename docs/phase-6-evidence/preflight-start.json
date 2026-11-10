@@ -1,0 +1,32 @@
+{
+  "phase": 6,
+  "status": "PREFLIGHT_STARTED",
+  "startedAtUTC": "2026-11-10T14:12:55.058084+00:00",
+  "userAuthorizedPhase6": true,
+  "fundedMainnetTransactionsAuthorized": false,
+  "gitPublicationAuthorized": false,
+  "paidPlanAuthorized": false,
+  "dedicatedCloudflareAccountVerified": false,
+  "gatewayCloudflareConnected": false,
+  "phase5ReceiptSha256": "db7e48c138473102176ab8ee4863e9bb5eec59c13435f14888b5415f0de2f5bf",
+  "phase5VerificationInputs": 345,
+  "sourceDrift": [],
+  "existingLocalAuthFiles": [
+    {
+      "path": "/home/deseti/.config/.wrangler/config/default.toml",
+      "exists": false
+    },
+    {
+      "path": "/home/deseti/.wrangler/config/default.toml",
+      "exists": false
+    }
+  ],
+  "inheritedCredentialVariableNamesPresent": [],
+  "inheritedCredentialsUsed": false,
+  "remoteResourcesCreated": false,
+  "awaiting": [
+    "Identity of dedicated Retempo Cloudflare account and user-only authorization",
+    "Public deployment/ownership wallet addresses, role proposal and explicit cost approval",
+    "Provider CPU and safe supported indexing/traffic acceptance before financial launch"
+  ]
+}

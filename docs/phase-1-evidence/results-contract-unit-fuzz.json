@@ -1,0 +1,18 @@
+{
+  "exit_code": 0,
+  "seconds": 43.34,
+  "command": [
+    "/home/deseti/.hermes/cache/scratch/retempo-phase1/tools/v1.7.1/forge",
+    "test",
+    "--out",
+    "/home/deseti/.hermes/cache/scratch/retempo-phase1/forge-out",
+    "--cache-path",
+    "/home/deseti/.hermes/cache/scratch/retempo-phase1/forge-cache",
+    "--no-match-path",
+    "contracts/test/invariant/**",
+    "--summary",
+    "-j",
+    "2"
+  ],
+  "log": "/home/deseti/.hermes/cache/scratch/retempo-phase1/contract-unit-fuzz-tests.log"
+}

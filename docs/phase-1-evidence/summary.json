@@ -1,0 +1,47 @@
+{
+  "phase": "1",
+  "status": "complete; ready for Phase 2 approval; not production ready",
+  "solidity": {
+    "passed": 405,
+    "failed": 0,
+    "skipped_arc_runtime": 17,
+    "verification": "two complementary test-path partitions",
+    "invariant_suites_passed": 2,
+    "invariant_partition_tests_passed": 19,
+    "invariants": 16,
+    "runs_per_invariant": 256,
+    "depth": 100,
+    "calls_per_invariant": 25600,
+    "handler_reverts": 0
+  },
+  "backend": {
+    "passed": 99,
+    "failed": 0
+  },
+  "export_helper_tests": {
+    "passed": 8,
+    "failed": 0
+  },
+  "browser_layout_tests": {
+    "passed": 5,
+    "failed": 0
+  },
+  "runner_tests": {
+    "passed": 2,
+    "failed": 0
+  },
+  "initial_full_suite_timeout_exit": 124,
+  "final_invariant_process_exit": 0,
+  "original_files_changed": [
+    "package.json",
+    "AGENTS.md",
+    "README.md",
+    "scripts/compass-deploy.ts",
+    "src/features/landing/Sections.tsx"
+  ],
+  "env_unchanged": true,
+  "lockfile_unchanged": true,
+  "production_solidity_unchanged": true,
+  "git_operations": "none",
+  "deployment": "none"
+}

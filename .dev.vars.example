@@ -1,0 +1,3 @@
+# Local-only secrets. Copy to .dev.vars and generate a random SESSION_SECRET.
+# Never use this example value in production or commit .dev.vars.
+SESSION_SECRET=REPLACE_WITH_AT_LEAST_32_RANDOM_CHARACTERS

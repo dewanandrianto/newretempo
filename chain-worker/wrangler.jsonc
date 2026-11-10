@@ -1,0 +1,11 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "retempo-chain",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-08",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [],
+  "vars": { "ARC_SYNC_CRON_ENABLED": "false" },
+  "d1_databases": [{ "binding": "CHAIN_DB", "database_name": "retempo-chain", "migrations_dir": "migrations", "remote": false }]
+}

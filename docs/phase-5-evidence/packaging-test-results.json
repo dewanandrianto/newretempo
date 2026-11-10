@@ -1,0 +1,33 @@
+{
+  "scope": "Actual credential-isolated local Wrangler packaging with synthetic fixtures; no installation, deployment or resource verification",
+  "checks": [
+    {
+      "worker": "public",
+      "exitCode": 0,
+      "dryRun": true,
+      "resourceIdsAreSynthetic": true,
+      "productionResourcesVerified": false,
+      "deploymentAuthorized": false,
+      "log": "docs/phase-5-evidence/packaging-test-public.log",
+      "bundleSha256": {
+        "index.js": "f3afd3428b6e048e8c4227ed01edaeb2e4b1a54469d4fd61340298282248f64f",
+        "index.js.map": "041d8cd29cfa511fe9b3158781bd1224c0c1cb8cc7c38d182a03aaa8047ab5fa",
+        "README.md": "b954c6a72334e2aac80e3eedaf58b29ec0cd9b1077293edce8a448bdbac77d2d"
+      }
+    },
+    {
+      "worker": "private",
+      "exitCode": 0,
+      "dryRun": true,
+      "resourceIdsAreSynthetic": true,
+      "productionResourcesVerified": false,
+      "deploymentAuthorized": false,
+      "log": "docs/phase-5-evidence/packaging-test-private.log",
+      "bundleSha256": {
+        "index.js": "680b64783f47ba5ce44c62bac4d0a61c99cbf29c443a588d3a6fb48130371ec8",
+        "index.js.map": "f2c8954086d5f9f826d4065ee7591e323afa6c84f63b5694a1a9c20762df0401",
+        "README.md": "be10378f028510ebc25ba32081cbdb60295e50cc4b02a023c31d4f8c4e577197"
+      }
+    }
+  ]
+}

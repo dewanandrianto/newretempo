@@ -1,0 +1,11 @@
+{
+  "name": "packaged-spa",
+  "command": [
+    "node",
+    "--test",
+    "tests/onchain/frontend-build.test.mjs"
+  ],
+  "exitCode": 0,
+  "seconds": 4.601,
+  "log": "docs/phase-5-evidence/session-fence-final-review-probes/packaged-spa.log"
+}

@@ -1,0 +1,22 @@
+{
+  "scope": "Read-only official Arc RPC; no transactions",
+  "rpcUrl": "https://rpc.mainnet.arc.io",
+  "documentationUrl": "https://docs.arc.io/arc/references/connect-to-arc",
+  "explorerUrl": "https://explorer.arc.io",
+  "initialDefaultUserAgent": "urllib returned HTTP 403; retried using an explicit readiness-client User-Agent",
+  "observations": {
+    "eth_chainId": {
+      "result": "0x13b2"
+    },
+    "eth_blockNumber": {
+      "result": "0x1d0dcb8"
+    },
+    "eth_getCode": {
+      "nonemptyCode": true,
+      "codeBytes": 1798
+    },
+    "eth_call": {
+      "result": "0x0000000000000000000000000000000000000000000000000000000000000006"
+    }
+  }
+}

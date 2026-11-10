@@ -1,0 +1,9 @@
+{
+  "exit_code": 0,
+  "source_sha256": {
+    "RetempoEscrow.sol": "d9fbf5367cf33c5d00d06bd913942a05780c38cde3cfb60520117152ac17ac34",
+    "RetempoSubscriptionManager.sol": "6d5375fc28cbaeb4561c4e0b6bcde707e15009f9df48bc923d12745c21dacff9",
+    "interfaces/IRetempoEscrow.sol": "b45ff420684e52692ba822d5e60dc433735e55e557f02c59a4cab8ae6e93ac16"
+  },
+  "source_unchanged_during_run": true
+}

@@ -1,0 +1,87 @@
+{
+  "passed": true,
+  "steps": [
+    {
+      "step": "Worker and D1 health",
+      "status": 200
+    },
+    {
+      "step": "Anonymous tenant access denied",
+      "status": 401
+    },
+    {
+      "step": "Unconfigured email fails closed",
+      "status": 503
+    },
+    {
+      "step": "Server-issued SIWE challenge",
+      "status": 200
+    },
+    {
+      "step": "Local signature authentication",
+      "status": 200
+    },
+    {
+      "step": "SIWE replay denied",
+      "status": 401
+    },
+    {
+      "step": "Create persistent organization",
+      "status": 201
+    },
+    {
+      "step": "Create product",
+      "status": 201
+    },
+    {
+      "step": "Create exact-amount plan",
+      "status": 201
+    },
+    {
+      "step": "Create customer",
+      "status": 201
+    },
+    {
+      "step": "Create incomplete subscription record",
+      "status": 201
+    },
+    {
+      "step": "Create invoice",
+      "status": 201
+    },
+    {
+      "step": "Idempotent invoice replay",
+      "status": 200
+    },
+    {
+      "step": "Finalize invoice",
+      "status": 200
+    },
+    {
+      "step": "Create pending payment record",
+      "status": 201
+    },
+    {
+      "step": "Create unfunded escrow record",
+      "status": 201
+    },
+    {
+      "step": "Frontend reload reads real D1 product through authenticated Worker",
+      "status": "passed"
+    },
+    {
+      "step": "Logout",
+      "status": 200
+    },
+    {
+      "step": "Revoked session rejected",
+      "status": 401
+    }
+  ],
+  "records": {
+    "organizationId": "b539c6fb-4a40-47e2-93de-3539434d18f4",
+    "productId": "be5f16de-38b0-404b-b3f6-ef23f30f3727",
+    "invoiceId": "01b9b408-ecdc-4bc0-b2d3-c2c20e0c3fee"
+  },
+  "chainTransactions": 0
+}

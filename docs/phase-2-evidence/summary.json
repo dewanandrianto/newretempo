@@ -1,0 +1,50 @@
+{
+  "phase": 2,
+  "status": "complete locally; ready for Phase 3 approval; not production ready",
+  "worker_tests": {
+    "files": 9,
+    "passed": 68,
+    "failed": 0
+  },
+  "browser_acceptance": {
+    "tests_passed": 1,
+    "steps_verified": 19,
+    "chain_transactions": 0
+  },
+  "schema": {
+    "tables": 22,
+    "columns": 260,
+    "local_migrations_applied": 2
+  },
+  "routes": {
+    "legacy": 66,
+    "worker": 66,
+    "missing": [],
+    "extra": []
+  },
+  "checks": {
+    "typecheck": {
+      "exit_code": 0,
+      "log": "docs/phase-2-evidence/typecheck.log"
+    },
+    "lint": {
+      "exit_code": 0,
+      "log": "docs/phase-2-evidence/lint.log"
+    },
+    "worker-tests": {
+      "exit_code": 0,
+      "log": "docs/phase-2-evidence/worker-tests.log"
+    },
+    "worker-bundle": {
+      "exit_code": 0,
+      "log": "docs/phase-2-evidence/worker-bundle.log"
+    }
+  },
+  "persistent_D1_readback": "passed after server stop",
+  "original_env_unchanged": true,
+  "production_contracts_unchanged": true,
+  "git_writes": "none",
+  "account_changes": "none",
+  "remote_deployment": "none",
+  "pending": "separate contract, onchain integration and production release phases"
+}

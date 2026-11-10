@@ -1,0 +1,13 @@
+{
+  "command": [
+    "node",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "--config",
+    "worker/vitest.config.ts",
+    "--disableConsoleIntercept"
+  ],
+  "exitCode": 0,
+  "elapsedSeconds": 138.184,
+  "log": "security-public-green.log"
+}

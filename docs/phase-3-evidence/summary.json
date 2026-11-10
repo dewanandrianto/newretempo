@@ -1,0 +1,146 @@
+{
+  "phase": 3,
+  "status": "COMPLETE_LOCAL_VALIDATION_AND_PREPARATION",
+  "production_deployed": false,
+  "contract_tests": {
+    "passed": 470,
+    "failed": 0,
+    "skipped": 0,
+    "partitions": {
+      "functional-approved": {
+        "passed": 451,
+        "exit_code": 0,
+        "relevant_source_matches_current": true
+      },
+      "escrow-invariants-approved": {
+        "passed": 9,
+        "exit_code": 0,
+        "relevant_source_matches_current": true
+      },
+      "manager-invariants-approved": {
+        "passed": 10,
+        "exit_code": 0,
+        "relevant_source_matches_current": true
+      }
+    }
+  },
+  "invariants": {
+    "checks": 16,
+    "runs_each": 256,
+    "depth": 100,
+    "calls_each": 25600,
+    "calls_total": 409600,
+    "handler_reverts": 0
+  },
+  "read_only_mainnet_fork": {
+    "passed": 17,
+    "block": 30197082,
+    "broadcast": false
+  },
+  "genuine_local_signed_acceptance": {
+    "passed": true,
+    "steps_recorded": 20,
+    "owned_node_stopped": true,
+    "source_keccak_verified": true
+  },
+  "approved_policy_fixes": [
+    "Explicit renewed consent before debits under changed escrow dispute windows; changed acceptance revokes the active mandate without recreating it",
+    "Exclusive arbitration deadline: late resolution rejects and timeout expiration remains available"
+  ],
+  "production_coverage": {
+    "contracts/RetempoEscrow.sol": {
+      "lines": {
+        "hit": 307,
+        "total": 310,
+        "percent": 99.03
+      },
+      "branches": {
+        "hit": 70,
+        "total": 72,
+        "percent": 97.22
+      },
+      "functions": {
+        "hit": 60,
+        "total": 60,
+        "percent": 100.0
+      }
+    },
+    "contracts/RetempoSubscriptionManager.sol": {
+      "lines": {
+        "hit": 218,
+        "total": 223,
+        "percent": 97.76
+      },
+      "branches": {
+        "hit": 77,
+        "total": 82,
+        "percent": 93.9
+      },
+      "functions": {
+        "hit": 29,
+        "total": 29,
+        "percent": 100.0
+      }
+    }
+  },
+  "slither": {
+    "source_matches_current": true,
+    "tool_version": "0.11.6",
+    "findings": 26,
+    "by_impact": {
+      "High": 3,
+      "Medium": 8,
+      "Low": 14,
+      "Informational": 1
+    },
+    "by_detector": {
+      "arbitrary-send-erc20": 2,
+      "reentrancy-balance": 1,
+      "incorrect-equality": 4,
+      "uninitialized-local": 4,
+      "timestamp": 14,
+      "cyclomatic-complexity": 1
+    },
+    "new_detector_function_signatures": 0,
+    "removed_detector_function_signatures": 0,
+    "independent_audit": false,
+    "assessment": "Unchanged detector/function inventory. Three High reports retain the documented fixed-customer bounded-mandate and nonReentrant exact-delta assumptions; not zero findings and not a production release approval."
+  },
+  "final_checks": {
+    "typecheck": {
+      "exit_code": 0,
+      "duration_seconds": 25.57,
+      "log": "docs/phase-3-evidence/typecheck-final.log",
+      "output_tail": "$ tsc --noEmit && tsc --noEmit -p worker && tsc --noEmit -p backend\n"
+    },
+    "lint": {
+      "exit_code": 0,
+      "duration_seconds": 24.96,
+      "log": "docs/phase-3-evidence/lint-final.log",
+      "output_tail": "Found 0 warnings and 0 errors.\nFinished in 24.0s on 129 files with 57 rules using 4 threads.\nFound 0 warnings and 0 errors.\nFinished in 239ms on 188 files with 34 rules using 4 threads.\n$ oxlint --type-aware src scripts worker && oxlint .\n"
+    },
+    "arc-anvil-smoke": {
+      "exit_code": 0,
+      "duration_seconds": 9.86,
+      "log": "docs/phase-3-evidence/arc-anvil-smoke-final.log",
+      "output_tail": "\u2714 genuine signed local Arc USDC acceptance and blocklist probes (5972.873749ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 9575.419036\n"
+    },
+    "gas-report-approved": {
+      "exit_code": 0,
+      "duration_seconds": 46.11,
+      "log": "docs/phase-3-evidence/gas-report-approved-final.log",
+      "output_tail": "--+---------|\n| RetempoSubscriptionManagerFeeTokenTest   | 4      | 0      | 0       |\n|------------------------------------------+--------+--------+---------|\n| RetempoSubscriptionManagerReentrancyTest | 8      | 0      | 0       |\n|------------------------------------------+--------+--------+---------|\n| RetempoSubscriptionManagerSubscribeTest  | 28     | 0      | 0       |\n|------------------------------------------+--------+--------+---------|\n| RetempoSubscriptionManagerCoreTest       | 28     | 0      | 0       |\n\u2570------------------------------------------+--------+--------+---------\u256f\n\n\n"
+    }
+  },
+  "durable_artifact_manifest": "contracts/contract-metadata/phase-3-build/manifest.json",
+  "original_env_unchanged": true,
+  "git_writes": "none",
+  "account_changes": "none",
+  "public_chain_transactions": "none",
+  "release_gates": [
+    "Real governance/signers/roles/arbitrators/caps and explicit deployment approval",
+    "Independent security review/risk acceptance",
+    "Frontend transaction integration and verified event ingestion",
+    "Dedicated Retempo online resources and production operational readiness"
+  ]
+}

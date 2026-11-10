@@ -1,0 +1,621 @@
+{
+  "passed": true,
+  "review_type": "Fresh assistant-context READ-ONLY bounded architecture review; not independent third-party security/financial audit",
+  "summary": "P5-SEC-003 closed in scoped local review: current typed proof fences password login, registration mail await and SIWE at atomic session admission; previous scoped closures retained.",
+  "phase5Complete": false,
+  "productionDeploymentAuthorized": false,
+  "generatedAtUTC": "2026-11-10T13:13:23.466735+00:00",
+  "security_concerns": [],
+  "logic_errors": [],
+  "suggestions": [],
+  "resolution_map": [
+    {
+      "id": "P5-SEC-001",
+      "status": "closure_retained_in_bounded_local_review",
+      "priorProof": [
+        {
+          "path": "worker/src/catalog/members.ts",
+          "lines": [
+            25,
+            27
+          ],
+          "detail": "Verified email required in lookup and INSERT SELECT"
+        },
+        {
+          "path": "worker/src/auth/guards.ts",
+          "lines": [
+            15,
+            18
+          ],
+          "detail": "Legacy unverified members denied; creator identity exception, not SIWE-method bypass"
+        },
+        {
+          "path": "worker/src/auth/account.ts",
+          "lines": [
+            9,
+            11
+          ],
+          "detail": "Account tenant listing uses matching predicate"
+        }
+      ],
+      "verification": "Membership/guards/account sources hash-identical; auth focused suite rerun."
+    },
+    {
+      "id": "P5-SEC-002",
+      "status": "closure_retained_in_bounded_local_review",
+      "priorProof": [
+        {
+          "path": "public/_headers",
+          "lines": [
+            1,
+            4
+          ],
+          "detail": "frame-ancestors none, X-Frame-Options DENY, nosniff without default-src none"
+        },
+        {
+          "path": "tests/onchain/frontend-build.test.mjs",
+          "lines": [
+            8,
+            26
+          ],
+          "detail": "Exact built SPA HTML through real Miniflare Static Assets on four navigation paths"
+        }
+      ],
+      "verification": "Headers and packaged SPA regression hash-identical; real Miniflare packaged-spa rerun, existing dist only."
+    },
+    {
+      "id": "P5-LOGIC-001",
+      "status": "closure_retained_in_bounded_local_review",
+      "priorProof": [
+        {
+          "path": "scripts/check-phase5-local.py",
+          "lines": [
+            19,
+            46
+          ],
+          "detail": "Refuses historical destination before write; invalidates before child; persists false on failure/exception/timeout"
+        },
+        {
+          "path": "scripts/check-phase5-local.py",
+          "lines": [
+            63,
+            88
+          ],
+          "detail": "Missing/malformed/nonpassing current child and frontend failure fail closed"
+        },
+        {
+          "path": "tests/ops/test_phase5_runner.py",
+          "lines": [
+            18,
+            105
+          ],
+          "detail": "Seeded stale-success negative fixtures and Phase4 destination guard"
+        }
+      ],
+      "verification": "Runner re-reviewed with added verification-input drift guard; 14 actual ops tests pass (mocked runner fixtures are not full-matrix execution).",
+      "currentProof": [
+        {
+          "path": "scripts/check-phase5-local.py",
+          "lines": [
+            19,
+            27
+          ],
+          "detail": "Verification input manifest covers code/tests/config and protected inputs."
+        },
+        {
+          "path": "scripts/check-phase5-local.py",
+          "lines": [
+            101,
+            108
+          ],
+          "detail": "Before/after hashes must match before passing verdict, source drift fails closed."
+        },
+        {
+          "path": "tests/ops/test_phase5_runner.py",
+          "lines": [
+            103,
+            107
+          ],
+          "detail": "Mocked source-mutation scenario must invalidate passing child and persist exact drift path."
+        }
+      ]
+    },
+    {
+      "id": "PAG-001",
+      "status": "closure_retained_in_bounded_local_review",
+      "priorProof": [
+        {
+          "path": "chain-worker/src/indexer.ts",
+          "lines": [
+            105,
+            107
+          ],
+          "detail": "Budget reserves final ancestor call"
+        },
+        {
+          "path": "chain-worker/src/indexer.ts",
+          "lines": [
+            188,
+            215
+          ],
+          "detail": "Old cursor checked after preparing statements as final RPC before atomic batch"
+        }
+      ],
+      "verification": "Indexer/service hash-identical; reserved final ancestor call and final-RPC recheck retained, indexer regressions rerun."
+    },
+    {
+      "id": "PAG-002",
+      "status": "closure_retained_in_bounded_local_review",
+      "priorProof": [
+        {
+          "path": "chain-worker/src/service.ts",
+          "lines": [
+            23,
+            68
+          ],
+          "detail": "Dedicated overflow type, stream cancellation and shared 40-call counter"
+        },
+        {
+          "path": "chain-worker/src/indexer.ts",
+          "lines": [
+            89,
+            110
+          ],
+          "detail": "Only eth_getLogs byte overflow shrinks complete prefix; oversized single block refuses"
+        }
+      ],
+      "verification": "Indexer/service hash-identical; overflow-specific cancellation/shrinking and no generic-error retry retained, indexer regressions rerun."
+    },
+    {
+      "id": "P5-SEC-003",
+      "status": "closed_in_scoped_local_review",
+      "originalReport": "docs/phase-5-evidence/independent-review-final.json",
+      "originalFailedVerdictRetained": true,
+      "originalVulnerability": "Authenticated pre-reset password could previously mint a new session after recovery; original failing workerd/D1 evidence retained unchanged.",
+      "resolution": "All three Worker mint callers now carry original credential snapshot into atomic active-user+credential SQL admission, rather than rereading post-await credential or using unconditional VALUES.",
+      "proof": [
+        {
+          "path": "worker/src/auth/sessionProof.ts",
+          "lines": [
+            1,
+            7
+          ],
+          "detail": "Mandatory discriminated read-only internal proof. Password requires string; null allowed only for SIWE wallet-only credential revision."
+        },
+        {
+          "path": "worker/src/auth/service.ts",
+          "lines": [
+            14,
+            21
+          ],
+          "detail": "Registration saves exact originally generated salted hash before awaiting mail delivery; never refreshes it after mail."
+        },
+        {
+          "path": "worker/src/auth/service.ts",
+          "lines": [
+            23,
+            32
+          ],
+          "detail": "Password proof carries exact SELECT hash genuinely verified by KDF, retained through metadata/audit awaits."
+        },
+        {
+          "path": "worker/src/auth/walletAuth.ts",
+          "lines": [
+            8,
+            27
+          ],
+          "detail": "SIWE captures original wallet-owner password hash before subsequent awaits, including null for wallet-only creation; revoked ownership cannot fork account."
+        },
+        {
+          "path": "worker/src/auth/routes.ts",
+          "lines": [
+            27,
+            35
+          ],
+          "detail": "Register and password login pass only produced proof to the shared mint boundary."
+        },
+        {
+          "path": "worker/src/auth/routes.ts",
+          "lines": [
+            52,
+            57
+          ],
+          "detail": "SIWE passes wallet-derived proof to same mint boundary, no alternate session insertion."
+        },
+        {
+          "path": "worker/src/auth/sessions.ts",
+          "lines": [
+            36,
+            43
+          ],
+          "detail": "Runtime guard rejects omitted, empty, undefined and null password evidence before any mutation; malformed method/address also denied."
+        },
+        {
+          "path": "worker/src/auth/sessions.ts",
+          "lines": [
+            44,
+            60
+          ],
+          "detail": "Sole production Worker INSERT SELECT requires active user and exact captured salted hash IS comparison; SIWE also rechecks live login owner/verified address. Guarded rotation and admission serialized in one D1 batch; denied insertion neither rotates nor emits cookie."
+        },
+        {
+          "path": "worker/src/auth/sessions.ts",
+          "lines": [
+            61,
+            63
+          ],
+          "detail": "Cookie/auth context set only after successful insertion; auth context excludes credential proof."
+        },
+        {
+          "path": "worker/src/auth/emailTokens.ts",
+          "lines": [
+            25,
+            42
+          ],
+          "detail": "Recovery atomically changes salted hash, revokes sessions/login-wallet verification, invalidates link nonces and consumes token; reset ordered after a mint revokes it, before mint invalidates proof."
+        },
+        {
+          "path": "worker/src/auth/routes.ts",
+          "lines": [
+            21,
+            35
+          ],
+          "detail": "HTTP uses whitelisted accountResponse, not spread internal register result or password proof."
+        },
+        {
+          "path": "worker/src/auth/account.ts",
+          "lines": [
+            7,
+            11
+          ],
+          "detail": "Whitelisted account/user fields never select password_hash."
+        },
+        {
+          "path": "worker/src/http.ts",
+          "lines": [
+            60,
+            87
+          ],
+          "detail": "Generic error handling does not serialize SQL, provider errors, bound parameters or proofs; logged internal errors contain request id/kind only."
+        },
+        {
+          "path": "worker/src/auth/passwords.ts",
+          "lines": [
+            3,
+            23
+          ],
+          "detail": "PBKDF2 SHA256 remains 600000, fresh random 16-byte salt; same-plaintext reset still changes revision."
+        },
+        {
+          "path": "worker/tests/session-fence.test.ts",
+          "lines": [
+            32,
+            75
+          ],
+          "detail": "Real D1 stale password proof denied 403 before/after fresh-password login; existing session rows unchanged across repeated denial, no Set-Cookie, old password/reset replay denied."
+        },
+        {
+          "path": "worker/tests/session-fence.test.ts",
+          "lines": [
+            78,
+            101
+          ],
+          "detail": "Real production registration route paused inside MAILER: reset then resume yields 403/no cookie/zero sessions; new password login and authenticated me succeed."
+        },
+        {
+          "path": "worker/tests/session-fence.test.ts",
+          "lines": [
+            103,
+            170
+          ],
+          "detail": "Invalid null evidence cannot mint/rotate; disabled login and registration both denied; denial response/audit metadata exclude plaintext and hash."
+        },
+        {
+          "path": "docs/phase-5-evidence/session-fence-final-review-probes/password-reset-race-current-api.test.ts",
+          "lines": [
+            11,
+            60
+          ],
+          "detail": "Independent original repro adapted to current typed two-argument API, explicit HttpError 403 expectation (not any 500), real reset and successful new-password login; additional omitted-proof denial test."
+        }
+      ],
+      "independentObserved": {
+        "raceStatus": 403,
+        "issuedCookie": false,
+        "authenticatedMeStatus": 401,
+        "liveSessions": [],
+        "newPasswordLoginStatus": 200,
+        "newPasswordMeStatus": 200,
+        "omittedProofStatus": 403
+      },
+      "log": "docs/phase-5-evidence/session-fence-final-review-probes/independent-isolated.log"
+    },
+    {
+      "id": "recovered-walletpreclaim",
+      "status": "wallet_specific_closure_retained_and_shared_password_mint_gap_closed",
+      "proof": [
+        {
+          "path": "worker/src/auth/walletAuth.ts",
+          "lines": [
+            29,
+            51
+          ],
+          "detail": "Same-owner tombstone relink, active live-session/email guard and transactional audit unchanged."
+        },
+        {
+          "path": "worker/tests/recovery-security.test.ts",
+          "lines": [
+            89,
+            133
+          ],
+          "detail": "Real signature/auth pause races across reset and legitimate relink retained; SIWE caller migrated to typed proof."
+        },
+        {
+          "path": "worker/src/auth/emailTokens.ts",
+          "lines": [
+            31,
+            40
+          ],
+          "detail": "Login-only revocation and link nonce invalidation remain byte-identical to prior review."
+        }
+      ],
+      "verification": "All 11 recovery-security regressions rerun in focused auth suite, including rollback/financial preservation/wallet-only onboarding."
+    }
+  ],
+  "verification": [
+    {
+      "name": "auth",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "worker/vitest.config.ts",
+        "worker/tests/session-fence.test.ts",
+        "worker/tests/recovery-security.test.ts",
+        "worker/tests/membership-security.test.ts",
+        "worker/tests/auth.test.ts",
+        "worker/tests/auth-account.test.ts",
+        "--disableConsoleIntercept",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/home/deseti/projects/retempo/docs/phase-5-evidence/session-fence-final-review-probes/auth-tests.json"
+      ],
+      "exitCode": 0,
+      "seconds": 192.522,
+      "log": "docs/phase-5-evidence/session-fence-final-review-probes/auth.log"
+    },
+    {
+      "name": "indexer",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "chain-worker/vitest.config.ts",
+        "chain-worker/tests/indexer-review.test.ts",
+        "chain-worker/tests/indexer-overflow.test.ts",
+        "chain-worker/tests/indexer-ancestor-budget.test.ts",
+        "--disableConsoleIntercept"
+      ],
+      "exitCode": 0,
+      "seconds": 54.135,
+      "log": "docs/phase-5-evidence/session-fence-final-review-probes/indexer.log"
+    },
+    {
+      "name": "ops",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/ops",
+        "-v"
+      ],
+      "exitCode": 0,
+      "seconds": 21.091,
+      "log": "docs/phase-5-evidence/session-fence-final-review-probes/ops.log"
+    },
+    {
+      "name": "worker-types",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "worker"
+      ],
+      "exitCode": 0,
+      "seconds": 6.921,
+      "log": "docs/phase-5-evidence/session-fence-final-review-probes/worker-types.log"
+    },
+    {
+      "name": "packaged-spa",
+      "command": [
+        "node",
+        "--test",
+        "tests/onchain/frontend-build.test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 4.601,
+      "log": "docs/phase-5-evidence/session-fence-final-review-probes/packaged-spa.log"
+    },
+    {
+      "name": "independent-current-api-isolated",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "docs/phase-5-evidence/session-fence-final-review-probes/vitest.config.ts",
+        "--disableConsoleIntercept",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=docs/phase-5-evidence/session-fence-final-review-probes/independent-isolated-tests.json"
+      ],
+      "exitCode": 0,
+      "seconds": 41.635,
+      "log": "docs/phase-5-evidence/session-fence-final-review-probes/independent-isolated.log"
+    }
+  ],
+  "testResults": {
+    "focusedAuth": {
+      "numTotalTests": 35,
+      "numPassedTests": 35,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "success": true
+    },
+    "independentCurrentApi": {
+      "numTotalTests": 2,
+      "numPassedTests": 2,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "success": true
+    }
+  },
+  "implementationFullPublicEvidence": {
+    "report": "docs/phase-5-evidence/session-fence-public-tests.json",
+    "testsPassed": 148,
+    "testsFailed": 0,
+    "sourceHashMismatches": [],
+    "independentlyReranFullPublicSuite": false,
+    "originalPublicTests": 143,
+    "newTests": 5
+  },
+  "opsTestsActuallyRerun": 14,
+  "reviewed_file_sha256": {
+    "worker/src/auth/sessionProof.ts": "d359a25822e85f4221bdbc57f7fa11cc85196e880199638074e1a0ef2428a700",
+    "worker/src/auth/sessions.ts": "81fdd81fb7b0b4fcd0de9874f27f057b8debed17df6d038a90e2ae9243d4524f",
+    "worker/src/auth/service.ts": "8848cf0ce86525fe73986e902eef94178cbe38c0da4ec0e8e13af452dd987188",
+    "worker/src/auth/routes.ts": "d9235deeb2e264b7178f09fefc0a32e07c071dd1c400d30eb266ba5f494db848",
+    "worker/src/auth/walletAuth.ts": "2d34d0c512daa1a97fb7f5a68265598636867ff4bd6017af179077b544cf0fa7",
+    "worker/src/auth/siwe.ts": "646a71cbd139dbc3ca30f88183004e920327aa2591dea9d557e2f328ca75e257",
+    "worker/src/auth/emailTokens.ts": "ee961bbbf2ade11c02cbae4d2d6c494726af289b13f3c2db653449d4096a3606",
+    "worker/src/auth/passwords.ts": "5a148b436ecb131ee86ea8a887a072852ffb485f890cac714e44951ed48adcef",
+    "worker/src/auth/account.ts": "f8558a30cdb70d6416fd6b874f862d769b32d07ee7e4618783e81c3bf51f8c91",
+    "worker/src/auth/guards.ts": "13f9b5065a89149bed4d8a5236081cf4e7d3445870c2dabc76b98c6bd37b29f9",
+    "worker/src/auth/audit.ts": "9a378fa33dad92640c6cb6bbcc8bd35656d77de92e0789e1d2179e7e24444108",
+    "worker/src/catalog/members.ts": "9dcc4000eb7338fd45146077868eae84303120468857f697a03c0a0632be6086",
+    "worker/src/http.ts": "1dd39885d69148bb66422553471ecb94ddd3fe3168ae9c51933c37c7a02b199c",
+    "worker/src/index.ts": "cdddb83d3d6993bdb10e576ce6c0ae1a3201efe5892ac47a563d5e50d56000f5",
+    "worker/tests/session-fence.test.ts": "25625d7287ecf604620fbfa3852460964c2e9a1a4eefa437a5c75a9478edf43f",
+    "worker/tests/recovery-security.test.ts": "fb0ba8cd47cacb31ab7a0e63046c00c35ce8eaabeb30bb37872c3a80ebcdcdb2",
+    "worker/vitest.config.ts": "a6722b1e44f1598c75081bd1f2eff0b7b3b9f7f15a2a57a0e3eb3856db4dc362",
+    "scripts/check-phase5-local.py": "3e54b133d11be36a69739e215d17bc9cb3521992806d43194dacd17515885653",
+    "tests/ops/test_phase5_runner.py": "5809525e4a0b7883be7a6c773df9cbe1f5fc00baf8a4b3a4c4d4969d5a2ac8d8",
+    "chain-worker/src/indexer.ts": "22abc2cd025a6a653e88c74cc6fef8f378a8b44866c416a245f90b99d43bf81c",
+    "chain-worker/src/service.ts": "85073f2ccd51f2f0bf7ca9e1452615d01665833822d7e7bcf64d85735a59e5fa",
+    "public/_headers": "13007281510d0b8d8b766488b5caedd80b920d3202b724ffc81fb2c7c0b3c792",
+    "docs/phase-5-evidence/independent-review-final.json": "c8278496bb96aa3638ce0a374757be6adb1215b03f8c8d11e7b168870a3a061d",
+    "docs/phase-5-evidence/session-fence-report.json": "3d6147c9c86616e4298e4a52cc9fd5c3ddb567292feea82dd2c6def8d8ad9ac7",
+    "docs/phase-5-evidence/final-review-probes/password-reset-race.test.ts": "48c0c21a28481864363b3da2c0375dd0675ab0fb1d96fda7ff16f76a7265f17a",
+    "docs/phase-5-dependency-boundary.md": "fc7544154d570be13999a59460a9550191d818b88183ab0db0633a0f2e099de8",
+    "package.json": "02ef91f0ec5e075b4550b2c82b02a4ef7537f6bb9037340095fc4b396d4f8efd"
+  },
+  "verificationInputsBeforeAfter": {
+    "before": "docs/phase-5-evidence/session-fence-final-review-probes/review-inputs-before.json",
+    "after": "docs/phase-5-evidence/session-fence-final-review-probes/review-inputs-after.json",
+    "count": 347,
+    "sourceDrift": []
+  },
+  "priorReviewHashComparison": "docs/phase-5-evidence/session-fence-final-review-probes/prior-review-hash-comparison.json",
+  "historicalEvidence": {
+    "independent-review-final.json": {
+      "passed": false,
+      "sha256": "c8278496bb96aa3638ce0a374757be6adb1215b03f8c8d11e7b168870a3a061d",
+      "preserved": true
+    },
+    "originalProbePreserved": true,
+    "priorEvidenceHashMismatches": []
+  },
+  "mintInventory": {
+    "productionWorkerInsertSites": [
+      "worker/src/auth/sessions.ts:54"
+    ],
+    "productionWorkerCallers": [
+      "worker/src/auth/routes.ts:29",
+      "worker/src/auth/routes.ts:34",
+      "worker/src/auth/routes.ts:56"
+    ],
+    "otherMatches": "Worker direct SQL tests are fixtures. backend/src is preserved legacy PostgreSQL runtime, not current Worker route target; no legacy-security certification or feature expansion."
+  },
+  "staticReview": {
+    "scope": "Current explicitly scoped exported sources; no Git baseline or diff invented. No Git commands run.",
+    "findings": [],
+    "reviewed": "Parameterized D1 statements; walletAdmission SQL fragment is internal method-discriminated constant, not request SQL. No new external fetch destinations, executable input, credential logging/serialization or shell execution in auth proof changes. Test plaintexts/SESSION_SECRET are local fixtures, not credentials."
+  },
+  "diagnostics": {
+    "initialProbeRun": {
+      "name": "independent-current-api",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "/home/deseti/projects/retempo/docs/phase-5-evidence/session-fence-final-review-probes/vitest.config.ts",
+        "--disableConsoleIntercept",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/home/deseti/projects/retempo/docs/phase-5-evidence/session-fence-final-review-probes/independent-tests.json"
+      ],
+      "exitCode": 124,
+      "seconds": 180.06,
+      "log": "docs/phase-5-evidence/session-fence-final-review-probes/independent-current-api.log"
+    },
+    "issue": "Initial evidence-local mergeConfig concatenated public include with probe include, accidentally broadening run. Corrected evidence-local config uses explicit include override; isolated current-API proof rerun passed exactly 2 tests. Initial diagnostic result retained, never used as closure proof.",
+    "obsoleteSignature500UsedAsProof": false
+  },
+  "dependency_disposition": {
+    "auditExitCode": 1,
+    "flaggedPackageNames": 9,
+    "advisoryRecords": 37,
+    "assessment": "Document is appropriately bounded: affected flagged package instances were not emitted in inspected fresh Worker/browser graphs including dynamic chunks. This is not audit clean, full vendored-code assurance or permission to execute unused affected Node/SDK/deployment branches. No unsafe major override demanded.",
+    "reviewerDidNotRerunAuditOrBuildGraphs": true,
+    "source": "docs/phase-5-dependency-boundary.md"
+  },
+  "review_boundaries": {
+    "writes": "Only this requested review JSON plus evidence-local test/config/runner/log/hash artifacts. No production source/test/config edits, .env or secret reads, Git, AGENTS, deploy or remote writes. Tests ran isolated local workerd/D1; production packaging test remains local.",
+    "fullMatrix": "Parent owns concurrent final 148-public/full-matrix verification and exact source/artifact hashes; this is not Phase 5 completion.",
+    "bundle": "Existing packaged SPA tested; reviewer did not rerun build or dependency graphs/audit.",
+    "modelContext": "Fresh reviewer assistant context, not independent third-party audit."
+  },
+  "remaining_release_gates": [
+    "Parent must validate exact review artifact hash and current source map against final full matrix before closure.",
+    "Production CPU and free-tier telemetry remain unverified; local wall time is not provider CPU; KDF cannot be weakened.",
+    "Remote production accounts/D1/email-provider configuration, custody and funded mainnet exposure remain separate gates.",
+    "9 flagged package names / 37 advisory records remain unresolved in lockfile; runtime-exposure disposition only, not dependency-audit clean.",
+    "Unrestricted capacity is not certified; bounded quotas/complete-history limits and RPC-D1 non-consensus atomicity remain disclosed.",
+    "No Git publication, deployment, mainnet writes or production approval granted."
+  ],
+  "evidence_sha256": {
+    "docs/phase-5-evidence/session-fence-final-review-probes/assemble-review.py": "336a67205677af25a7bdc3d8eaddb83dac4349c271d33031ec2fb7f5d8884f59",
+    "docs/phase-5-evidence/session-fence-final-review-probes/auth-run.json": "22b2b40c9e11aff10dcbedb0e13a3bd81135b63032d86c2c6c73f0027cf556fe",
+    "docs/phase-5-evidence/session-fence-final-review-probes/auth-tests.json": "2906b22e721cf4b06959cf7d9c3c6f3289d1dcde1a6ce3bb901a728780aa023c",
+    "docs/phase-5-evidence/session-fence-final-review-probes/auth.log": "4058fc3da63ef84566c66b2db126211912ea4c02df9453810c4b638dc5124ee8",
+    "docs/phase-5-evidence/session-fence-final-review-probes/checks.json": "caa5216a94e6ffa5023d1fae289ad059a41602de9456c9123815dc48100698a0",
+    "docs/phase-5-evidence/session-fence-final-review-probes/independent-current-api-run.json": "57aa97b34d73361a1166791e891c246774ebbb9f7f4ae3d6a4836c9a28161d1a",
+    "docs/phase-5-evidence/session-fence-final-review-probes/independent-current-api.log": "8a51a0330c1b880a6fe46f2536c3e817ae5fef77e28b2a7861e67bb59451e8a3",
+    "docs/phase-5-evidence/session-fence-final-review-probes/independent-isolated-run.json": "61d538ecc63f6e7cd6b175562658684d6013e21b96cf1d55eb81f2a327758e0f",
+    "docs/phase-5-evidence/session-fence-final-review-probes/independent-isolated-tests.json": "05d0ece3bb847d465db546cb3a4f804f66bf43422c5bcbc681e1e5153aa756fb",
+    "docs/phase-5-evidence/session-fence-final-review-probes/independent-isolated.log": "4de995d781c07ae2f41094804d7b5a428e2a989978506657b77aca4fd2c578bc",
+    "docs/phase-5-evidence/session-fence-final-review-probes/indexer-run.json": "dab9730e0578608ac26379a13306365d1d262cf943ef85bce304a020659503f4",
+    "docs/phase-5-evidence/session-fence-final-review-probes/indexer.log": "9ececf9e35db0bcade7c18f918fd53714b5839e036817dffc2c509f03aa4b092",
+    "docs/phase-5-evidence/session-fence-final-review-probes/ops-run.json": "0063d81bfd2819f10201f28eb0f8f0646823f56cc7b93ca87e1fe9a5fab6c4ad",
+    "docs/phase-5-evidence/session-fence-final-review-probes/ops.log": "9d5d107f911fee49f276803dd6cc6defa85f365561f3234d1ece69c748e1afb5",
+    "docs/phase-5-evidence/session-fence-final-review-probes/packaged-spa-run.json": "f3fcd443a9316fa086694844cf6ee5e8f0a244badd96af932ee6bb1bdebc6993",
+    "docs/phase-5-evidence/session-fence-final-review-probes/packaged-spa.log": "dff779ece4b2211bc3744f029a7ee3ce5b244695af586765d1e44b03c5bca494",
+    "docs/phase-5-evidence/session-fence-final-review-probes/packaging-test-private.log": "582fb75398008d1bf881b11ab1448e8249f13244757e2b4685d434077046664f",
+    "docs/phase-5-evidence/session-fence-final-review-probes/packaging-test-public.log": "10d25aa08706440878f0422d6ecb0d807692e8662c9039e98dfc86af2bfeb2ba",
+    "docs/phase-5-evidence/session-fence-final-review-probes/packaging-test-results.json": "da0d280dce102f366cf04926268485587d293e5dd5f47b1db877f33ed171ffb3",
+    "docs/phase-5-evidence/session-fence-final-review-probes/password-reset-race-current-api.test.ts": "5ca5c98b31af24c33e62e3328f788ff8b7e9015fbecbd9ce45ff932df9ea2749",
+    "docs/phase-5-evidence/session-fence-final-review-probes/prior-review-hash-comparison.json": "da440eee395862855de3433115edbe229605d4fdd63b31f8165a779052f98614",
+    "docs/phase-5-evidence/session-fence-final-review-probes/review-inputs-after.json": "05bf7da83d142147d675205c77a8bfa8e31bd70e55024c22d9292012f0fa717c",
+    "docs/phase-5-evidence/session-fence-final-review-probes/review-inputs-before.json": "05bf7da83d142147d675205c77a8bfa8e31bd70e55024c22d9292012f0fa717c",
+    "docs/phase-5-evidence/session-fence-final-review-probes/run-review.py": "98cec2a458d7a11efa16deebe141f4b99b908e17934ea6fe2ce73671b2bde41f",
+    "docs/phase-5-evidence/session-fence-final-review-probes/vitest.config.ts": "fa1ee3d61f2fd5f42e6dc6ed4ce8ee549e92136d6de4d30b01f2736bfcf5c707",
+    "docs/phase-5-evidence/session-fence-final-review-probes/worker-types-run.json": "5938464c7a61d50f796d94939abb4e66d7677404a08214bc065faa42e20a0a1f",
+    "docs/phase-5-evidence/session-fence-final-review-probes/worker-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

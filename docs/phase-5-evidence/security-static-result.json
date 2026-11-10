@@ -1,0 +1,24 @@
+[
+  {
+    "command": [
+      "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+      "--no-env-file",
+      "run",
+      "typecheck"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 8.241,
+    "log": "security-typecheck.log"
+  },
+  {
+    "command": [
+      "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+      "--no-env-file",
+      "run",
+      "lint"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 10.026,
+    "log": "security-lint.log"
+  }
+]

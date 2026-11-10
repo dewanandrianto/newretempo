@@ -1,0 +1,357 @@
+{
+  "passed": true,
+  "scope": "Local focused session-issuance architecture correction for P5-SEC-003; not independent review or Phase 5 completion",
+  "generatedAtUTC": "2026-11-10T13:01:58.686318+00:00",
+  "phase5Complete": false,
+  "productionDeploymentAuthorized": false,
+  "freshIndependentReviewRequired": true,
+  "implementation": [
+    "Mandatory SessionProof discriminated union at the sole production Worker session INSERT boundary; password proof requires non-null original salted hash, SIWE permits null only for wallet-only accounts.",
+    "Password verification retains its SELECT snapshot through genuine KDF/audit awaits. Registration retains the originally generated salted hash through D1 creation and mail delivery. SIWE retains the wallet lookup credential snapshot and address.",
+    "All paths use D1 INSERT SELECT with users.status=active and users.password_hash IS capturedHash; SIWE additionally checks login purpose, same owner/address, verification_method=siwe and non-null verified_at.",
+    "Previous-cookie rotation is guarded on the new session id inside the same D1 batch, so denied proof changes neither prior sessions nor cookies/auth context.",
+    "Runtime guard rejects invalid null password evidence before any database mutation; routes serialize accountResponse only, never the internal proof."
+  ],
+  "apiAndInternalTypeChanges": {
+    "HTTP": "Success routes and account response shapes unchanged; stale registration/login now return generic 403 without Set-Cookie. Cookie names, flags, TTL/idle/absolute expiration, logout and rotation behavior retained.",
+    "establishSession": "(c, proof: SessionProof) => Promise<void>; removed userId/method/optional-wallet positional API.",
+    "authenticatePassword": "Promise<PasswordSessionProof> replaces Promise<string>. Proof stores the exact verified non-null hash before subsequent metadata awaits.",
+    "registerUser": "Returns {proof: PasswordSessionProof, verificationEmailSent} instead of {userId, verificationEmailSent}; proof is captured before mail delivery and never included in HTTP JSON.",
+    "loginWithWallet": "Promise<SiweSessionProof> replaces Promise<string>. VerifiedWallet.loginState removed; mandatory typed proof now carries captured hash/address explicitly.",
+    "publicTestCompatibility": "One existing direct SIWE establishment test caller migrated to the new signature; all original assertions preserved. Direct D1 public fixtures unchanged. Historical independent-review probe preserved unchanged and intentionally retains old internal signature.",
+    "migration": "None"
+  },
+  "tdd": [
+    {
+      "stage": "independent-existing-repro RED",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "docs/phase-5-evidence/final-review-probes/vitest.config.ts",
+        "--disableConsoleIntercept"
+      ],
+      "exitCode": 1,
+      "observed": {
+        "raceStatus": 200,
+        "issuedCookie": true,
+        "meStatus": 200,
+        "livePasswordSessions": 1
+      },
+      "log": "docs/phase-5-evidence/session-fence-independent-red.log"
+    },
+    {
+      "stage": "new regressions RED confirmed before production edits",
+      "exitCode": 1,
+      "testsFailed": 2,
+      "observed": "Old password proof minted 200 rather than 403; registration after reset during mail delivery minted 201 rather than 403. Initial RED harness swallowed one assertion into a 500; corrected the harness and reran to show the actual 200 security failure.",
+      "log": "docs/phase-5-evidence/session-fence-red-confirmed.log"
+    },
+    {
+      "stage": "initial GREEN retaining SIWE races",
+      "exitCode": 0,
+      "testsPassed": 13,
+      "log": "docs/phase-5-evidence/session-fence-green.log"
+    },
+    {
+      "stage": "invalid null password evidence RED",
+      "exitCode": 1,
+      "testsFailed": 1,
+      "testsPassed": 2,
+      "observed": "Untyped null password proof could mint a password session for a wallet-only user; mandatory TypeScript proof already rejected that input. Added runtime fail-closed boundary guard.",
+      "log": "docs/phase-5-evidence/session-fence-invalid-red.log"
+    },
+    {
+      "stage": "final full-suite GREEN",
+      "exitCode": 0,
+      "testsPassed": 148,
+      "testsFailed": 0,
+      "newTests": 5,
+      "originalTests": 143,
+      "log": "docs/phase-5-evidence/session-fence-public.log"
+    }
+  ],
+  "regressions": [
+    "Original authenticated old-password proof denied after reset, no cookie, no new session, anonymous /me 401; denial repeated after valid new-password login leaves its exact session rows unchanged and /me 200.",
+    "Real production registration route reset during MAILER delivery denies stale issuance with zero sessions; valid recovered password login and /me succeed.",
+    "Invalid null password proof is statically rejected and runtime 403; repeated denial cannot mint a wallet-only password session, rotate an unrelated valid browser cookie or change user status.",
+    "Password login and registration mail-await recheck active status inside admission, with unchanged session rows/no issuance after disabling.",
+    "No credential hash/password/proof field names in tested denial response or persisted audit metadata; current routes whitelist account fields. No browser journal changes.",
+    "Existing SIWE paused-reset races both before/after legitimate relink, tombstone reservation/rollback, email membership guards, wallet-only onboarding, cookie rotation/logout and TTL/idle/absolute expiry all retained and pass in the complete original public suite."
+  ],
+  "verification": [
+    {
+      "name": "public",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "worker/vitest.config.ts",
+        "--disableConsoleIntercept",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=docs/phase-5-evidence/session-fence-public-tests.json"
+      ],
+      "exitCode": 0,
+      "seconds": 212.255,
+      "startedUTC": "2026-11-10T12:56:23.161656+00:00",
+      "log": "docs/phase-5-evidence/session-fence-public.log"
+    },
+    {
+      "name": "root-types",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "exitCode": 0,
+      "seconds": 8.709,
+      "startedUTC": "2026-11-10T12:56:23.162996+00:00",
+      "log": "docs/phase-5-evidence/session-fence-root-types.log"
+    },
+    {
+      "name": "worker-types",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "worker"
+      ],
+      "exitCode": 0,
+      "seconds": 8.169,
+      "startedUTC": "2026-11-10T12:56:23.164404+00:00",
+      "log": "docs/phase-5-evidence/session-fence-worker-types.log"
+    },
+    {
+      "name": "backend-types",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "backend"
+      ],
+      "exitCode": 0,
+      "seconds": 3.224,
+      "startedUTC": "2026-11-10T12:56:31.334210+00:00",
+      "log": "docs/phase-5-evidence/session-fence-backend-types.log"
+    },
+    {
+      "name": "lint-type-aware",
+      "command": [
+        "node_modules/.bin/oxlint",
+        "--type-aware",
+        "src",
+        "scripts",
+        "worker"
+      ],
+      "exitCode": 0,
+      "seconds": 15.467,
+      "startedUTC": "2026-11-10T12:56:31.872244+00:00",
+      "log": "docs/phase-5-evidence/session-fence-lint-type-aware.log"
+    },
+    {
+      "name": "lint-full",
+      "command": [
+        "node_modules/.bin/oxlint",
+        "."
+      ],
+      "exitCode": 0,
+      "seconds": 1.174,
+      "startedUTC": "2026-11-10T12:56:34.558965+00:00",
+      "log": "docs/phase-5-evidence/session-fence-lint-full.log"
+    },
+    {
+      "name": "ops",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/ops",
+        "-v"
+      ],
+      "exitCode": 0,
+      "seconds": 21.434,
+      "startedUTC": "2026-11-10T12:56:35.733221+00:00",
+      "log": "docs/phase-5-evidence/session-fence-ops.log"
+    }
+  ],
+  "totals": {
+    "publicFiles": 22,
+    "publicTests": 148,
+    "opsTests": 13,
+    "allChecksExitZero": true
+  },
+  "protectedBeforeAfterSHA256": {
+    "worker/src/auth/passwords.ts": {
+      "before": "5a148b436ecb131ee86ea8a887a072852ffb485f890cac714e44951ed48adcef",
+      "after": "5a148b436ecb131ee86ea8a887a072852ffb485f890cac714e44951ed48adcef",
+      "unchanged": true
+    },
+    "worker/migrations/0002_guards.sql": {
+      "before": "48726c8bb74ced677c77d50100e69ee88b33ba966566e32423e258a9678a0f21",
+      "after": "48726c8bb74ced677c77d50100e69ee88b33ba966566e32423e258a9678a0f21",
+      "unchanged": true
+    },
+    "worker/migrations/0003_chain_bridge.sql": {
+      "before": "8e8ede3be62a5d814432fe1808deb7735260210696e244cb52ee1440a56b2c8c",
+      "after": "8e8ede3be62a5d814432fe1808deb7735260210696e244cb52ee1440a56b2c8c",
+      "unchanged": true
+    },
+    "worker/migrations/0001_schema.sql": {
+      "before": "15bd83e8569aa8b9f947fb763bbfc2a5b838bbd084fbb053e03bf42d5f7f6a52",
+      "after": "15bd83e8569aa8b9f947fb763bbfc2a5b838bbd084fbb053e03bf42d5f7f6a52",
+      "unchanged": true
+    },
+    "contracts/abi/RetempoEscrow.json": {
+      "before": "80dc9922962f6e61db1a8525847ac0ca59597c8f275a8f36e0d170f47a433401",
+      "after": "80dc9922962f6e61db1a8525847ac0ca59597c8f275a8f36e0d170f47a433401",
+      "unchanged": true
+    },
+    "contracts/abi/RetempoSubscriptionManager.json": {
+      "before": "5066a66e3b4b09668fe7b4a1d7d9eaa5b56672e216e4fe6f383e6cf23a160469",
+      "after": "5066a66e3b4b09668fe7b4a1d7d9eaa5b56672e216e4fe6f383e6cf23a160469",
+      "unchanged": true
+    },
+    "package.json": {
+      "before": "02ef91f0ec5e075b4550b2c82b02a4ef7537f6bb9037340095fc4b396d4f8efd",
+      "after": "02ef91f0ec5e075b4550b2c82b02a4ef7537f6bb9037340095fc4b396d4f8efd",
+      "unchanged": true
+    },
+    "bun.lock": {
+      "before": "2df71760be28936457751a1f2f603686add23dfabbd9ad20b995e7e50f0e5db7",
+      "after": "2df71760be28936457751a1f2f603686add23dfabbd9ad20b995e7e50f0e5db7",
+      "unchanged": true
+    }
+  },
+  "modifiedExistingSourceFiles": [
+    "worker/src/auth/walletAuth.ts",
+    "worker/src/auth/service.ts",
+    "worker/src/auth/sessions.ts",
+    "worker/src/auth/siwe.ts",
+    "worker/src/auth/routes.ts"
+  ],
+  "newSourceFiles": [
+    "worker/src/auth/sessionProof.ts",
+    "worker/tests/session-fence.test.ts"
+  ],
+  "updatedPublicTests": [
+    "worker/tests/recovery-security.test.ts"
+  ],
+  "sourceSHA256": {
+    "backend/src/http/errors.ts": "b5d762c7e2622c74b7470001ab937b8a25140df61c68eb1af290a9dbab364f65",
+    "bun.lock": "2df71760be28936457751a1f2f603686add23dfabbd9ad20b995e7e50f0e5db7",
+    "package.json": "02ef91f0ec5e075b4550b2c82b02a4ef7537f6bb9037340095fc4b396d4f8efd",
+    "shared/chain.ts": "77191e211b904f0e997f29f8e3ae45043456c9e7118a079524e601e33b76c522",
+    "shared/chainPages.ts": "f3303b8d3f334c816ab7e0930e8c42fc90f33c80760313d2e85616ea0ff564c6",
+    "shared/money.ts": "ba830adf37cacb55d870510495d1f0b9c2c104d80aa06c7e2222d6d5f80cb295",
+    "shared/types/api.ts": "99b091e1a051a1276087f2169dc86db9c48509145a9443238e2d89fd7a314fdb",
+    "shared/types/auth.ts": "7902b69a6908ac38d2dedc7e6338a2bbd8cd2d2b35125c4c4ab6b6f3d6193d11",
+    "shared/types/billing.ts": "3e85521050c8e0676a93a5371122aae85052a5f8f1a6028478d76c0c72d30c56",
+    "shared/types/index.ts": "865f6559b0258cead69b5a4c5337d8ef62daf0ee899aa5d4b8cd2dd80045ed1e",
+    "worker/src/audit.ts": "9b5880e852aa0db331584fea5cc6e6fa896edb4d2ecdedd874ac1cb4583769d3",
+    "worker/src/auth/account.ts": "f8558a30cdb70d6416fd6b874f862d769b32d07ee7e4618783e81c3bf51f8c91",
+    "worker/src/auth/audit.ts": "9a378fa33dad92640c6cb6bbcc8bd35656d77de92e0789e1d2179e7e24444108",
+    "worker/src/auth/crypto.ts": "933c50180b98e95f3d5a9d6dde6afac2f5ce2dd35735eb3cf9b68a6ad28b94d4",
+    "worker/src/auth/emailTokens.ts": "ee961bbbf2ade11c02cbae4d2d6c494726af289b13f3c2db653449d4096a3606",
+    "worker/src/auth/guards.ts": "13f9b5065a89149bed4d8a5236081cf4e7d3445870c2dabc76b98c6bd37b29f9",
+    "worker/src/auth/passwords.ts": "5a148b436ecb131ee86ea8a887a072852ffb485f890cac714e44951ed48adcef",
+    "worker/src/auth/permissions.ts": "fa2dabfd943eaf5bd815023ee93ebeefd6e2a3d0fcf670507f36110653665026",
+    "worker/src/auth/rateLimits.ts": "59d29d872e8a76693750365ac36ac779a72d16019d0e89ff043642d36720ee35",
+    "worker/src/auth/routes.ts": "d9235deeb2e264b7178f09fefc0a32e07c071dd1c400d30eb266ba5f494db848",
+    "worker/src/auth/service.ts": "8848cf0ce86525fe73986e902eef94178cbe38c0da4ec0e8e13af452dd987188",
+    "worker/src/auth/sessionProof.ts": "d359a25822e85f4221bdbc57f7fa11cc85196e880199638074e1a0ef2428a700",
+    "worker/src/auth/sessions.ts": "81fdd81fb7b0b4fcd0de9874f27f057b8debed17df6d038a90e2ae9243d4524f",
+    "worker/src/auth/siwe.ts": "646a71cbd139dbc3ca30f88183004e920327aa2591dea9d557e2f328ca75e257",
+    "worker/src/auth/walletAuth.ts": "2d34d0c512daa1a97fb7f5a68265598636867ff4bd6017af179077b544cf0fa7",
+    "worker/src/billing/money.ts": "6a50f711c0b53e1fa87f3be5793c312e6964a002d59d11f7c7e09b663107906d",
+    "worker/src/billing/routes.ts": "fa82eb776c1d72df8185bf1ec54c3f2ed6b6797a69256e441a1c02dfd0dc0be6",
+    "worker/src/catalog/associations.ts": "fbda00573ff0627934e45b31cb062e959d237e7a9f56539b1ee54ef2ce93e072",
+    "worker/src/catalog/db.ts": "11fdd9c3baf459464bdf0bead89ef74c73028d3fe319a52eadb7505dcbac2a60",
+    "worker/src/catalog/members.ts": "9dcc4000eb7338fd45146077868eae84303120468857f697a03c0a0632be6086",
+    "worker/src/catalog/resources.ts": "ba8b72681da34216d2073a3b0cd142a35f6bfc6c30084e8ac9cf4a829dbf0c6b",
+    "worker/src/catalog/routes.ts": "ebad51e87ea3bb43036a4f1808d8543248c40c8162ca9867d3c0c2eb60a31d70",
+    "worker/src/chain/checkouts.ts": "44c323ffca1b1f00a27b4c94eb3038f3e270dc581f9306b39564c0a81339a973",
+    "worker/src/chain/client.ts": "983ae0c74867f3346d26fc9d6e19fd7cbb5d6cdafb93156469bc56cfb0dd2f17",
+    "worker/src/chain/customer.ts": "d26dd2bc4df06016e341f08f4626100b70e8cf99cbf8656ec073d407fb67298d",
+    "worker/src/chain/invoices.ts": "63794301a7743c4811e7269719dc24ab4a55d5389104682876d9278847bd7a7b",
+    "worker/src/chain/keys.ts": "6c3eece01cc873d841c472d49dabb4a84d7b3fce80b3677fb935866feed7354f",
+    "worker/src/chain/lifecycle.ts": "86f1d9931fbe6b216914d56bed4172eb00d46612a3ce030f252b735080e3b053",
+    "worker/src/chain/plans.ts": "f32357823db66b0123eee5650cc51e3425f7a5ee5999120b51b2079afccf4b55",
+    "worker/src/chain/prepare.ts": "ff6abe64affa092a9dde262a4ad1a54f3e902c921c39e8228ff62cd4ad3d540e",
+    "worker/src/chain/projections.ts": "1555e34153a71824f32ecfce50354aab8bb57b371cc3e314f1d84ef8f012d877",
+    "worker/src/chain/routes.ts": "b82f7fbf98982b92e27d514793454bbe9ef79c89deef59dca6ef6866a1d75de0",
+    "worker/src/common.ts": "738c6d3fea4370b5094585f3371cef4df1ddeea5ce094462c3d43a1f4acd268f",
+    "worker/src/config.ts": "e2af27e78aa86f0468a0cee38fefa51f439aaca529c69b68ef87d7206e0f3084",
+    "worker/src/db/client.ts": "85c4f5b621b48661ebd210a5d171b291ae07e9777b794457b12777a17cead3f5",
+    "worker/src/db/schema.ts": "54e848d3095ff3a0ed09b7f341ab03cae6a9656c37c2e1942797a56845c1815d",
+    "worker/src/errors.ts": "75694bfa5f609f46a88454a41ef082ec4f9e5edf45a30c9e8063cd61f2b4c095",
+    "worker/src/http.ts": "1dd39885d69148bb66422553471ecb94ddd3fe3168ae9c51933c37c7a02b199c",
+    "worker/src/index.ts": "cdddb83d3d6993bdb10e576ce6c0ae1a3201efe5892ac47a563d5e50d56000f5",
+    "worker/src/types.ts": "a743f138feb95e15d7d878e628f2d6838c3b91f0c083a704751b61a8d4f06b24",
+    "worker/tests/auth-account.test.ts": "26a247af58e5853906982413ec2a8870f7b42dedbc2ae1a867d1ebc0c53a1055",
+    "worker/tests/auth-passwords.test.ts": "33dfc2ee498635b9eaa48c9b533cfe6194e91a85120a4d17dbbca16b78da212a",
+    "worker/tests/auth.test.ts": "4177f5d243e44b346b306ee7ccf12995985409d2c3d111564f281c067a3633ac",
+    "worker/tests/billing-money.test.ts": "32b861d3ce505fb92e8ab83aeb24c10201f3529021c4cc3ac450f4d7300489ba",
+    "worker/tests/billing.test.ts": "014ddb5c4c6649f9a9a10d211558e539e27d903bf515432a810d509b7df0d969",
+    "worker/tests/catalog.test.ts": "9490d82299815e7c894246adfbd39eb0ffe922003ddd6d1c431e9c557697ffb5",
+    "worker/tests/chain-checkout.test.ts": "29dad9ef2006eee856d9b3e51f52271f91c168a49f26bedec50d3de183beda55",
+    "worker/tests/chain-renewal.test.ts": "d364addea36c01d1b77466abb99ddc969f551539f4079d707ed150561d55c5a3",
+    "worker/tests/chain.test.ts": "ebb64beba67b3a7c4a1758f6b07da87bbcd35c6c1051a9d5d30ec2017c16e296",
+    "worker/tests/entry.test.ts": "0b944a9fc8e6d52dcf504a89448ea4a08aaad5682fb861182f044dda9f0edb05",
+    "worker/tests/history-pages.test.ts": "645835b40948e74862916717fb3b41f286fd1ea09dc79947ab918f9c5d0ac516",
+    "worker/tests/http.test.ts": "728338d56f63a7b4c33543edfac0e8ab17a7727815a0430b10e8dc9c7f7c11a4",
+    "worker/tests/membership-security.test.ts": "a016647ed8bef55666dca1e8793276d3b5e0456439cdbebafe34aa5c163eb8d8",
+    "worker/tests/recovery-security.test.ts": "fb0ba8cd47cacb31ab7a0e63046c00c35ce8eaabeb30bb37872c3a80ebcdcdb2",
+    "worker/tests/schema.test.ts": "a282b202a9ad358287af3a8768e3730e0f5cf30a4f7eefd967abee9e9d6bd293",
+    "worker/tests/security-api-keys.test.ts": "0743a59bdac507a28a3d28a5d4441561903a4c894b854167f2ad0f01b3ba3e20",
+    "worker/tests/security-config.test.ts": "b167da4a691fc4c03ef1f0be9649bcc8a76fab8a155dbbc23a5d510ccf024bbe",
+    "worker/tests/security-cost.test.ts": "ed4d1d6d34fbb19e60f3384b89c3aa2791e6818212c0906f3f3ad8c170ec206a",
+    "worker/tests/security-fanout.test.ts": "1db89715d67c4489ffe55d8ee06c6bfb4822981aec26e0920cd13711bc311859",
+    "worker/tests/security-http.test.ts": "e936fba83be46f24775a38c40ca4187f7e075e2318b5d946325a9e6fdb9bc670",
+    "worker/tests/security-metadata.test.ts": "87cb0ed5eb75d331b60490d461c73d67776e9d1f17246ba8b7ee2ac7217abeca",
+    "worker/tests/session-fence.test.ts": "25625d7287ecf604620fbfa3852460964c2e9a1a4eefa437a5c75a9478edf43f",
+    "worker/tests/setup.ts": "a2b0af03eee236aeb5ec561ea05f2d229e4998eda573c5af52fb0e0b393a80c6",
+    "worker/tsconfig.json": "81063b283272cf49a9618f057ae7de7239e5e6ce931ca90c6b6b7f46f5ac8950",
+    "worker/vitest.config.ts": "a6722b1e44f1598c75081bd1f2eff0b7b3b9f7f15a2a57a0e3eb3856db4dc362"
+  },
+  "limits": [
+    "Internal proofs are request-local typed authentication evidence, not externally accepted bearer tokens or a new persisted single-use token system. Stale proofs stay denied; external SIWE/reset replay protection remains nonce/token consumption in D1.",
+    "No new durable credential counter or schema migration; exact salted hash serves as revision, including same-plaintext resets because salt changes.",
+    "Authentication metadata/audit can record a successful credential check before a later mint denial; this change fences session authority, not transactional login telemetry across awaits.",
+    "A reset serialized after a successful INSERT revokes that session under existing reset logic. This does not promise no response cookie if recovery occurs after admission; any such cookie has no live session authority.",
+    "PBKDF2 remains 600000; local real-workerd wall time is not provider CPU verification. Production email/provider/free-tier capacity, deployment configuration and independent security review remain gates.",
+    "Only requested local public suite/types/read-only lint/ops rerun here; parent owns subsequent whole-matrix and fresh independent review. No private-chain/frontend implementation changed."
+  ],
+  "evidenceSanitization": "New independent RED log redacts the ephemeral local test session-cookie value from failed assertion output. Historical review/probe files were not edited.",
+  "evidenceSHA256": {
+    "docs/phase-5-evidence/session-fence-backend-types-run.json": "f03437129e72a471c38edbabff430a6d208cad735edc5de835338cbcc4d6fd4a",
+    "docs/phase-5-evidence/session-fence-backend-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/phase-5-evidence/session-fence-checks.json": "ebffa88713ec28442899d1ba6dbc58f1a065e9542cc3fe9ddf0d60f3522dcadf",
+    "docs/phase-5-evidence/session-fence-green.log": "8a4ea5784212f64b82ccef98b37b3bb129a46dfe98cb652b05cab17e92f21f3a",
+    "docs/phase-5-evidence/session-fence-independent-red.log": "d78ecbf58f6772cdf38482ea62c0a5752f3d0fc0d1eed1e1c7baffc758976e4d",
+    "docs/phase-5-evidence/session-fence-invalid-red.log": "5fb3c5f60aa6f4c0cdee9aec0fd0d34e4cc0faaf148722b5b2cad0a168498251",
+    "docs/phase-5-evidence/session-fence-lint-full-run.json": "f004f45127c8b7f93361248993402d70aa4ced6830085fd010a7e6eab91d8118",
+    "docs/phase-5-evidence/session-fence-lint-full.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/phase-5-evidence/session-fence-lint-type-aware-run.json": "83ec132221bf71cde782d68d70dcb0003ba2643e10682f11005a3dd1b1cee103",
+    "docs/phase-5-evidence/session-fence-lint-type-aware.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/phase-5-evidence/session-fence-ops-run.json": "e07a50c3b58294266513f487f4a33b2f8e84ed51497ff3a97b895b91f92ce32a",
+    "docs/phase-5-evidence/session-fence-ops.log": "83aca3f0e7d2baa562062848f8fdaf38249febaf9d00fcd7a260643ed1473e0a",
+    "docs/phase-5-evidence/session-fence-public-run.json": "fd4a779152b81430b0c8f97c9b6dabe4dc3b12c3902b3508fab65c68fe845cfa",
+    "docs/phase-5-evidence/session-fence-public-tests.json": "7f9417442fb625afbac995b83f9cc0ce7e56957f898824cef91055b1a9f9f263",
+    "docs/phase-5-evidence/session-fence-public.log": "146a305359963c686fee58d488936443a502459607139ea69c9185f247b2b21f",
+    "docs/phase-5-evidence/session-fence-red-confirmed.log": "3c29ef24a5902607d7c14af3364d965377c54916bf19fc24d7b4f2dd650728bc",
+    "docs/phase-5-evidence/session-fence-red.log": "2d9efa427342839d7714a50e71ad25443df74e80c752605a1e79aade13e5eb9f",
+    "docs/phase-5-evidence/session-fence-root-types-run.json": "31b85c9b931efbf7cab13a2f7486af4e20c6bcf7807029952497093c6c8f6ef4",
+    "docs/phase-5-evidence/session-fence-root-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/phase-5-evidence/session-fence-types.json": "37466e485c582bee19c538f51d93ee07956176fc00aa25dc33c261e142beb2e9",
+    "docs/phase-5-evidence/session-fence-types.log": "24d6aa064c2e66b1719c87c0454833ec6a5f6ceeaae762deee51d8d0777070db",
+    "docs/phase-5-evidence/session-fence-worker-types-run.json": "ba29c8cdb75b56ae2ea1657dead38fa602747cf42276b4ced61979b736656f23",
+    "docs/phase-5-evidence/session-fence-worker-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

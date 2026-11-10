@@ -1,0 +1,18 @@
+{
+  "typecheck": {
+    "exit_code": 0,
+    "log": "docs/phase-2-evidence/typecheck.log"
+  },
+  "lint": {
+    "exit_code": 0,
+    "log": "docs/phase-2-evidence/lint.log"
+  },
+  "worker-tests": {
+    "exit_code": 0,
+    "log": "docs/phase-2-evidence/worker-tests.log"
+  },
+  "worker-bundle": {
+    "exit_code": 0,
+    "log": "docs/phase-2-evidence/worker-bundle.log"
+  }
+}

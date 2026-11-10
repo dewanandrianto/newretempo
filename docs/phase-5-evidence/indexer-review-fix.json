@@ -1,0 +1,497 @@
+{
+  "scope": "Fix cycle 1 private indexer only: PAG-001 and PAG-002; local acceptance, not overall Phase 5 completion or independent re-review",
+  "generatedAtUTC": "2026-11-10T12:12:49.696047+00:00",
+  "passed": true,
+  "phase5Complete": false,
+  "productionDeploymentAuthorized": false,
+  "sourceStableDuringChecks": true,
+  "modifiedProductionFiles": [
+    "chain-worker/src/indexer.ts",
+    "chain-worker/src/service.ts"
+  ],
+  "addedRegressionFiles": [
+    "chain-worker/tests/indexer-review.test.ts",
+    "chain-worker/tests/indexer-overflow.test.ts",
+    "chain-worker/tests/indexer-ancestor-budget.test.ts"
+  ],
+  "defects": [
+    {
+      "id": "PAG-001",
+      "status": "fixed; awaiting parent independent fresh re-review",
+      "implementation": "Retain old cursor; reserve one additional RPC when a prior cursor exists. After preparing all event/cursor statements and reading existing events, revalidate old cursor hash as the last RPC immediately before D1.batch. On mismatch persist halt and commit no new events or cursor. Existing append-only orphan rows remain inaccessible through halted snapshots; no rollback policy introduced.",
+      "baseline": {
+        "secondSyncStatus": 200,
+        "oldCursorReads": 1,
+        "cursorBlock": "2",
+        "walletStatus": 200,
+        "orphanProofsReturned": 1
+      },
+      "fixed": {
+        "secondSyncStatus": 503,
+        "oldCursorReads": 2,
+        "cursorBlock": "1",
+        "halted": "Canonical cursor mismatch",
+        "walletStatus": 503,
+        "priorStoredEvents": 1,
+        "newEventsCommitted": 0,
+        "cases": [
+          "empty extension",
+          "extension containing a separately receipt-verified new financial event"
+        ]
+      },
+      "tdd": {
+        "red": "docs/phase-5-evidence/indexer-fix-pag001-red.log",
+        "redExitCode": 1,
+        "expectedFailure": "expected 200 to be 503",
+        "green": "docs/phase-5-evidence/indexer-fix-pag001-green.log",
+        "greenExitCode": 0
+      }
+    },
+    {
+      "id": "PAG-002",
+      "status": "fixed; awaiting parent independent fresh re-review",
+      "implementation": "Dedicated OversizedRpcResponseError raised after canceling guarded reader. Catch only that error around eth_getLogs; halve complete multi-block prefix and retry in shared 40-call budget. Oversized single block returns explicit capacity error with cursor unchanged. Generic capacity, transport, invalid JSON, identity and receipt overflow are not eligible for retry.",
+      "baseline": {
+        "responseBytes": 570652,
+        "singleBlockBytes": 17836,
+        "statuses": [
+          503,
+          503
+        ],
+        "ranges": [
+          [
+            "0x1",
+            "0x20"
+          ],
+          [
+            "0x1",
+            "0x20"
+          ]
+        ],
+        "cursor": null
+      },
+      "fixed": {
+        "statuses": [
+          200,
+          200
+        ],
+        "cursorBlock": "2",
+        "completeEventsCommitted": 32,
+        "rpcCalls": [
+          21,
+          23
+        ],
+        "singleOversizedBlockStatus": 503,
+        "singleOversizedBlockCursor": null,
+        "singleOversizedBlockCalls": 17,
+        "canceledResponses": 6
+      },
+      "tdd": {
+        "red": "docs/phase-5-evidence/indexer-fix-pag002-red.log",
+        "redExitCode": 1,
+        "expectedFailure": "expected [503,503] to deeply equal [200,200]",
+        "green": "docs/phase-5-evidence/indexer-fix-pag002-green.log",
+        "greenExitCode": 0
+      }
+    }
+  ],
+  "baselineProof": {
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "docs/phase-5-evidence/pagination-review-vitest.config.ts",
+      "--disableConsoleIntercept"
+    ],
+    "exitCode": 0,
+    "testsConfirmingDefects": 2,
+    "log": "docs/phase-5-evidence/indexer-fix-baseline-repro.log",
+    "historicalReviewStillPassedFalse": true,
+    "historicalArtifacts": {
+      "docs/phase-5-evidence/pagination-review-repro.test.ts": {
+        "sha256": "26c5f184efb754c33996601f61303dea196f59c588fcd577e38b4ff2865d584d",
+        "historicalSHA256": "26c5f184efb754c33996601f61303dea196f59c588fcd577e38b4ff2865d584d",
+        "preserved": true
+      },
+      "docs/phase-5-evidence/pagination-review-vitest.config.ts": {
+        "sha256": "6edec91b106268b69835246f5e87127e9038275907f754a78c075c097ad18544",
+        "historicalSHA256": "6edec91b106268b69835246f5e87127e9038275907f754a78c075c097ad18544",
+        "preserved": true
+      },
+      "docs/phase-5-evidence/pagination-review-recovered-repro.log": {
+        "sha256": "26bd2da0a86b580c5832e738df40e9290645ff1e2ec48c2233553c254e001406",
+        "historicalSHA256": "26bd2da0a86b580c5832e738df40e9290645ff1e2ec48c2233553c254e001406",
+        "preserved": true
+      }
+    },
+    "note": "Historical reproductions intentionally assert defective behavior. They were run before implementation, preserved unchanged, and are not presented as passing post-fix acceptance."
+  },
+  "checks": [
+    {
+      "name": "types",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "chain-worker"
+      ],
+      "exitCode": 0,
+      "log": "docs/phase-5-evidence/indexer-fix-types.log",
+      "seconds": 3.1,
+      "logSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "root-types",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "run",
+        "typecheck"
+      ],
+      "exitCode": 0,
+      "log": "docs/phase-5-evidence/indexer-fix-root-types.log",
+      "seconds": 21.2,
+      "logSHA256": "5b8bd2e65abcbac2730aee0d9bec99f5f58e1058415d12a4cc1b9bf3ba603bbd"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "log": "docs/phase-5-evidence/indexer-fix-lint.log",
+      "seconds": 21.79,
+      "logSHA256": "fa163890cda999070019ddd4ddc1253b0bbfa557b938bc2c0d9c2f6426748123"
+    },
+    {
+      "name": "private-final",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "chain-worker/vitest.config.ts",
+        "--disableConsoleIntercept"
+      ],
+      "exitCode": 0,
+      "log": "docs/phase-5-evidence/indexer-fix-private-final.log",
+      "seconds": 105.0,
+      "logSHA256": "ccbd99858f2aa172539625132d8321a459a94dbfb97c5f2aa5ca99cc59bc338b"
+    },
+    {
+      "name": "system",
+      "command": [
+        "node",
+        "--test",
+        "tests/browser/signed-worker-integration.test.mjs"
+      ],
+      "exitCode": 0,
+      "log": "docs/phase-5-evidence/indexer-fix-system.log",
+      "seconds": 19.58,
+      "logSHA256": "17cffa901a1cdd2716e8fe9b55cdb6af512fe8b486e2c698a5e18de93eb9571c"
+    },
+    {
+      "name": "baseline-restart",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "chain-worker/tests/restart-acceptance.ts"
+      ],
+      "exitCode": 0,
+      "log": "docs/phase-5-evidence/indexer-fix-baseline-restart.log",
+      "seconds": 22.97,
+      "logSHA256": "11b2bbc3898d5e1484387d70c5e62f87c21351b20b378d2b33892756bd4754d3"
+    },
+    {
+      "name": "capacity-restart",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "chain-worker/tests/capacity-restart-acceptance.ts"
+      ],
+      "exitCode": 0,
+      "log": "docs/phase-5-evidence/indexer-fix-capacity-restart.log",
+      "seconds": 26.68,
+      "logSHA256": "2cf99ea0c8a98b96a8eddb513ecbc01ec83e0de5236b2df374759cdae477bc71"
+    }
+  ],
+  "privateTests": {
+    "passed": 102,
+    "files": 13,
+    "previousInventory": 91,
+    "added": 11,
+    "runtime": "real local workerd/D1 with deterministic injected RPC transports"
+  },
+  "measuredCounters": [
+    {
+      "fixture": "dense-26-plan-page",
+      "rpcCalls": 40,
+      "d1Invocations": 8,
+      "batchedRowsRead": 1692,
+      "storedRelevantEvents": 1820,
+      "returnedEvents": 64
+    },
+    {
+      "fixture": "admission-escrow",
+      "acceptedBindings": 9,
+      "acceptedChargeBindings": 7,
+      "rejectedNext": true
+    },
+    {
+      "fixture": "admission-payment",
+      "acceptedBindings": 32,
+      "acceptedChargeBindings": 30,
+      "rejectedNext": true
+    },
+    {
+      "fixture": "empty-sync",
+      "rpcCalls": 15,
+      "peakRpcConnections": 3
+    },
+    {
+      "fixture": "sixteen-events-one-transaction",
+      "d1Invocations": 6,
+      "rpcCalls": 16,
+      "combinedInvocations": 22
+    },
+    {
+      "fixture": "sparse-sixteen-event-blocks",
+      "rpcCalls": 39,
+      "cursor": "8",
+      "processedEvents": 8
+    },
+    {
+      "repro": "mid-scan-ancestor-reorg",
+      "syncStatus": 503,
+      "oldCursorReads": 2,
+      "runtime": {
+        "cursor": "{\"blockNumber\":\"1\",\"blockHash\":\"0x8a07523229fdc48491a5e56c76620ba40639eb940e6a2fbdf62b2799b4c86643\",\"updatedAt\":\"2026-11-10T12:10:05.299Z\"}",
+        "halted": "Canonical cursor mismatch"
+      },
+      "walletStatus": 503
+    },
+    {
+      "repro": "mid-scan-ancestor-reorg",
+      "syncStatus": 503,
+      "oldCursorReads": 2,
+      "runtime": {
+        "cursor": "{\"blockNumber\":\"1\",\"blockHash\":\"0x8a07523229fdc48491a5e56c76620ba40639eb940e6a2fbdf62b2799b4c86643\",\"updatedAt\":\"2026-11-10T12:10:05.465Z\"}",
+        "halted": "Canonical cursor mismatch"
+      },
+      "walletStatus": 503
+    },
+    {
+      "measurement": "overflow-shrinking-rpc",
+      "counts": [
+        21,
+        23
+      ]
+    },
+    {
+      "repro": "oversized-multiblock-response",
+      "responseBytes": 570652,
+      "singleBlockBytes": 17836,
+      "statuses": [
+        200,
+        200
+      ],
+      "ranges": [
+        [
+          "0x1",
+          "0x20"
+        ],
+        [
+          "0x1",
+          "0x10"
+        ],
+        [
+          "0x1",
+          "0x8"
+        ],
+        [
+          "0x1",
+          "0x4"
+        ],
+        [
+          "0x1",
+          "0x2"
+        ],
+        [
+          "0x1",
+          "0x1"
+        ],
+        [
+          "0x2",
+          "0x20"
+        ],
+        [
+          "0x2",
+          "0x11"
+        ],
+        [
+          "0x2",
+          "0x9"
+        ],
+        [
+          "0x2",
+          "0x5"
+        ],
+        [
+          "0x2",
+          "0x3"
+        ],
+        [
+          "0x2",
+          "0x2"
+        ]
+      ],
+      "state": {
+        "cursor": "{\"blockNumber\":\"2\",\"blockHash\":\"0xcc865094c4fa17272d8a2e511979a5c101df0efcc208cdac8b02181241cabb92\",\"updatedAt\":\"2026-11-10T12:10:06.525Z\"}",
+        "halted": null
+      }
+    },
+    {
+      "fixture": "advancing-sparse-ancestor-reservation",
+      "rpcCalls": 30,
+      "ranges": [
+        "0x20",
+        "0x11",
+        "0x9",
+        "0x5"
+      ],
+      "body": {
+        "configuration": {
+          "chainId": 5042,
+          "mode": "local",
+          "configured": true,
+          "rpcUrl": "http://127.0.0.1:8545/",
+          "explorerUrl": "https://explorer.arc.io",
+          "usdc": "0x3600000000000000000000000000000000000000",
+          "usdcDecimals": 6,
+          "manager": "0x1111111111111111111111111111111111111111",
+          "escrow": "0x2222222222222222222222222222222222222222",
+          "startBlock": "1",
+          "genesisHash": "0x77b7d82d931e1a403db0240b08c0716665eec4664af617c457918e4a67bc1810",
+          "managerCodeHash": "0xcf61a6eb3b9b89e75f1dadf3dcd16509616896cb50eac765a68fa27bbbc6de82",
+          "escrowCodeHash": "0xcf61a6eb3b9b89e75f1dadf3dcd16509616896cb50eac765a68fa27bbbc6de82"
+        },
+        "cursor": {
+          "blockNumber": "5",
+          "blockHash": "0xc6bf2e05f4611925c6fde8831f4922be81e88a22116ac03caf8d07579ec4635f",
+          "updatedAt": "2026-11-10T12:10:50.770Z"
+        },
+        "processedEvents": 4,
+        "duplicateEvents": 0,
+        "busy": false
+      },
+      "oldCursorReads": 2,
+      "lastRpc": "eth_getBlockByNumber",
+      "lastBlockRead": "0x1"
+    }
+  ],
+  "counterInterpretation": [
+    "No preexisting capacity expectation was weakened or rewritten. Cold sparse scan remains 39 calls and 8 events; advancing sparse scan now reserves the extra ancestor recheck and accepts 4 events through block 5 at 30 calls instead of attempting an over-budget larger prefix.",
+    "Overflow reproduction uses 21 calls on first scan and 23 on advancing scan: initial and precommit old-cursor reads account for the advancing difference. Both remain within the unchanged whole-request 40 ceiling.",
+    "Dense tenant snapshot remains 1820 relevant stored events, 64 returned events, 26 plans, 40 RPC calls, 8 instrumented D1 invocations and 1692 batched rows read. These are local counters, not provider billing or CPU telemetry."
+  ],
+  "signedAPIColdSystem": {
+    "environment": {
+      "RETEMPO_COLD_RECOVERY": "1",
+      "RETEMPO_EVIDENCE_DIR": "docs/phase-5-evidence/indexer-fix-system",
+      "RETEMPO_BROWSER": "0"
+    },
+    "passed": true,
+    "signedApplicationTransactions": 13,
+    "canonicalEvents": 21,
+    "stages": 8,
+    "coldRecovery": {
+      "mode": "Disposed both Workers, copied local persisted state to backup and a new restore directory, restarted against restored state",
+      "cloudflareTimeTravelTested": false,
+      "events": 7,
+      "canonicalCursorPreserved": true,
+      "authenticatedSessionPreserved": true
+    },
+    "nodeStopped": true,
+    "report": "docs/phase-5-evidence/indexer-fix-system/signed-worker-integration.json",
+    "note": "Actual signed API flow against fresh loopback Arc and two real Workers; no browser matrix claimed."
+  },
+  "sourceSHA256": {
+    "chain-worker/migrations/0001_chain.sql": "775d6c775a37452aea83b9f3646fce425c162b3b9892ccd044d9c7059c6946f0",
+    "chain-worker/migrations/0002_unique_binding_identity.sql": "1e6fc3d29983bce5cde4d69572d9d19ad476a89d7b2717fadc38e02357047513",
+    "chain-worker/migrations/0003_binding_capacity.sql": "5dbf59980c516974f8140c69052a6b7ce2f90847abb223bb5a48788bf584b84e",
+    "chain-worker/migrations/0004_history_pages.sql": "7dfdbceee7e593f732e86fde4ffbc229b7f436b70339c62ba184125c76fb064d",
+    "chain-worker/src/bindings.ts": "dc3f424a48966a3a440f59eb65e1374fa6464db00e5f48f135ad26876f4d21dd",
+    "chain-worker/src/customer.ts": "7981ebc8a1e6c6e45c20f0e64c476dec63c522003067749a26e52506dd663d81",
+    "chain-worker/src/history.ts": "c14d1aa58ddcd6e4bd2bbb3f8d916547ec82aa2f99f55f006d4cf95a1141f8ca",
+    "chain-worker/src/index.ts": "be5deb09df1786ce1b57ce05aee340f63dabbcc6b773de1f606b83c81c17aa8f",
+    "chain-worker/src/indexer.ts": "22abc2cd025a6a653e88c74cc6fef8f378a8b44866c416a245f90b99d43bf81c",
+    "chain-worker/src/projections.ts": "1fdb07aed0fc59b181c821cf9924ba727e699fd22f895bff683d71dbb55fd943",
+    "chain-worker/src/service.ts": "85073f2ccd51f2f0bf7ca9e1452615d01665833822d7e7bcf64d85735a59e5fa",
+    "chain-worker/tests/capacity-restart-acceptance.ts": "179aabff6376b8cd414195bf16d83e0951c6df4fde9bebd0365aece94b0ea246",
+    "chain-worker/tests/capacity.test.ts": "4f61a19c00aeee08a241a17554450f4ad93a9411369a5d246718f8cd35c9f14d",
+    "chain-worker/tests/config-worker.ts": "7d5e61b3823dbf7d10c03e0ac3b9ac710d7fd09cdc5ac6f44685b8a47304a41c",
+    "chain-worker/tests/escrow.test.ts": "7a7986326ecd1509fbf3ca1f176f082cc6964e39672d63ef7ce34e942c98ec9e",
+    "chain-worker/tests/fixtures.ts": "beecf92801c4ce6221b34fb47622790863d9b6ef534832926feb6187eac2ec76",
+    "chain-worker/tests/history.test.ts": "959a1672c4f7d585894b4e07725d689bba053fe168439d0517df88dc82ad5cb4",
+    "chain-worker/tests/indexer-ancestor-budget.test.ts": "48d31c0dad4d8bd625ce1aabece92db09c817ab615305b5a7b376b8b8bc9941a",
+    "chain-worker/tests/indexer-overflow.test.ts": "b369f2c3a251a9c433b46112d514b25d143ef32a491caeae08e1a4afff9bb1b5",
+    "chain-worker/tests/indexer-review.test.ts": "8b6fc01d93e264a31e2906b28ea01b206c6d27aeb94789847bc3d0438ceefee4",
+    "chain-worker/tests/indexer.test.ts": "82cdcf79195441aba1a17447e10b493fbee1bae1d50ba42476f90020d0efef30",
+    "chain-worker/tests/production.test.ts": "f721c708d494cbfd3d61de5d160f5cd45a87e8f057f90c534d959122ecb6905d",
+    "chain-worker/tests/recovery.test.ts": "236888306c962e2eea9db1620e93cb634f9f0c52bd74e4599974aa2bd94999a6",
+    "chain-worker/tests/restart-acceptance.ts": "204e91c5aa51dd9008aa391dcc40247aea66ea21a0b96cace2b1be3fb4fa325d",
+    "chain-worker/tests/scheduled.test.ts": "32a789c5cbe7989b279b5ec425c4ca0ff26b93b4bb9e82f64cb38609dc57774f",
+    "chain-worker/tests/security.test.ts": "5df7b9e3b49cf44c6fe5bf90b171592e294234b0a539a1507651ea533332d94c",
+    "chain-worker/tests/service.test.ts": "b9e4d1363ca6380f706da62f99300d74e0ac321e98d07d7546a48ae0a39ca07e",
+    "chain-worker/tests/setup.ts": "da33bac9ea3cee2cd7dbbd12d54a4bcaf2eaba2cb021c97be046aa43000c3757",
+    "chain-worker/tests/wallet.test.ts": "17196384607aa1a6fa5ed075b6aa15e9b89ed39f1e50b8802ff38770c33085ce",
+    "chain-worker/vitest.config.ts": "c15c5ebdc1ac3c8976f861f62f0c16f93e63b3a4937e9ec8e4025cebb59460d0"
+  },
+  "sourceSetSHA256": "e731a1489aa6d1c220424244b756143fc3a3e4709852d3180439f13acf70ebb7",
+  "evidenceSHA256": {
+    "docs/phase-5-evidence/indexer-fix-baseline-repro.log": "b2058b97253440e093dbe849fbb9f9e87795778777fe40b00a04cd0a1547ffe4",
+    "docs/phase-5-evidence/indexer-fix-pag001-red.log": "5ccb24462d065867c0607903c0736d19280c6a765b7797bf0182c63f6a1f748a",
+    "docs/phase-5-evidence/indexer-fix-pag001-green.log": "95957a436171ed3dec948fcd5ee95ac9e4a56e3fa79aa68a4813482752931e3c",
+    "docs/phase-5-evidence/indexer-fix-pag002-red.log": "f5353ac454ed7cef1fb4ee0c2ad293de0a07d3512372fe801cee34b1a914af3b",
+    "docs/phase-5-evidence/indexer-fix-pag002-green.log": "8507537057fad356e57e73e7de3003b1087acf48ff316d558d61f45b85b99785",
+    "docs/phase-5-evidence/indexer-fix-gates.json": "f6655c3a655bf15e8891abb98506f650010632339330bc017e9c53098bfaa037",
+    "docs/phase-5-evidence/indexer-fix-system/signed-worker-integration.json": "1018ca170870727ad7101a8403cf466b6261ea8696b868219b61e5ffff719126"
+  },
+  "preserved": {
+    "phase4Evidence": true,
+    "historicalFailedReview": true,
+    "financialPolicies": true,
+    "contractsABIAndKDF": true,
+    "apiShapesAnd64EventPagers": true,
+    "scan16EventCap": true,
+    "wholeRequest40RPCCap": true,
+    "tenant32Bindings26Getters": true
+  },
+  "limitations": [
+    "RPC ancestor revalidation narrows the race window; RPC reads and D1 commit are not consensus-atomic and do not establish finality.",
+    "Reorg and response-size regressions use controlled RPC transport executed by real workerd/D1; they do not claim a live Arc reorg.",
+    "Cloudflare production 10ms CPU/provider telemetry and production resource ownership remain unverified.",
+    "Parent owns final genuinely signed browser matrix, full combined acceptance and independent fresh re-review. No overall phase completion claimed."
+  ],
+  "scopeSafety": {
+    "gitOperations": false,
+    "externalMainnetWrites": false,
+    "deployment": false,
+    "secretReads": false,
+    "AGENTSModified": false,
+    "publicAuthOrSharedCollectorModifiedByThisAgent": false
+  },
+  "issuesEncountered": [
+    "Both reviewed defects reproduced exactly before implementation. No final local gate remains failing. Node ran real-workerd Vitest; pinned Bun --no-env-file ran package gates and restart fixtures."
+  ],
+  "remaining": [
+    "Parent final signed-browser matrix against final combined source",
+    "Parent independent fresh re-review of both fixes",
+    "Production-only CPU/provider and deployment-authorization gates remain outside this local repair"
+  ]
+}

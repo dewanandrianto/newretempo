@@ -1,0 +1,19 @@
+{
+  "release_url": "https://github.com/circlefin/arc-foundry/releases/tag/v0.8.0-4",
+  "asset_url": "https://github.com/circlefin/arc-foundry/releases/download/v0.8.0-4/arc-foundry-v0.8.0-4-x86_64-unknown-linux-gnu.tar.gz",
+  "sha256": "78330505af7dc0d2c9b55fc1aed00d9d063581bb57054949d31ef1c1b4bdbc5e",
+  "binaries": [
+    {
+      "path": "/home/deseti/.local/share/retempo/toolchains/arc-foundry-v0.8.0-4/arc-forge",
+      "version": "forge Version: 1.7.1-dev\nCommit SHA: 3e95efaeaaaca64d6ac9c1ee988968683dbd0d22\nBuild Timestamp: 2026-11-02T15:38:59.688300050Z (1793633939)\nBuild Profile: release"
+    },
+    {
+      "path": "/home/deseti/.local/share/retempo/toolchains/arc-foundry-v0.8.0-4/arc-cast",
+      "version": "cast Version: 1.7.1-dev\nCommit SHA: 3e95efaeaaaca64d6ac9c1ee988968683dbd0d22\nBuild Timestamp: 2026-11-02T15:38:59.688300050Z (1793633939)\nBuild Profile: release"
+    },
+    {
+      "path": "/home/deseti/.local/share/retempo/toolchains/arc-foundry-v0.8.0-4/arc-anvil",
+      "version": "anvil Version: 1.7.1-dev\nCommit SHA: 3e95efaeaaaca64d6ac9c1ee988968683dbd0d22\nBuild Timestamp: 2026-11-02T15:38:59.688300050Z (1793633939)\nBuild Profile: release"
+    }
+  ]
+}

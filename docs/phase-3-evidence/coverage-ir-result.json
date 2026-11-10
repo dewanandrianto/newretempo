@@ -1,0 +1,27 @@
+{
+  "exit_code": 0,
+  "duration_seconds": 237.87,
+  "ir_minimum": true,
+  "command": [
+    "/home/deseti/.local/share/retempo/toolchains/arc-foundry-v0.8.0-4/arc-forge",
+    "coverage",
+    "--network",
+    "arc",
+    "--chain-id",
+    "5042",
+    "--offline",
+    "--out",
+    "/home/deseti/.hermes/cache/scratch/retempo-phase3/coverage-out",
+    "--cache-path",
+    "/home/deseti/.hermes/cache/scratch/retempo-phase3/coverage-cache",
+    "--no-match-path",
+    "contracts/test/invariant/**",
+    "--report",
+    "summary",
+    "--report",
+    "lcov",
+    "--report-file",
+    "/home/deseti/projects/retempo/docs/phase-3-evidence/coverage.lcov",
+    "--ir-minimum"
+  ]
+}

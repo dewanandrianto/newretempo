@@ -1,0 +1,23 @@
+{
+  "source_matches_current": true,
+  "tool_version": "0.11.6",
+  "findings": 26,
+  "by_impact": {
+    "High": 3,
+    "Medium": 8,
+    "Low": 14,
+    "Informational": 1
+  },
+  "by_detector": {
+    "arbitrary-send-erc20": 2,
+    "reentrancy-balance": 1,
+    "incorrect-equality": 4,
+    "uninitialized-local": 4,
+    "timestamp": 14,
+    "cyclomatic-complexity": 1
+  },
+  "new_detector_function_signatures": 0,
+  "removed_detector_function_signatures": 0,
+  "independent_audit": false,
+  "assessment": "Unchanged detector/function inventory. Three High reports retain the documented fixed-customer bounded-mandate and nonReentrant exact-delta assumptions; not zero findings and not a production release approval."
+}

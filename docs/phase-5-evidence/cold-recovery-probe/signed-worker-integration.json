@@ -1,0 +1,10 @@
+{
+  "scope": "Fresh non-forked loopback Arc and two real workerd Workers; in-memory keys and artificial local balances only",
+  "passed": false,
+  "steps": [
+    "Three independent real SIWE wallet sessions"
+  ],
+  "chainTransactions": [],
+  "failure": "GET /api/chain/config: {\n  \"error\": {\n    \"code\": \"chain_unavailable\",\n    \"message\": \"Chain service rejected the operation\",\n    \"requestId\": \"fa5c41f6-a92a-4007-b06f-892fa014e8a6\"\n  }\n}\n\n503 !== 200\n",
+  "nodeStopped": true
+}

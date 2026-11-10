@@ -1,0 +1,532 @@
+{
+  "scope": "Phase 5 local production-readiness regression; no deployment or remote chain writes",
+  "startedAt": "2026-11-10T12:38:03.672105+00:00",
+  "passed": true,
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "run",
+        "typecheck"
+      ],
+      "exitCode": 0,
+      "seconds": 8.18,
+      "log": "docs/phase-5-evidence/final-typecheck.log"
+    },
+    {
+      "name": "indexer-typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "chain-worker"
+      ],
+      "exitCode": 0,
+      "seconds": 0.86,
+      "log": "docs/phase-5-evidence/final-indexer-typecheck.log"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 9.47,
+      "log": "docs/phase-5-evidence/final-lint.log"
+    },
+    {
+      "name": "script-tests",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "test",
+        "scripts"
+      ],
+      "exitCode": 0,
+      "seconds": 1.06,
+      "log": "docs/phase-5-evidence/final-script-tests.log",
+      "passingTests": 32
+    },
+    {
+      "name": "public-worker-tests",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "worker/vitest.config.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 219.17,
+      "log": "docs/phase-5-evidence/final-public-worker-tests.log",
+      "passingTests": 143
+    },
+    {
+      "name": "private-worker-tests",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "chain-worker/vitest.config.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 99.75,
+      "log": "docs/phase-5-evidence/final-private-worker-tests.log",
+      "passingTests": 102
+    },
+    {
+      "name": "wallet-tests",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "tests/onchain/vitest.config.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 9.41,
+      "log": "docs/phase-5-evidence/final-wallet-tests.log",
+      "passingTests": 39
+    },
+    {
+      "name": "production-build",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 69.15,
+      "log": "docs/phase-5-evidence/final-production-build.log"
+    },
+    {
+      "name": "signed-sdk",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "test",
+        "tests/contracts/phase-4-sdk.integration.test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 2.06,
+      "log": "docs/phase-5-evidence/final-signed-sdk.log",
+      "passingTests": 1
+    },
+    {
+      "name": "signed-browser-workers",
+      "command": [
+        "node",
+        "--test",
+        "tests/browser/signed-worker-integration.test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 145.72,
+      "log": "docs/phase-5-evidence/final-signed-browser-workers.log"
+    },
+    {
+      "name": "frontend-build-routes",
+      "command": [
+        "node",
+        "--test",
+        "tests/onchain/frontend-build.test.mjs",
+        "tests/onchain/frontend-routes.browser.test.mjs"
+      ],
+      "exitCode": 0,
+      "log": "docs/phase-5-evidence/final-frontend-routes.log"
+    }
+  ],
+  "signed-worker-integration.json": {
+    "scope": "Fresh non-forked loopback Arc and two real workerd Workers; in-memory keys and artificial local balances only",
+    "passed": true,
+    "steps": [
+      "Three independent real SIWE wallet sessions",
+      "Server-derived immutable plan and charge bindings; wrong customer denied; stable preparation replay",
+      "Actual signed approval and debit; only private verified projections declare payment, invoice and subscription settled",
+      "Both Worker processes restarted; D1 sessions/bindings/cursor/events survive; replay creates no duplicate payment",
+      "Paired local D1 cold backup/restore preserves exact canonical events, cursor, verified payment and authenticated session",
+      "Real merchant renewal invoice creation/finalization/capability, exact UTC period, customer browser renewal, new paid charge and settled escrow",
+      "Second real charge, customer dispute, merchant response, arbitrator split and pinned private dispute state",
+      "Vested claim, actual merchant withdrawal and permissionless fixed-payout customer recovery; gas-independent recipient balance exact",
+      "Wallet proof restricted to SIWE owner; organization history excludes unallocated wallet-wide withdrawals; final liabilities zero"
+    ],
+    "chainTransactions": [
+      "0x32dc870540f0b08073247162407ae35c48632f2baddf0bf3fff46aa2809c127f",
+      "0x3fafaa1c585811b48e3a7e30fed1a122b91b5dadf55d14e164b3dae0537a04be",
+      "0x7b41ed9119af09f1311a9c35bff8e5db0cfb5956069e4e0b62a0e7d32bededb1",
+      "0xd5e775ba2eefe00ede9f08adea00c6f5c15a93fda87d3facd4842188f303aa68",
+      "0x107d9b07ba759d422a08b169d59933b5aeda361ae6dfa4b697b66ec752fda7b1",
+      "0x60ea65d9f52398b6b6080ad9bc64bc2372fe271e512eed339aa0f498ad30c7b5",
+      "0xfd266bfccb76240a230ddd3eafa4f5fdffc8daccb14a717c7ea292df760ffec6",
+      "0xe9d01f470bb23175cac7815661b6f65dd073ac44a67f700c9153398aad84b315",
+      "0xb6035e9365885b2257f5bb5693cf64fc0bd16a8b125404f3d167232bc42f2e92",
+      "0x773c06dd36a5669b207b293003d0e04cb236a04378a306e4a86b32c515b950bc",
+      "0x44f6369c532b93e3ebdbd349ac3eac71621cf55f13b04ab94b5aff694dcfe13e",
+      "0xbb05ed7593c57356a28515d4b0f18b135c81fc77b7aa65a503ecddeb0cf23f72",
+      "0x6c8b223eb65a58b8ab8e99448a19e741cb9604ff33436d599dbbc204cd271956",
+      "0x7d14a6b75e7e62f5f9781afe5a624a03ca581330761d84147857852a351fc86f",
+      "0x5cb5804e225193c9f10cd78c7bd9a8ba3e107cfe6ab333f5ee80e6bdf97c0669",
+      "0xfa47f8c47ebb686f3e58274681bca3957e3c0da79542f4541324c9f9d191c6e3",
+      "0x58e5ef57703a0ca663189e0c73b0282767fe064bf0598933fc70698e2d610c95"
+    ],
+    "merchantBrowser": {
+      "signedWalletRequests": [
+        {
+          "hash": "0x32dc870540f0b08073247162407ae35c48632f2baddf0bf3fff46aa2809c127f",
+          "to": "0x7f13f929c1846dcd1875c6936968a7f3a2a77fea",
+          "status": "success"
+        }
+      ],
+      "capabilityCreatedThroughUI": true
+    },
+    "browser": {
+      "signedWalletRequests": [
+        {
+          "hash": "0x3fafaa1c585811b48e3a7e30fed1a122b91b5dadf55d14e164b3dae0537a04be",
+          "to": "0x3600000000000000000000000000000000000000",
+          "status": "success"
+        },
+        {
+          "hash": "0x7b41ed9119af09f1311a9c35bff8e5db0cfb5956069e4e0b62a0e7d32bededb1",
+          "to": "0x7f13f929c1846dcd1875c6936968a7f3a2a77fea",
+          "status": "success"
+        }
+      ],
+      "wrongWorldBlockedBeforeApproval": true,
+      "rejectionBeforeSubmission": true,
+      "reloadRetryDidNotDoublePay": true,
+      "responsiveWidths": [
+        320,
+        360,
+        390,
+        768,
+        1440
+      ],
+      "pageErrors": []
+    },
+    "coldRecovery": {
+      "mode": "Disposed both Workers, copied local persisted state to backup and a new restore directory, restarted against restored state",
+      "cloudflareTimeTravelTested": false,
+      "events": 7,
+      "canonicalCursorPreserved": true,
+      "authenticatedSessionPreserved": true
+    },
+    "renewalBrowser": {
+      "invoiceId": "b06005da-5ab0-47c8-8081-0bec699364ac",
+      "exactPeriodStart": "2026-12-10T12:46:52.000Z",
+      "signedWalletRequests": [
+        {
+          "hash": "0x7d14a6b75e7e62f5f9781afe5a624a03ca581330761d84147857852a351fc86f",
+          "to": "0x3600000000000000000000000000000000000000",
+          "status": "success"
+        },
+        {
+          "hash": "0x5cb5804e225193c9f10cd78c7bd9a8ba3e107cfe6ab333f5ee80e6bdf97c0669",
+          "to": "0x7f13f929c1846dcd1875c6936968a7f3a2a77fea",
+          "status": "success"
+        }
+      ]
+    },
+    "records": {
+      "orgId": "6057e219-f56c-4971-913e-c3420fa7b302",
+      "subscriptionId": "e81f298a-3a25-47bd-ae24-21fb7194b467",
+      "paymentId": "a522789a-77d7-4514-9262-78e2dcb6d38e",
+      "escrowId": "334a7fa2-8a42-452a-b6bd-d108e707b713",
+      "invoiceId": "28db22d6-4f1b-4928-8550-390ae7edcb8a"
+    },
+    "replayBaselineEvents": 7,
+    "canonicalEvents": 27,
+    "nodeStopped": true
+  },
+  "signed-sdk-integration.json": {
+    "scope": "Production frontend SDK against fresh signed localhost Arc; artificial local balances and in-memory keys",
+    "passed": true,
+    "steps": [
+      "Actual subscribe and finite 150-USDC mandate; changed windows reject before write; renewed consent revokes it; separate explicit 100-USDC mandate",
+      "Permissionless real recurring charge spends exactly 50 USDC; revoke; separate manual renewal; actual merchant cancellation"
+    ],
+    "signedTransactions": [
+      "0x4fe95e4dd0d1cd5cbaeed99b832bc275274be044536815778a3e4a39272f927e",
+      "0x70b0e47e1a26424b022503bf930a55ccbf23568103deb00cf3ff8e75ab2af9e3",
+      "0x21d78654ada4fe2f72d373858508aaad70961c795eaae238bd5f3dc73fb88c73",
+      "0xe54fa94c372d700954005d54fca1a6ff3cc82f34891e5dde867b3e80da45cc73",
+      "0xaeb667bf3772251c5a9f4bdced15a667f8f8d6f5fe125c2eb8c3d837675edd01",
+      "0xc7a872a31c9b49f28d13c9d4f50bf52118ddae48c53794b9c158803ade0d546b",
+      "0xe56906ae02a7f329702e575e36326441f866ba3820c686619a479129f88a3320",
+      "0x9f826310629c7a46d1c0e4a0b6248658e22bdec16431ce00d1447e4502d8ae2b",
+      "0x19bfeaae7f3b0bb445be78a81f03cfbea8651c9a929139c24720ca47400fb934",
+      "0x8005446ae3fa6a2e9beb12af1e0ef33b6e0f3cdb7613d183ee7a8a21c3c3edb7",
+      "0x2db50f585c0836710d885328776485d6e47a4e4055b29cc1d3dfb66f50ca8ae1",
+      "0x9e6a0f59849175efb032384bf59f65a9c7831aaae66773af0d5ec99a931aba78",
+      "0x7d897731b345645d0a4a9703b3f28b48561f33f132b3a9bf9e539888c0beda2c"
+    ],
+    "sdkWrites": [
+      {
+        "kind": "payment",
+        "hash": "0x4fe95e4dd0d1cd5cbaeed99b832bc275274be044536815778a3e4a39272f927e"
+      },
+      {
+        "kind": "approval",
+        "hash": "0x70b0e47e1a26424b022503bf930a55ccbf23568103deb00cf3ff8e75ab2af9e3"
+      },
+      {
+        "kind": "payment",
+        "hash": "0x21d78654ada4fe2f72d373858508aaad70961c795eaae238bd5f3dc73fb88c73"
+      },
+      {
+        "kind": "approval",
+        "hash": "0xe54fa94c372d700954005d54fca1a6ff3cc82f34891e5dde867b3e80da45cc73"
+      },
+      {
+        "kind": "payment",
+        "hash": "0xaeb667bf3772251c5a9f4bdced15a667f8f8d6f5fe125c2eb8c3d837675edd01"
+      },
+      {
+        "kind": "payment",
+        "hash": "0xe56906ae02a7f329702e575e36326441f866ba3820c686619a479129f88a3320"
+      },
+      {
+        "kind": "approval",
+        "hash": "0x9f826310629c7a46d1c0e4a0b6248658e22bdec16431ce00d1447e4502d8ae2b"
+      },
+      {
+        "kind": "payment",
+        "hash": "0x19bfeaae7f3b0bb445be78a81f03cfbea8651c9a929139c24720ca47400fb934"
+      },
+      {
+        "kind": "payment",
+        "hash": "0x2db50f585c0836710d885328776485d6e47a4e4055b29cc1d3dfb66f50ca8ae1"
+      },
+      {
+        "kind": "payment",
+        "hash": "0x9e6a0f59849175efb032384bf59f65a9c7831aaae66773af0d5ec99a931aba78"
+      },
+      {
+        "kind": "payment",
+        "hash": "0x7d897731b345645d0a4a9703b3f28b48561f33f132b3a9bf9e539888c0beda2c"
+      }
+    ],
+    "nodeStopped": true
+  },
+  "sourceSha256": {
+    "chain-worker/migrations/0001_chain.sql": "775d6c775a37452aea83b9f3646fce425c162b3b9892ccd044d9c7059c6946f0",
+    "chain-worker/migrations/0002_unique_binding_identity.sql": "1e6fc3d29983bce5cde4d69572d9d19ad476a89d7b2717fadc38e02357047513",
+    "chain-worker/migrations/0003_binding_capacity.sql": "5dbf59980c516974f8140c69052a6b7ce2f90847abb223bb5a48788bf584b84e",
+    "chain-worker/migrations/0004_history_pages.sql": "7dfdbceee7e593f732e86fde4ffbc229b7f436b70339c62ba184125c76fb064d",
+    "chain-worker/src/bindings.ts": "dc3f424a48966a3a440f59eb65e1374fa6464db00e5f48f135ad26876f4d21dd",
+    "chain-worker/src/customer.ts": "7981ebc8a1e6c6e45c20f0e64c476dec63c522003067749a26e52506dd663d81",
+    "chain-worker/src/history.ts": "c14d1aa58ddcd6e4bd2bbb3f8d916547ec82aa2f99f55f006d4cf95a1141f8ca",
+    "chain-worker/src/index.ts": "be5deb09df1786ce1b57ce05aee340f63dabbcc6b773de1f606b83c81c17aa8f",
+    "chain-worker/src/indexer.ts": "22abc2cd025a6a653e88c74cc6fef8f378a8b44866c416a245f90b99d43bf81c",
+    "chain-worker/src/projections.ts": "1fdb07aed0fc59b181c821cf9924ba727e699fd22f895bff683d71dbb55fd943",
+    "chain-worker/src/service.ts": "85073f2ccd51f2f0bf7ca9e1452615d01665833822d7e7bcf64d85735a59e5fa",
+    "contracts/RetempoEscrow.sol": "d9fbf5367cf33c5d00d06bd913942a05780c38cde3cfb60520117152ac17ac34",
+    "contracts/RetempoSubscriptionManager.sol": "6d5375fc28cbaeb4561c4e0b6bcde707e15009f9df48bc923d12745c21dacff9",
+    "contracts/interfaces/IRetempoEscrow.sol": "b45ff420684e52692ba822d5e60dc433735e55e557f02c59a4cab8ae6e93ac16",
+    "contracts/interfaces/RetempoErrors.sol": "da8d733248c717365ffe520a4529279155fb6b8de4234f7594842d24bb1a2219",
+    "contracts/script/Create2Factory.sol": "4b2d23e8364e58e08460c39d6c26dced67b82b7e039c306c671245c4f012c38b",
+    "contracts/script/DeployCreate2.s.sol": "031692db152269016a8df83293d429f69f90dcb0e563ecc5366a257cbcf334a1",
+    "contracts/script/mainnet/PrepareMainnet.s.sol": "af4c5eeeaa0ee142365d39dbe07fb14f48b519a535586b9ccba82f0facc599b3",
+    "contracts/test/PrepareMainnet.t.sol": "12c99906f8254ef2031d1308a6be96ebf66c816345bb812ddc3fae133fd2acf1",
+    "contracts/test/RetempoConsent.t.sol": "43d766d14595a0a5f9232d1e964fee6b1f0418523d85d4c39632aa069b4195fe",
+    "contracts/test/RetempoEscrow.Dispute.t.sol": "92b97b1c56e3ab93ab344e0fec420cc834397287bcc8a5e4e79b16e79611c27b",
+    "contracts/test/RetempoEscrow.Funding.t.sol": "d0457b9dcd97c8ca4bd67ec20b5093385f2754266f7aade18d5e253ab32eb7ca",
+    "contracts/test/RetempoEscrow.Fuzz.t.sol": "98b1aa42397af59086c1e27bcbbdc726f0de14e68236794a60b8a6def88d4e5f",
+    "contracts/test/RetempoEscrow.Ledger.t.sol": "559ecc7240209e8466b6b80d42ea2d01141efa6d7f00ea0117953e96d12bfcb5",
+    "contracts/test/RetempoEscrow.t.sol": "a1ff29a25408011ce1727b8c0d53e7bea37554bba13b93b1aff0bc941332e23b",
+    "contracts/test/RetempoIntegration.t.sol": "17aba45c7b4a5d5424fa87531a108fa9c4fade38334cd08c61c6ad2c1835e639",
+    "contracts/test/RetempoPolicyEvidence.t.sol": "7cac1ad0e8b86081c31dccaf5cdc1617cee23b0fe393281540e492e29f04037c",
+    "contracts/test/RetempoSlitherFindings.t.sol": "aa3ae78d8fd9de8557f33e3b184677f0441c0853aae7ff43d57132b9e8f781a0",
+    "contracts/test/RetempoSubscriptionManager.Auth.t.sol": "0af9a0709afd6f26c58032c5c432aa6dc17c91028bd7f3400b8adaa0dc3f2e16",
+    "contracts/test/RetempoSubscriptionManager.Fuzz.t.sol": "7831bed3c2a640a5072e74f2c5c4a2e5c68cc1663a15ac813a1030a7fe07a9d8",
+    "contracts/test/RetempoSubscriptionManager.Lifecycle.t.sol": "52302c4fdd5b278de2e96acdaa33fe84a306ad3e062ec895e7309a4e13fdfef5",
+    "contracts/test/RetempoSubscriptionManager.Mandate.t.sol": "d90798553128ae1cbcc7dc3966629d9c02a2a3ffb97693ec5e7c00924b780936",
+    "contracts/test/RetempoSubscriptionManager.Plan.t.sol": "0151ce65343fe2f4708c6c5b9a52299f85da9bcca8ab22611bddee3dd946a419",
+    "contracts/test/RetempoSubscriptionManager.Security.t.sol": "7c54a6fed339e0848d06104ca9e5cf9135279fd654ef0711f8d46da985a80672",
+    "contracts/test/RetempoSubscriptionManager.Subscribe.t.sol": "39ad41916cb90734ea869b6d0a7e1f14998a83f51fb55021ceb3a963cf8827de",
+    "contracts/test/RetempoSubscriptionManager.t.sol": "ca9b8d93794af2fbde0d888fb388d88cf216d06806bf82e106464de176ee8d47",
+    "contracts/test/arc/ArcUsdc.Faults.t.sol": "04238439dc1f40e1f8d6c16ae1bac464629af57ffc547b91b5cb9fc6226167ae",
+    "contracts/test/arc/ArcUsdc.t.sol": "bbc53ffaa45ee8b16a1264156ac0aee6e694aea6ab26f07d0dcf3d7c75a16854",
+    "contracts/test/arc/ArcUsdcBase.sol": "85e96e9ccc8dfb4620caeb39fa6fe072020f49de6845d4e3cea624f4b42f091d",
+    "contracts/test/helpers/RetempoBase.sol": "79903459ac9aa673f9205e578643820a094f3c92803c661541029f113c4b77a1",
+    "contracts/test/helpers/RetempoSystemBase.sol": "65c7c1e91f1d14a7e843a89ccd9366593f1c008e74c9d9b244cb6eb1fe295895",
+    "contracts/test/invariant/EscrowInvariant.t.sol": "dc33a330cc4d9d31ad0e6630fbdc0bcb911cb1192f6b356c9c968d8887459ab3",
+    "contracts/test/invariant/EscrowInvariantHandler.sol": "96b21391708fb8a3c503897695471e02f88b562e02b93315583ef05fa15107c9",
+    "contracts/test/invariant/ManagerInvariant.t.sol": "810851b5cc2e9e2aa8e35486160d6e0ba46ac4e93b015a8ff37446175225640e",
+    "contracts/test/invariant/ManagerInvariantHandler.sol": "bd25eb021b859fc1861aa92b2c42fac34c9961adda1f17f9a64ae2e4fdbd40e2",
+    "contracts/test/mocks/BalanceMutatingToken.sol": "852e31f50e065581f0ec551b6ce38a1a820eca6c64cfea56959c58d80055846b",
+    "contracts/test/mocks/FeeOnTransferToken.sol": "9110ccf2e0d728b986ccdf20dd6e1b85b7271214285e9ac6e288ed6ca278e432",
+    "contracts/test/mocks/MockUSDC.sol": "c217f2d3030feac9f12f69d37585e7b98199a7a124fca2717716201ac5528c98",
+    "contracts/test/mocks/ReentrantToken.sol": "6c49790ff09c08e95ed0f45aa86d32ce4c9b8f4badc6252ecc762c27a4135e09",
+    "contracts/test/mocks/Wallet1271.sol": "98dfd50dfb9b81dd8585771fc52d2cb6e6bbcea4c432ce1937a108c45ea5ab4b",
+    "shared/chain.ts": "77191e211b904f0e997f29f8e3ae45043456c9e7118a079524e601e33b76c522",
+    "shared/chainPages.ts": "f3303b8d3f334c816ab7e0930e8c42fc90f33c80760313d2e85616ea0ff564c6",
+    "shared/money.ts": "ba830adf37cacb55d870510495d1f0b9c2c104d80aa06c7e2222d6d5f80cb295",
+    "shared/types/api.ts": "99b091e1a051a1276087f2169dc86db9c48509145a9443238e2d89fd7a314fdb",
+    "shared/types/auth.ts": "7902b69a6908ac38d2dedc7e6338a2bbd8cd2d2b35125c4c4ab6b6f3d6193d11",
+    "shared/types/billing.ts": "3e85521050c8e0676a93a5371122aae85052a5f8f1a6028478d76c0c72d30c56",
+    "shared/types/index.ts": "865f6559b0258cead69b5a4c5337d8ef62daf0ee899aa5d4b8cd2dd80045ed1e",
+    "src/App.tsx": "1c7de4909f7057ceb4b9a5ffef255832b8ab3814eb29231de34789e59e82b50a",
+    "src/app/NotFoundPage.tsx": "5e8ad75e346e7f16855e922b4c001e964fed20392f60dfeda99bfc64a08f904b",
+    "src/app/RouteBoundary.tsx": "8d856830457ee1003dae3ed8fb8a538b7a7736141f5849cf850cd4f3b29bb369",
+    "src/app/providers/WalletRoutes.tsx": "af473aace963df0eaf655dc6dd030d9b9017efbc9072acae1ae0dc4330cd8f1d",
+    "src/app/router.tsx": "b70e2d1161d055ed020422acb8e046f96a54ee937144c30da91eb7ebf9e7c49d",
+    "src/components/charts/ActivityBars.tsx": "3977484e9194059f856445c53006f92c72545792d4706aeacf2fb40dd2ad84a3",
+    "src/components/charts/AreaChart.tsx": "b3a70edd036848f72d5fbc5e5dab76da3793dea535cfb261db439c14f68ce316",
+    "src/components/charts/Donut.tsx": "43c7dfd778caf8e5d3bd3ca684fba01a108f018cf4e95d5a5a7b79fb87bdd0ee",
+    "src/components/charts/Sparkline.tsx": "2d4f1aa2f3b7894ac2454cd4e3b7b9344dce6112930bbab50deda4d2e76ef7d6",
+    "src/components/layout/DashboardLayout.tsx": "02d819f35dc706909b00432f6fd6c9be9f202c590063083a2f3effc6ffff97b7",
+    "src/components/layout/PublicLayout.tsx": "04816718666ee2b0801ef00167012636dfc2bc8a0d65445ca5ea5f77c1e25277",
+    "src/components/layout/Sidebar.tsx": "6e7c264e67019253769bdfcb67dee107470a33e3fef6719c70e3f633a011b4c2",
+    "src/components/layout/Topbar.tsx": "b3004433b0e9504fbc38ab86490251480532ef41c6c3699f98466b8512fbad15",
+    "src/components/layout/nav.ts": "858c9abd03f086068b3e5d6997f4c85c4cfa34e211fd808e08a692ad9db2793c",
+    "src/components/ui/Badge.tsx": "d08652d9b07ecc3b7ef34a192c96bfe13a768a50f85b41fae05232e611eaa394",
+    "src/components/ui/Button.tsx": "8dfc92b59e006e24169630c5626abdf42eea5c570a60a17079fcb9999b5850ae",
+    "src/components/ui/Card.tsx": "6ac5ce2298bd246b74432702d2531a0e52c48b0888d251f176eca921683b069a",
+    "src/components/ui/CodeBlock.tsx": "6321f4d7a33429cde75869ba2aa4612f0b1af333d07780e0d3540bc3ce13f602",
+    "src/components/ui/DataTable.tsx": "86c0f21145b3f8e3bee5bf7bd287a4e1b7534d25d3d2e5f217b8a9ef11c067de",
+    "src/components/ui/Field.tsx": "771e4daaad129b9b285e05fd91337d6f9556f9dd3d4dfd0630c6aaf0fb787202",
+    "src/components/ui/Logo.tsx": "38f0658dc4e5d922e719d300cf7e815cafd09ffcafdb16053b0391f1d83f12ed",
+    "src/components/ui/Modal.tsx": "fc2d7114110e38026b11f228952bd827eb9590d6153478eff7fe19a1fa1434ec",
+    "src/components/ui/Notice.tsx": "cd7bd2de08c8f4690990610ef08afa9f5b580c7d256c5a90db8c761feb883c85",
+    "src/components/ui/PageHeader.tsx": "8442beb841e9101de7a645f447935e263024d9e01399ddd408718dfcaa8a48b8",
+    "src/components/ui/QueryBoundary.tsx": "c661e90e8c2d3976e37b08dfc4fae5870fad158d910fb0d52301dda2335132f4",
+    "src/components/ui/Segmented.tsx": "2a286aa7733698d4e498a061f6701241f72d6aed55683b286d517bec5f3b973b",
+    "src/components/ui/Stat.tsx": "c8ba4b26a21f3dd836d3b26597e070060e3876336e9f243840820f06ead96132",
+    "src/components/ui/States.tsx": "05314981742771ca02e7ecbbbf05f0f5e3d46c47acb3a86f2c26f9d62ff935cb",
+    "src/components/wallet/WalletButton.tsx": "cfb3524469b4d87469ea3a831ab29e763fdd61a0806e4daea27eebe1d2b0c566",
+    "src/config.ts": "842c00b4daa245b15cd066bf3531510c1dc0e5de93b75cba816a3f7d7f802d6d",
+    "src/console-capture.ts": "d3ac226eed0f96fcbcb7b2d1d8998fc92ea43d173f26cdac4840d3e3d6ff2f66",
+    "src/data/demo.ts": "5d6d5141108db3d11e9451d8bd841b376a5827aa9c316eef8fb3931a18b7b245",
+    "src/features/auth/AccountPages.tsx": "3a57e835c74c533f760e48ebfe774efb0e13a368b2df81c89a24e5cfedb3921a",
+    "src/features/auth/AuthLayout.tsx": "cd731f105c6d0b3f66de09355e312e7f20d3257146be1cf2d4737801960d4ee7",
+    "src/features/auth/AuthProvider.tsx": "88fbb006efc1019a6d2718e5fc889fc2b6612867cf5244bba743b524214982c6",
+    "src/features/auth/LoginPage.tsx": "363fb5568d376bed9195ebdb1f6f6b0adf2f9d914942fc83930d2ef183db7e9a",
+    "src/features/auth/OnboardingPage.tsx": "1e8e8fa2128c8506bc1cd8c90409128c80fa6b3f76fee9bf8421a2a59f71b619",
+    "src/features/auth/SignUpPage.tsx": "fe3072183d2415ebace1afdd72a2b13d0e28ed075917dea80b665586797e9f00",
+    "src/features/auth/VerifyEmailBanner.tsx": "878897a28ed456e63ca6130050d296e5043dd67bab01694c71387f0b8601f9de",
+    "src/features/auth/WalletEntry.tsx": "4a9cb7672e3d16cdf87e3b62e4e0a223dbc63ba7418307b697749f6a9c6aebcf",
+    "src/features/auth/permissions.ts": "0f9a51cb837de4491f39f4662fc5ef24c344e281c421ea7ff4becf3e7a24394c",
+    "src/features/customer/CheckoutPage.tsx": "429be2940d4483f79d2644ebdc684cb6b05b7827038c22b14355753ed10c4e84",
+    "src/features/customer/CustomerLayout.tsx": "36caa30d37af6c27a66779a1b2e3d1ce2a503a65b001e76879cc420a3314d9f1",
+    "src/features/customer/EscrowCard.tsx": "dfdcbd0e746a82f73dc8b0b761c10d23df170d8406b277da7a5bce5d7cb32f7d",
+    "src/features/customer/InvoicePage.tsx": "40f270b87259e20b0d0df934252891bbdd6d27d0f5579300d6d0b33268d5853c",
+    "src/features/customer/PortalPage.tsx": "41e5e54e877c012bd11b502adfa12c0af0915d161ea2513c8f5d7eedf798b2e8",
+    "src/features/customer/SubscriptionCard.tsx": "376d70b1c63df415650c15c7dfe179abd6f94db023730e5230d82bbf287db95d",
+    "src/features/customer/model.ts": "f4f87cadd8c2e27a648bfa6d46a2c9e9b04f2b21ebf6113a0cb2874c2c37a490",
+    "src/features/dashboard/ApiKeysCard.tsx": "fa5931510a4264a3f05fdeea73e31b92eb78ca8e8e5173392908c086db0904cd",
+    "src/features/dashboard/ListPage.tsx": "7f8313917037bdfeaf91eaed88fd955e3c8491c88f9714ce345a43c15ce7016d",
+    "src/features/dashboard/MembersCard.tsx": "497c6c92b6607f616d2599db2df68ced2767240c4c9f185da46e05a4028d3b13",
+    "src/features/dashboard/actions.tsx": "812be3eef0e7861cee338525a8d64d84405ff19fc63938a2c87e882c269e534c",
+    "src/features/dashboard/forms/BillingForms.tsx": "bfa7780d9263312c9cd9e6c95d148caf90b8e8894507d7d47b2d6ba68a8e80fb",
+    "src/features/dashboard/forms/CatalogForms.tsx": "3a8636e2318c4fc3d8a75978d63fd5edc92ab2bddf7d65deb640f866c40404c8",
+    "src/features/dashboard/forms/invoiceDraft.ts": "67cee761f71457305861f387d9f7dc788903c278edcf4fd2b0e60c085128fa50",
+    "src/features/dashboard/forms/shared.tsx": "88d65af279cfdd255d1ebd6daa2d565355f69f9e7b8c57adc4149a83206371c6",
+    "src/features/dashboard/pages/CatalogPages.tsx": "48c618f243e527d234775fe029212281dfec9839d2ea456c569af8e1a92aa3c6",
+    "src/features/dashboard/pages/CustomerPages.tsx": "4c1cf48aafdf61087299cf76fc8fc153be2f079fcb5e34fc28902b2331fa87ed",
+    "src/features/dashboard/pages/DevelopersPage.tsx": "59a27798a6f843f98aa5c557d15dabb7a94b1519ef2db47e1475dce7166ec18a",
+    "src/features/dashboard/pages/EscrowPage.tsx": "81ebad3035c86d89ea2d5d342d7ad84f6033339ba8fbc5b74b42582b26a937ad",
+    "src/features/dashboard/pages/MoneyPages.tsx": "5cb836c79109e7fa58c92a55938d2b4ec943be287418d4ae0f3c25690b049422",
+    "src/features/dashboard/pages/OverviewPage.tsx": "d7a58b510ee3310162e33c28ffcff1f0d0f36f0f0960909a690487ee067abf58",
+    "src/features/dashboard/pages/SettingsPage.tsx": "a102924365fd20348883546f11d7ed008afeeb9e6acf6b139864ec1b2d294d96",
+    "src/features/landing/Hero.tsx": "e15eb5e9180176bdf81439427f40d236c363f2a04fc75f8187d31b790110f7f5",
+    "src/features/landing/LandingPage.tsx": "90de75f0c426fcfcfc3bf44be8e022f9ae10444d3a9247e419cfb78e5772ccfc",
+    "src/features/landing/Reveal.tsx": "0eb0ab501e3c8d2d7b2e6363680ffcbf8b73e7eb909ae83d044def93587b9157",
+    "src/features/landing/Sections.tsx": "2814d75dec875b067be48fede8b764f9e665d2afb2ff637853ff37922062eb42",
+    "src/features/onchain/ContractAction.tsx": "9b9ea6f4254da3e73f4422f5d5057b68e658e3d1dc5c6a7991e0bd2a42a8ffd1",
+    "src/features/onchain/MerchantActions.tsx": "5c02d863ef9558efbed64e6874810d0d4808ba968510d248119f43b635005bd0",
+    "src/features/onchain/MerchantEscrowControls.tsx": "55dca47c4512a459abea48da0561318ee901c905ec7870784e11da0f70fbb425",
+    "src/features/onchain/TransactionStatus.tsx": "fe8ce1fdca03d8b631ca4260f6f1cf47f918bb6a07cb2f654c7b9209239cee66",
+    "src/features/onchain/merchantModel.ts": "b6b27af60bb5712bd77ed9f974773a2dfc83e62a4c8f5f40518fb6f392c8616b",
+    "src/features/onchain/proof.ts": "c86037cebd244ab1a42b10d9cd5399ec324620d7f21de60234700cfe77ea0091",
+    "src/features/onchain/useRetempoTransactions.ts": "2e70b0a87b53c864e80329e661ab279df1f81d975ab8c001d5b558902fc42fe5",
+    "src/hooks/useBilling.ts": "c26d4b583f4b6a3babe12601a9a1f5b5224b948a89fc695218517a3b17d2f8f9",
+    "src/lib/cn.ts": "e46429536f43f5910f5b2b0c50bb2769b510a4558bb4b5d20a3b0a9091dbf7c3",
+    "src/lib/format.ts": "3380f6a4fff819f451f234f0667c6764071cf1d8ea3aa7dab77ee7af1ee95114",
+    "src/lib/share.ts": "fe7401b995cb8476761a551897cac873be63cbeb28d8c9ac34c154648dc0901d",
+    "src/main.tsx": "878e6e61e092ffd78571d2c75fcc2e761416014a349ae8d8fbe1dcc75e16c54f",
+    "src/onchain-facts.ts": "c7c314ada2f6be684dcd24c703fee3fec68f8bc0a2c7c9d1bcf3633c33199abd",
+    "src/onchain-money.ts": "1ac379552459f345f429d85b6d3f9f5f052be0c62ab630c6b111ea6f7a78af4f",
+    "src/onchain-wait.ts": "e6b89dcf266213adea50cd35dd761aa8adfc4fb121dd90c702fb635d98bb1577",
+    "src/services/api/activeOrg.ts": "a444cf51fe7dd3d0ffb8fc6d9335c8dda43a4e161b0e9725c4c314ddc1c2891f",
+    "src/services/api/client.ts": "8ae25a4e5d1d230a39ab58aaaac17bf61dc8ef4fd3e78d38f0ddfa3a5caa04d7",
+    "src/services/auth/apiAuthService.ts": "0129b9a352b5351dc74553304c163fda70c23fcee54b9029b83d14826b36b6c7",
+    "src/services/auth/index.ts": "68bf3fcd8c4e29dc8a10435f3cf6cde71ca6f1df6dfdacb507f73873d5604f1e",
+    "src/services/auth/types.ts": "bfe392bec5d9ea5ae4e24125147f57039ca384afa8dbc81a36aa7f38ae11d92b",
+    "src/services/billing/chainMappers.ts": "4725905138209e703199c461d334cf9b53237b0b8c22ebaf5e37125e9734cb63",
+    "src/services/billing/demoBillingService.ts": "cd722d8c243c34fe3108329c01f90b35f4d452d7f41ef07a65ea317eacf9508d",
+    "src/services/billing/index.ts": "df6530544c09b7be7de26edb832816b11d1fcbe8225631c9b6acba7a8dbe1f21",
+    "src/services/billing/liveBillingService.ts": "3f550fcf77089b1beb2ba3c24b3b52c68861ab08a3e59153ede37745b4721d40",
+    "src/services/billing/mappers.ts": "926b6e2065f8e342a2d485cadb0670068de2c0d877432b4d5bf1c5667840a69f",
+    "src/services/billing/types.ts": "296de5ac26174798047af1e302182cd91c979b5c8faffb87d6c31bb39cb4227c",
+    "src/services/blockchain/amounts.ts": "3f2f9d9043aa0b2b2262c0ddff4dd7e6adfa68f1598567065d9f8d3f2d9bbc99",
+    "src/services/blockchain/arcService.ts": "abf7d90b713e59a2ed72b71e082e4afa8c02a9ef25c732b9df45b2ebd5084a53",
+    "src/services/blockchain/client.ts": "3f67dc036d8783c5c2cb7ced405c1b7fa94fac58bb284460b2392a15905cd3f0",
+    "src/services/blockchain/guards.ts": "3edfce160b8c14c95cfe5ad3e1e1c579c5ab3f6dec3dfc494e10bc098c81f507",
+    "src/services/blockchain/index.ts": "0c49bd26ce9e3edf14d7587fd0c37ff2464fbfd4f75605a0d21590dea85c53f7",
+    "src/services/blockchain/transactions.ts": "b401b9daf7b827c5db1fbb7dfbe4fce40947602207fbc7276821c867b1f0e12d",
+    "src/services/blockchain/types.ts": "38aa71733a335dbaf1067099b04f14321859f74b760ddecd72c36077bcc81e31",
+    "src/services/merchant/api.ts": "46e6bd0df734911b9a7624118bace9db01970ac0e14fed02aa1cfc02d3275e68",
+    "src/tracing.ts": "b84056625447264048b618d924b640d9f24da57741e875c8ab6fb32e42c18713",
+    "src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "worker/migrations/0001_schema.sql": "15bd83e8569aa8b9f947fb763bbfc2a5b838bbd084fbb053e03bf42d5f7f6a52",
+    "worker/migrations/0002_guards.sql": "48726c8bb74ced677c77d50100e69ee88b33ba966566e32423e258a9678a0f21",
+    "worker/migrations/0003_chain_bridge.sql": "8e8ede3be62a5d814432fe1808deb7735260210696e244cb52ee1440a56b2c8c",
+    "worker/src/audit.ts": "9b5880e852aa0db331584fea5cc6e6fa896edb4d2ecdedd874ac1cb4583769d3",
+    "worker/src/auth/account.ts": "f8558a30cdb70d6416fd6b874f862d769b32d07ee7e4618783e81c3bf51f8c91",
+    "worker/src/auth/audit.ts": "9a378fa33dad92640c6cb6bbcc8bd35656d77de92e0789e1d2179e7e24444108",
+    "worker/src/auth/crypto.ts": "933c50180b98e95f3d5a9d6dde6afac2f5ce2dd35735eb3cf9b68a6ad28b94d4",
+    "worker/src/auth/emailTokens.ts": "ee961bbbf2ade11c02cbae4d2d6c494726af289b13f3c2db653449d4096a3606",
+    "worker/src/auth/guards.ts": "13f9b5065a89149bed4d8a5236081cf4e7d3445870c2dabc76b98c6bd37b29f9",
+    "worker/src/auth/passwords.ts": "5a148b436ecb131ee86ea8a887a072852ffb485f890cac714e44951ed48adcef",
+    "worker/src/auth/permissions.ts": "fa2dabfd943eaf5bd815023ee93ebeefd6e2a3d0fcf670507f36110653665026",
+    "worker/src/auth/rateLimits.ts": "59d29d872e8a76693750365ac36ac779a72d16019d0e89ff043642d36720ee35",
+    "worker/src/auth/routes.ts": "0e58c79b37e32f522d6f8e37868c3e12b9958077386ac3d71337a3290eff6093",
+    "worker/src/auth/service.ts": "080a1725c20fe191b6e5ecf593c39ac884a113cfa1607ad0d979de8f437a293b",
+    "worker/src/auth/sessions.ts": "6f21ec06deb25086aa7d291bcca6b073905514b75de6eabfa2cbcc7f6e992b5d",
+    "worker/src/auth/siwe.ts": "1bd920bff1e4621399eaa2dbec4510c09d9e36f6de56d99c9c3d937896c7a225",
+    "worker/src/auth/walletAuth.ts": "8a9bc5c20e413e968403dd5d0ee2f75af05f81ef28ee587da2666ced95d9bbfc",
+    "worker/src/billing/money.ts": "6a50f711c0b53e1fa87f3be5793c312e6964a002d59d11f7c7e09b663107906d",
+    "worker/src/billing/routes.ts": "fa82eb776c1d72df8185bf1ec54c3f2ed6b6797a69256e441a1c02dfd0dc0be6",
+    "worker/src/catalog/associations.ts": "fbda00573ff0627934e45b31cb062e959d237e7a9f56539b1ee54ef2ce93e072",
+    "worker/src/catalog/db.ts": "11fdd9c3baf459464bdf0bead89ef74c73028d3fe319a52eadb7505dcbac2a60",
+    "worker/src/catalog/members.ts": "9dcc4000eb7338fd45146077868eae84303120468857f697a03c0a0632be6086",
+    "worker/src/catalog/resources.ts": "ba8b72681da34216d2073a3b0cd142a35f6bfc6c30084e8ac9cf4a829dbf0c6b",
+    "worker/src/catalog/routes.ts": "ebad51e87ea3bb43036a4f1808d8543248c40c8162ca9867d3c0c2eb60a31d70",
+    "worker/src/chain/checkouts.ts": "44c323ffca1b1f00a27b4c94eb3038f3e270dc581f9306b39564c0a81339a973",
+    "worker/src/chain/client.ts": "983ae0c74867f3346d26fc9d6e19fd7cbb5d6cdafb93156469bc56cfb0dd2f17",
+    "worker/src/chain/customer.ts": "d26dd2bc4df06016e341f08f4626100b70e8cf99cbf8656ec073d407fb67298d",
+    "worker/src/chain/invoices.ts": "63794301a7743c4811e7269719dc24ab4a55d5389104682876d9278847bd7a7b",
+    "worker/src/chain/keys.ts": "6c3eece01cc873d841c472d49dabb4a84d7b3fce80b3677fb935866feed7354f",
+    "worker/src/chain/lifecycle.ts": "86f1d9931fbe6b216914d56bed4172eb00d46612a3ce030f252b735080e3b053",
+    "worker/src/chain/plans.ts": "f32357823db66b0123eee5650cc51e3425f7a5ee5999120b51b2079afccf4b55",
+    "worker/src/chain/prepare.ts": "ff6abe64affa092a9dde262a4ad1a54f3e902c921c39e8228ff62cd4ad3d540e",
+    "worker/src/chain/projections.ts": "1555e34153a71824f32ecfce50354aab8bb57b371cc3e314f1d84ef8f012d877",
+    "worker/src/chain/routes.ts": "b82f7fbf98982b92e27d514793454bbe9ef79c89deef59dca6ef6866a1d75de0",
+    "worker/src/common.ts": "738c6d3fea4370b5094585f3371cef4df1ddeea5ce094462c3d43a1f4acd268f",
+    "worker/src/config.ts": "e2af27e78aa86f0468a0cee38fefa51f439aaca529c69b68ef87d7206e0f3084",
+    "worker/src/db/client.ts": "85c4f5b621b48661ebd210a5d171b291ae07e9777b794457b12777a17cead3f5",
+    "worker/src/db/schema.ts": "54e848d3095ff3a0ed09b7f341ab03cae6a9656c37c2e1942797a56845c1815d",
+    "worker/src/errors.ts": "75694bfa5f609f46a88454a41ef082ec4f9e5edf45a30c9e8063cd61f2b4c095",
+    "worker/src/http.ts": "1dd39885d69148bb66422553471ecb94ddd3fe3168ae9c51933c37c7a02b199c",
+    "worker/src/index.ts": "cdddb83d3d6993bdb10e576ce6c0ae1a3201efe5892ac47a563d5e50d56000f5",
+    "worker/src/types.ts": "a743f138feb95e15d7d878e628f2d6838c3b91f0c083a704751b61a8d4f06b24"
+  },
+  "finishedAt": "2026-11-10T12:47:28.587977+00:00",
+  "phase4EvidencePreserved": true,
+  "opsTestExitCode": 0,
+  "productionDeploymentAuthorized": false,
+  "productionResourcesVerified": false,
+  "preparationSourceSha256": {
+    "ops/production.template.json": "fc9de8f7bd07da130a30e02f98f01be5619c017f614a5fa74f39ab6e5fd7b7f0",
+    "scripts/check-phase5-local.py": "47b924fbf326808f1be9e5fab0a33893b8b0687bdc7047d1be9b582071b47038",
+    "scripts/production_config.py": "9ed102a4f784408c4fe9bea12853a3a43a3dc9d7beae49217c232e4f86fbce31"
+  }
+}

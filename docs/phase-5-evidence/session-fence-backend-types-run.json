@@ -1,0 +1,14 @@
+{
+  "name": "backend-types",
+  "command": [
+    "node",
+    "node_modules/typescript/bin/tsc",
+    "--noEmit",
+    "-p",
+    "backend"
+  ],
+  "exitCode": 0,
+  "seconds": 3.224,
+  "startedUTC": "2026-11-10T12:56:31.334210+00:00",
+  "log": "docs/phase-5-evidence/session-fence-backend-types.log"
+}

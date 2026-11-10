@@ -1,0 +1,45 @@
+{
+  "before": {
+    "initialJsCount": 1,
+    "initialBytes": 2245401,
+    "initialGzipBytes": 641353,
+    "emittedJsCount": 82,
+    "emittedJsBytes": 3495709
+  },
+  "after": {
+    "initialJsCount": 1,
+    "initialBytes": 687028,
+    "initialGzipBytes": 208179,
+    "emittedJsCount": 130,
+    "emittedJsBytes": 3526447
+  },
+  "rawReductionPercent": 69.40288171244245,
+  "gzipReductionPercent": 67.54065233966318,
+  "sha256": {
+    "src/main.tsx": "878e6e61e092ffd78571d2c75fcc2e761416014a349ae8d8fbe1dcc75e16c54f",
+    "src/config.ts": "842c00b4daa245b15cd066bf3531510c1dc0e5de93b75cba816a3f7d7f802d6d",
+    "src/app/router.tsx": "b70e2d1161d055ed020422acb8e046f96a54ee937144c30da91eb7ebf9e7c49d",
+    "src/app/RouteBoundary.tsx": "8d856830457ee1003dae3ed8fb8a538b7a7736141f5849cf850cd4f3b29bb369",
+    "src/app/providers/WalletRoutes.tsx": "af473aace963df0eaf655dc6dd030d9b9017efbc9072acae1ae0dc4330cd8f1d",
+    "vite.config.ts": "898a577ff992a67752cb8f3084e043bc5737cfcc46cebc9c766c7c2b23bb5086",
+    "tests/onchain/config.test.ts": "a0b9d043fe4b174036983c7f4b51c9cac26c8e08df6a5e1c0443121693d18d50",
+    "tests/onchain/frontend-assets.mjs": "aae6a009719cdc6916f5ea0ef12f20f2e93788ac4643a46d023ebf8eeb79c6bd",
+    "tests/onchain/frontend-build.test.mjs": "bf8a747178aed0194b2bbf22367a338dec2854fcef00e7ff7da81a09bb04ef3b",
+    "tests/onchain/frontend-routes.browser.test.mjs": "09a39c76bae8097eac3a798c3bfae162ecf8df1cc1774d0d3cef680777b6efb7"
+  },
+  "exits": {
+    "beforeBuild": 0,
+    "buildRegressionRed": 1,
+    "routeBrowserRed": 1,
+    "rpcRegressionRed": 1,
+    "afterBuild": 0,
+    "buildAndRouteRegressions": 0,
+    "walletTests29": 0,
+    "rootTypecheck": 0,
+    "walletTestTypecheck": 0,
+    "scopedSourceLint": 0,
+    "normalHarnessLint": 0,
+    "publicBrowserFixtures": 0,
+    "overbroadTypeAwareTestAttempt": 1
+  }
+}

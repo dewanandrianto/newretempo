@@ -1,0 +1,23 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "overflow": false,
+    "heading": "Subscription billing that settles in USDC.",
+    "errors": []
+  },
+  {
+    "width": 768,
+    "height": 1024,
+    "overflow": false,
+    "heading": "Subscription billing that settles in USDC.",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "overflow": true,
+    "heading": "Subscription billing that settles in USDC.",
+    "errors": []
+  }
+]

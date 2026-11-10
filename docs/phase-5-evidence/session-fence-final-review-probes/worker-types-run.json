@@ -1,0 +1,13 @@
+{
+  "name": "worker-types",
+  "command": [
+    "node",
+    "node_modules/typescript/bin/tsc",
+    "--noEmit",
+    "-p",
+    "worker"
+  ],
+  "exitCode": 0,
+  "seconds": 6.921,
+  "log": "docs/phase-5-evidence/session-fence-final-review-probes/worker-types.log"
+}

@@ -1,0 +1,91 @@
+[
+  {
+    "name": "auth",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "worker/vitest.config.ts",
+      "worker/tests/recovery-security.test.ts",
+      "worker/tests/membership-security.test.ts",
+      "worker/tests/auth.test.ts",
+      "worker/tests/auth-account.test.ts",
+      "--disableConsoleIntercept"
+    ],
+    "exitCode": 0,
+    "seconds": 117.23,
+    "log": "docs/phase-5-evidence/final-review-probes/auth.log"
+  },
+  {
+    "name": "indexer",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "chain-worker/vitest.config.ts",
+      "chain-worker/tests/indexer-review.test.ts",
+      "chain-worker/tests/indexer-overflow.test.ts",
+      "chain-worker/tests/indexer-ancestor-budget.test.ts",
+      "--disableConsoleIntercept"
+    ],
+    "exitCode": 0,
+    "seconds": 40.9,
+    "log": "docs/phase-5-evidence/final-review-probes/indexer.log"
+  },
+  {
+    "name": "password-race",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "docs/phase-5-evidence/final-review-probes/vitest.config.ts",
+      "--disableConsoleIntercept"
+    ],
+    "exitCode": 1,
+    "seconds": 237.6,
+    "log": "docs/phase-5-evidence/final-review-probes/password-race.log"
+  },
+  {
+    "name": "ops",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/ops",
+      "-v"
+    ],
+    "exitCode": 0,
+    "seconds": 5.49,
+    "log": "docs/phase-5-evidence/final-review-probes/ops.log"
+  },
+  {
+    "name": "password-race-isolated",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "docs/phase-5-evidence/final-review-probes/vitest.config.ts",
+      "--disableConsoleIntercept"
+    ],
+    "exitCode": 1,
+    "seconds": 21.74,
+    "log": "docs/phase-5-evidence/final-review-probes/password-race-isolated.log"
+  },
+  {
+    "name": "packaged-spa",
+    "command": [
+      "node",
+      "--test",
+      "tests/onchain/frontend-build.test.mjs"
+    ],
+    "exitCode": 0,
+    "seconds": 3.98,
+    "log": "docs/phase-5-evidence/final-review-probes/packaged-spa.log"
+  }
+]

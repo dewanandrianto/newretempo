@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "types": ["bun"],
+    "lib": ["ES2022"]
+  },
+  "include": ["src", "tests", "../shared"],
+  "exclude": ["../src"]
+}

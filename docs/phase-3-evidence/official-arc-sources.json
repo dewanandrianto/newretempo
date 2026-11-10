@@ -1,0 +1,32 @@
+{
+  "sources": [
+    {
+      "url": "https://docs.arc.io/arc/references/connect-to-arc",
+      "verified_fields": {
+        "chainId": 5042,
+        "rpc": "https://rpc.mainnet.arc.io",
+        "explorer": "https://explorer.arc.io"
+      }
+    },
+    {
+      "url": "https://docs.arc.io/arc/references/contract-addresses",
+      "verified_fields": {
+        "usdc": "0x3600000000000000000000000000000000000000",
+        "erc20Decimals": 6
+      }
+    },
+    {
+      "url": "https://docs.arc.io/arc/references/evm-differences.md",
+      "topics": [
+        "18-decimal native USDC versus six-decimal ERC-20",
+        "native transfer logs and exact amounts",
+        "blocklist/pause and transaction semantics"
+      ]
+    },
+    {
+      "url": "https://docs.arc.io/arc/tutorials/install-arc-foundry.md",
+      "release": "v0.8.0-4"
+    }
+  ],
+  "remote_calls": "read only; no broadcast"
+}

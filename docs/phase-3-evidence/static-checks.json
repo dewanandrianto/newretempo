@@ -1,0 +1,12 @@
+{
+  "typecheck": {
+    "exit_code": 0,
+    "duration_seconds": 23.69,
+    "tail": "$ tsc --noEmit && tsc --noEmit -p worker && tsc --noEmit -p backend\n"
+  },
+  "lint": {
+    "exit_code": 0,
+    "duration_seconds": 24.5,
+    "tail": "Found 0 warnings and 0 errors.\nFinished in 23.5s on 129 files with 57 rules using 4 threads.\nFound 0 warnings and 0 errors.\nFinished in 327ms on 188 files with 34 rules using 4 threads.\n$ oxlint --type-aware src scripts worker && oxlint .\n"
+  }
+}

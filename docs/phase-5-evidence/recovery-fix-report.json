@@ -1,0 +1,138 @@
+{
+  "status": "PASS_LOCAL_AUTH_RECOVERY_FIX_ONLY_NOT_PHASE5_COMPLETE",
+  "scope": "fixcycle2 auth wallet-preclaim recovery; local real workerd and D1 only",
+  "publicTests": {
+    "numTotalTests": 143,
+    "numPassedTests": 143,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "success": true
+  },
+  "sourceSha256": {
+    "worker/src/auth/account.ts": "f8558a30cdb70d6416fd6b874f862d769b32d07ee7e4618783e81c3bf51f8c91",
+    "worker/src/auth/emailTokens.ts": "ee961bbbf2ade11c02cbae4d2d6c494726af289b13f3c2db653449d4096a3606",
+    "worker/src/auth/routes.ts": "0e58c79b37e32f522d6f8e37868c3e12b9958077386ac3d71337a3290eff6093",
+    "worker/src/auth/sessions.ts": "6f21ec06deb25086aa7d291bcca6b073905514b75de6eabfa2cbcc7f6e992b5d",
+    "worker/src/auth/siwe.ts": "1bd920bff1e4621399eaa2dbec4510c09d9e36f6de56d99c9c3d937896c7a225",
+    "worker/src/auth/walletAuth.ts": "8a9bc5c20e413e968403dd5d0ee2f75af05f81ef28ee587da2666ced95d9bbfc",
+    "worker/tests/membership-security.test.ts": "a016647ed8bef55666dca1e8793276d3b5e0456439cdbebafe34aa5c163eb8d8",
+    "worker/tests/recovery-security.test.ts": "17ff305e11410f46c6958403c34b88db4fc077748eff64040b2a4929805a6b40",
+    "src/features/auth/AccountPages.tsx": "3a57e835c74c533f760e48ebfe774efb0e13a368b2df81c89a24e5cfedb3921a"
+  },
+  "environment": {
+    "platform": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+    "node": "v26.12.1",
+    "bun": "1.3.14",
+    "vitest": "4.1.12",
+    "cloudflareVitestPlugin": "1.6.0",
+    "workerd": "1.20261104.1"
+  },
+  "checks": {
+    "publicWorker": {
+      "exitCode": 0,
+      "log": "recovery-fix-public-tests.log",
+      "report": "recovery-fix-public-tests.json"
+    },
+    "types": {
+      "exitCode": 0,
+      "scope": "root + worker + backend",
+      "log": "recovery-fix-types.log"
+    },
+    "lint": {
+      "exitCode": 0,
+      "scope": "type-aware src/scripts/worker and repository read-only lint",
+      "log": "recovery-fix-lint.log"
+    },
+    "ops": {
+      "exitCode": 0,
+      "tests": 12,
+      "log": "recovery-fix-ops.log"
+    },
+    "actualSdk": "Not rerun in auth subtask; no SDK, contracts or chain-worker changes. Parent owns final signed SDK/browser acceptance."
+  },
+  "implementation": [
+    "Password reset atomically updates password/email verification, revokes all sessions, tombstones every login wallet, invalidates pending link nonces, audits and consumes the reset token in one D1 batch.",
+    "Wallet ownership remains reserved: purpose/address/user_id/verified_at are retained; verification_method=NULL revokes login without financial wallet mutation or schema changes.",
+    "Login refuses tombstoned bindings without creating a forked user. Account and public wallet/customer ownership reads exclude tombstones.",
+    "Link INSERT/UPSERT checks active user, verified email if present, and live unrevoked session in the mutation. Only same-user tombstones may reactivate; fresh signed nonce is required.",
+    "SIWE session insertion conditionally checks active binding and captured salted password hash so a login paused across recovery cannot acquire a new session, including after legitimate relinking.",
+    "Wallet linking and conditional mandatory audit remain transactional.",
+    "Minimal English reset confirmation instructs new-password login and fresh-signature relinking; states funds/payout addresses unchanged."
+  ],
+  "redEvidence": [
+    {
+      "file": "recovery-fix-red-reset.log",
+      "kind": "pre-fix recovery attack",
+      "expectedFailure": "fresh attacker SIWE 200 instead of 403"
+    },
+    {
+      "file": "recovery-fix-red-link.log",
+      "kind": "pre-fix insertion semantics, corrected test-mode fixture",
+      "expectedFailure": "unverified link 200 instead of 403"
+    },
+    {
+      "file": "recovery-fix-red-ownership-race.log",
+      "kind": "before account/session guards",
+      "expectedFailure": "revoked wallet still listed and paused SIWE establishes session 200"
+    },
+    {
+      "file": "recovery-fix-red-link-race-mutation.log",
+      "kind": "mutation test removing live-session predicate",
+      "expectedFailure": "both fresh-link and tombstone-resurrection stale requests return 200"
+    },
+    {
+      "file": "recovery-fix-red-link-audit.log",
+      "kind": "intermediate implementation atomicity regression",
+      "expectedFailure": "link persisted after failed mandatory audit"
+    }
+  ],
+  "coverage": [
+    "legacy email preclaim recovery denies new SIWE and privileged write",
+    "unverified-email linking denied even with optional email policy disabled",
+    "verified email and wallet-only normal flows preserved",
+    "same-owner fresh-signature relink retains wallet row ID and account ID",
+    "cross-user theft denied",
+    "reset token replay cannot revoke a newly reactivated link",
+    "pre-reset pending link challenge rejected under recovered session",
+    "stale authenticated link and upsert races denied",
+    "paused SIWE session race denied before and after legitimate relink",
+    "multiple login-wallet access revoked; payout and customer rows unchanged",
+    "D1 fault rolls back password, sessions, wallet tombstones and token consumption together",
+    "mandatory link audit failure rolls back binding",
+    "wallet-only onboarding/linking works with mail disabled",
+    "wallet/customer snapshot and paginated snapshot reject revoked ownership"
+  ],
+  "environmentPolicy": {
+    "sourceConfig": "worker/vitest.config.ts",
+    "remoteBindings": false,
+    "compatibilityDate": "2026-11-08",
+    "database": "disposable local workerd D1 with current migrations; no remote DB",
+    "authFixtures": "production mode, HTTPS app.retempo.xyz, 64-hex random session secret, secure host cookies, verified-email policy true, local MAILER Fetcher; explicit test-policy-disabled and email-disabled variants",
+    "bunCommand": "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun --no-env-file",
+    "envFilesReadOrModified": false,
+    "productionKdfIterations": 600000,
+    "productionSecretHttpsMailerGuardsChanged": false
+  },
+  "schema": {
+    "migrationsChanged": false,
+    "drizzleSchemaChanged": false,
+    "observedConstraint": "login wallets require verified_at IS NOT NULL; verification_method nullable and CHECK IN (siwe) admits NULL",
+    "revocation": "verification_method=NULL for purpose=login only",
+    "testOnlyFaultInjection": "temporary D1 test triggers created/dropped within isolated tests, never migrations or remote databases"
+  },
+  "boundaries": {
+    "gitCommands": false,
+    "deployments": false,
+    "remoteChainWrites": false,
+    "chainWorkerChanged": false,
+    "contractOrAbiChanged": false,
+    "financialRecordsChangedByRecovery": false,
+    "phase5Complete": false
+  },
+  "issuesResolved": [
+    "Invalid slug length in initial finance fixture; fixed fixture, original full-suite failure retained as recovery-fix-public-tests-initial-failed.*",
+    "Per-file shared D1 rate-limit accumulation; fixture-specific documentation IPs isolate test actors without weakening production limits",
+    "Intermediate out-of-batch link audit caught by regression and restored to conditional audit in D1 batch"
+  ],
+  "remaining": "Parent final matrix/fresh review and current-source signed integration acceptance; no production readiness or provider CPU/delivery/deployment claim."
+}

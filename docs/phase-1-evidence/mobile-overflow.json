@@ -1,0 +1,118 @@
+{
+  "width": 390,
+  "scrollWidth": 459,
+  "offenders": [
+    {
+      "tag": "DIV",
+      "cls": "absolute -inset-x-10 -top-10 -bottom-10 -z-10 bg-[radial-gradient(ellipse_50%_50%_at_50%_40%,rgba(59,130,246,0.18),transparent)]",
+      "text": "",
+      "left": -20,
+      "right": 400
+    },
+    {
+      "tag": "DIV",
+      "cls": "",
+      "text": "FOR DEVELOPERS\n\nBilling you can drive from code\n\nAn API-first architecture so su",
+      "left": 20,
+      "right": 459.015625
+    },
+    {
+      "tag": "DIV",
+      "cls": "max-w-xl",
+      "text": "FOR DEVELOPERS\n\nBilling you can drive from code\n\nAn API-first architecture so su",
+      "left": 20,
+      "right": 459.015625
+    },
+    {
+      "tag": "P",
+      "cls": "eyebrow",
+      "text": "FOR DEVELOPERS",
+      "left": 20,
+      "right": 459.015625
+    },
+    {
+      "tag": "H2",
+      "cls": "display mt-3 text-3xl font-semibold text-fg sm:text-4xl",
+      "text": "Billing you can drive from code",
+      "left": 20,
+      "right": 459.015625
+    },
+    {
+      "tag": "P",
+      "cls": "mt-4 text-base text-dim",
+      "text": "An API-first architecture so subscriptions, invoices and escrow events plug stra",
+      "left": 20,
+      "right": 459.015625
+    },
+    {
+      "tag": "UL",
+      "cls": "mt-8 grid gap-4 sm:grid-cols-2",
+      "text": "REST API\n\nTyped resources for plans, customers and invoices.\n\nWebhooks\n\nSigned e",
+      "left": 20,
+      "right": 459.015625
+    },
+    {
+      "tag": "LI",
+      "cls": "rounded-xl border border-line bg-midnight/40 p-4",
+      "text": "REST API\n\nTyped resources for plans, customers and invoices.",
+      "left": 20,
+      "right": 459.015625
+    },
+    {
+      "tag": "P",
+      "cls": "mt-3 text-sm font-medium text-fg",
+      "text": "REST API",
+      "left": 37,
+      "right": 442.015625
+    },
+    {
+      "tag": "P",
+      "cls": "mt-1 text-xs text-dim",
+      "text": "Typed resources for plans, customers and invoices.",
+      "left": 37,
+      "right": 442.015625
+    },
+    {
+      "tag": "LI",
+      "cls": "rounded-xl border border-line bg-midnight/40 p-4",
+      "text": "Webhooks\n\nSigned events for payments, escrow and disputes.",
+      "left": 20,
+      "right": 459.015625
+    },
+    {
+      "tag": "P",
+      "cls": "mt-3 text-sm font-medium text-fg",
+      "text": "Webhooks",
+      "left": 37,
+      "right": 442.015625
+    },
+    {
+      "tag": "P",
+      "cls": "mt-1 text-xs text-dim",
+      "text": "Signed events for payments, escrow and disputes.",
+      "left": 37,
+      "right": 442.015625
+    },
+    {
+      "tag": "LI",
+      "cls": "rounded-xl border border-line bg-midnight/40 p-4",
+      "text": "Test mode\n\nBuild against Arc Testnet with no real funds.",
+      "left": 20,
+      "right": 459.015625
+    },
+    {
+      "tag": "P",
+      "cls": "mt-3 text-sm font-medium text-fg",
+      "text": "Test mode",
+      "left": 37,
+      "right": 442.015625
+    },
+    {
+      "tag": "P",
+      "cls": "mt-1 text-xs text-dim",
+      "text": "Build against Arc Testnet with no real funds.",
+      "left": 37,
+      "right": 442.015625
+    }
+  ]
+}

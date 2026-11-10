@@ -1,0 +1,102 @@
+{
+  "scope": "Fresh non-forked loopback Arc and two real workerd Workers; in-memory keys and artificial local balances only",
+  "passed": true,
+  "steps": [
+    "Three independent real SIWE wallet sessions",
+    "Server-derived immutable plan and charge bindings; wrong customer denied; stable preparation replay",
+    "Actual signed approval and debit; only private verified projections declare payment, invoice and subscription settled",
+    "Both Worker processes restarted; D1 sessions/bindings/cursor/events survive; replay creates no duplicate payment",
+    "Paired local D1 cold backup/restore preserves exact canonical events, cursor, verified payment and authenticated session",
+    "Real merchant renewal invoice creation/finalization/capability, exact UTC period, customer browser renewal, new paid charge and settled escrow",
+    "Second real charge, customer dispute, merchant response, arbitrator split and pinned private dispute state",
+    "Vested claim, actual merchant withdrawal and permissionless fixed-payout customer recovery; gas-independent recipient balance exact",
+    "Wallet proof restricted to SIWE owner; organization history excludes unallocated wallet-wide withdrawals; final liabilities zero"
+  ],
+  "chainTransactions": [
+    "0x6b6c625d55ce46b928f7990c2102cd4f6cf8c9db2c97fb7ed129c7eafa1f2e6e",
+    "0x9fa3c776c03dc0422436afe5dde64c874a27df5ed5a20c8c502f9c1fa06f5a1b",
+    "0x597c8a6d10a420a30ac39a2a6179b3a17148ad9cdf925f6b46ace493b2d605b8",
+    "0x3ab1bfde9c852eef4cdefb315bde373689f08ab1edcb4c8064e4b0b7606554b7",
+    "0x06e5d0af40d89d76695fb7158e68196c217a827df400b6599fcc88c67a5c103f",
+    "0x4a6e57b7d7ca7c5905d8ebd97f428972f0e95f8a06834c4a4267182dab619cbd",
+    "0xb2b6eb61fa19aad51c716c71b241982ac605fedfb5407d138fc6989c5709ba49",
+    "0xc4eeda7a787d1acba9e9b0344bbd800a7d48d54c695b73d5b51049d407c7c97a",
+    "0xd62748710722d96400022a3176f76185e6393ca123f18247c5b55762a030820f",
+    "0x0272e9d79c84ec6dadf0c2cc2744e160e5851fb6e83135e07bf8f52fd9d5b55d",
+    "0x07a1661edb924e0f45b9005b04ea83c731bfdb4236e6d58a341e800c0b02f79a",
+    "0x9daec37985af1b6c51d61f3d03d94452d0fa4f5c3502cb41ef7797fa031cf932",
+    "0xb8873b799693972123c77b0547ef81fb9ca21c1a69d7c1b40a1c444c84b4631b",
+    "0xe551b5dfa3cfc1e41ba15eebef89cb23deecd552f8d222c20a619aa4cf28f3ee",
+    "0xc8253c52d8f2b609bc3717c8f75637a4d733c74b2cd8bb430fd6bb929b87ebe9",
+    "0x7c2e47fd738f6b2dde56cb83008739385d63d2862494f6eb1bf109c824ac9020",
+    "0xa90e669339e7f9440bee94c5d451873e42f21e41f2b2b9a16bd917baa85f3fbd"
+  ],
+  "merchantBrowser": {
+    "signedWalletRequests": [
+      {
+        "hash": "0x6b6c625d55ce46b928f7990c2102cd4f6cf8c9db2c97fb7ed129c7eafa1f2e6e",
+        "to": "0xbe63d70eaed2622a20c7739b79811cbe97668ebd",
+        "status": "success"
+      }
+    ],
+    "capabilityCreatedThroughUI": true
+  },
+  "browser": {
+    "signedWalletRequests": [
+      {
+        "hash": "0x9fa3c776c03dc0422436afe5dde64c874a27df5ed5a20c8c502f9c1fa06f5a1b",
+        "to": "0x3600000000000000000000000000000000000000",
+        "status": "success"
+      },
+      {
+        "hash": "0x597c8a6d10a420a30ac39a2a6179b3a17148ad9cdf925f6b46ace493b2d605b8",
+        "to": "0xbe63d70eaed2622a20c7739b79811cbe97668ebd",
+        "status": "success"
+      }
+    ],
+    "wrongWorldBlockedBeforeApproval": true,
+    "rejectionBeforeSubmission": true,
+    "reloadRetryDidNotDoublePay": true,
+    "responsiveWidths": [
+      320,
+      360,
+      390,
+      768,
+      1440
+    ],
+    "pageErrors": []
+  },
+  "coldRecovery": {
+    "mode": "Disposed both Workers, copied local persisted state to backup and a new restore directory, restarted against restored state",
+    "cloudflareTimeTravelTested": false,
+    "events": 7,
+    "canonicalCursorPreserved": true,
+    "authenticatedSessionPreserved": true
+  },
+  "renewalBrowser": {
+    "invoiceId": "85d70be9-b8b9-4724-b895-db54bc5cbf40",
+    "exactPeriodStart": "2026-12-10T11:36:17.000Z",
+    "signedWalletRequests": [
+      {
+        "hash": "0xe551b5dfa3cfc1e41ba15eebef89cb23deecd552f8d222c20a619aa4cf28f3ee",
+        "to": "0x3600000000000000000000000000000000000000",
+        "status": "success"
+      },
+      {
+        "hash": "0xc8253c52d8f2b609bc3717c8f75637a4d733c74b2cd8bb430fd6bb929b87ebe9",
+        "to": "0xbe63d70eaed2622a20c7739b79811cbe97668ebd",
+        "status": "success"
+      }
+    ]
+  },
+  "records": {
+    "orgId": "f161fa3f-f474-4d69-9ab5-2dafa6f89d4c",
+    "subscriptionId": "fc211b28-6111-498d-8c93-27fa789a5896",
+    "paymentId": "2e9429f2-15af-4b16-944b-31f5c8680288",
+    "escrowId": "461f48ce-94a1-4cfd-abf4-75804f90a913",
+    "invoiceId": "5fc205c7-1edf-4165-a138-35891f7c5420"
+  },
+  "replayBaselineEvents": 7,
+  "canonicalEvents": 27,
+  "nodeStopped": true
+}

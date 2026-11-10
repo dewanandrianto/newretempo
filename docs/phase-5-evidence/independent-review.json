@@ -1,0 +1,261 @@
+{
+  "passed": false,
+  "review_type": "Fresh assistant-context source/security review; NOT an independent third-party financial audit",
+  "summary": "Production readiness is blocked by unverified-email membership pre-hijacking, missing frontend anti-framing policy, and stale successful evidence on early runner failures.",
+  "security_concerns": [
+    {
+      "id": "P5-SEC-001",
+      "path": "worker/src/catalog/members.ts",
+      "line": 25,
+      "end_line": 27,
+      "severity": "high",
+      "title": "Email-based membership grants trust an unverified, attacker-preclaimed address",
+      "explanation": "In the supported production EMAIL_MODE=delivery configuration, registration creates an active user and establishes a password session without requiring email verification. Adding a colleague by email selects any active account, not a verified email owner. An attacker who pre-registers the intended colleague email receives the owner-authorized membership and can immediately use its role through requireWorkerOrg. REQUIRE_VERIFIED_EMAIL=true guards organization creation only, not membership acquisition or organization access. This is tenant access by email pre-hijacking, not a blockchain-signature bypass.",
+      "related_locations": [
+        {
+          "path": "worker/src/auth/routes.ts",
+          "line": 27,
+          "end_line": 30
+        },
+        {
+          "path": "worker/src/auth/guards.ts",
+          "line": 15,
+          "end_line": 18
+        },
+        {
+          "path": "worker/src/catalog/routes.ts",
+          "line": 48,
+          "end_line": 49
+        }
+      ],
+      "reproduction": [
+        "Use an isolated D1 and production bindings with a local MAILER stub returning 200; no mail or external write is required.",
+        "SIWE-login an owner and create an organization. Register a second password account using the intended colleague email, but never consume its verification token.",
+        "As owner POST /api/orgs/:orgId/members with that email and role=admin. Use the unverified registration session to GET the organization and POST a product."
+      ],
+      "verifiable_proof": {
+        "runtime": "local real workerd and D1, full production middleware and sessions",
+        "registrationStatus": 201,
+        "emailVerified": false,
+        "membershipGrantStatus": 201,
+        "tenantReadStatus": 200,
+        "adminProductWriteStatus": 201,
+        "probe": "/home/deseti/.hermes/cache/scratch/retempo-independent-review/security-probe.test.ts",
+        "probe_test": "production email preclaim grants unverified password holder invited admin access",
+        "network": "MAILER is an in-process stub; signatures generated in memory; no remote requests"
+      },
+      "required_fix": "Require verified ownership before resolving an email into a membership, and ensure pre-existing unverified email memberships cannot exercise tenant authority. Preserve wallet-only onboarding. Add production delivery-mode regression coverage with an attacker-controlled unverified password session."
+    },
+    {
+      "id": "P5-SEC-002",
+      "path": "worker/src/index.ts",
+      "line": 29,
+      "severity": "medium",
+      "title": "Production HTML bypasses the API-only anti-framing policy",
+      "explanation": "The public entry returns ASSETS.fetch unchanged for frontend pages. API middleware sets frame-ancestors none, but that policy protects JSON responses, not the HTML document containing wallet, login, checkout and administrative UI. Neither public nor dist has a _headers file, the production generator supplies no frontend response-header policy, and index.html has no equivalent protection. Production HTML therefore has no application-controlled anti-framing control; API CSRF checks do not stop UI redressing because clicks cause the framed application itself to send valid same-origin requests. Browser third-party-cookie restrictions may limit some cross-site sessions but do not protect wallet/capability UI or same-site hostile origins. No fund-stealing exploit is claimed.",
+      "related_locations": [
+        {
+          "path": "worker/src/http.ts",
+          "line": 92,
+          "end_line": 104
+        },
+        {
+          "path": "scripts/production_config.py",
+          "line": 72
+        }
+      ],
+      "reproduction": [
+        "Inspect public and dist for _headers: neither exists.",
+        "Call the actual public entry fetch for a checkout HTML path with an isolated ASSETS binding returning text/html. Observe it returns the asset unchanged with neither Content-Security-Policy nor X-Frame-Options.",
+        "Confirm generated asset routing serves non-API paths directly; thus API response headers cannot supply the HTML framing policy."
+      ],
+      "verifiable_proof": {
+        "runtime": "local workerd entry-point probe with fixture ASSETS binding",
+        "status": 200,
+        "contentSecurityPolicy": null,
+        "xFrameOptions": null,
+        "probe": "/home/deseti/.hermes/cache/scratch/retempo-independent-review/security-probe.test.ts",
+        "probe_test": "static HTML asset delegation has no frontend anti-framing headers",
+        "limitation": "Not a deployed-CDN capture or browser exploit; verifies missing application/configuration policy in the reviewed production package."
+      },
+      "required_fix": "Set an explicit production HTML frame-ancestors policy (normally none; use a narrowly approved allowlist only if embedding is a real requirement) through Static Assets _headers or a correctly routed Worker response. Test actual packaged HTML headers, not only API responses; do not copy the API default-src none onto the SPA."
+    }
+  ],
+  "logic_errors": [
+    {
+      "id": "P5-LOGIC-001",
+      "path": "scripts/check-phase5-local.py",
+      "line": 25,
+      "end_line": 27,
+      "severity": "medium",
+      "title": "Early verification failures leave a previous passing final report intact",
+      "explanation": "The new absent-cold-proof guard correctly changes passed to false after a successful child run. However, if a previous final-checks.json has passed=true and the ops subprocess fails, main returns its nonzero status without invalidating that report. Equivalent stale success can survive timeout/exception paths and early child failure. An evidence reader can therefore see a passing final artifact after the current verification failed. This contradicts fail-closed current-source evidence even though the CLI exit code is correctly nonzero.",
+      "reproduction": [
+        "Load scripts/check-phase5-local.py with importlib. Patch ROOT/OUT/BASELINE to a scratch tree. Seed OUT/final-checks.json with {\"passed\":true,\"checks\":[]}.",
+        "Patch subprocess.run to return CompletedProcess([],1,stdout=\"isolated intentional ops failure\",stderr=\"\"). Invoke main and read the exact scratch final-checks.json."
+      ],
+      "verifiable_proof": {
+        "fixture": "fully mocked subprocesses, scratch-only report",
+        "mainExitCode": 1,
+        "persistedPassed": true,
+        "source_review": "The cold-proof and frontend guards were also reviewed and their nine current ops unit tests pass; they do not cover this earlier failure path."
+      },
+      "required_fix": "Invalidate/replace the current report at run start and write a failed verdict on every unsuccessful exit or exception, preserving prior success separately if historical evidence is needed. Add fixtures for preexisting passed=true plus ops failure, child failure, timeout and malformed/missing child report."
+    }
+  ],
+  "suggestions": [],
+  "counts": {
+    "security_concerns": 2,
+    "logic_errors": 1,
+    "reviewed_files": 56
+  },
+  "reviewed_file_sha256": {
+    "docs/phase-5-contract.md": "65f67e350877155bde522eda1d693371d14ad389728f8658f7e0e7b422e681b6",
+    "docs/phase-5-operations.md": "2fde8caea238e2cd6f0f5b114aaf072c9f397fcfb6bde83404aa487e7ec75b3f",
+    "package.json": "02ef91f0ec5e075b4550b2c82b02a4ef7537f6bb9037340095fc4b396d4f8efd",
+    "worker/src/config.ts": "e2af27e78aa86f0468a0cee38fefa51f439aaca529c69b68ef87d7206e0f3084",
+    "worker/src/http.ts": "1dd39885d69148bb66422553471ecb94ddd3fe3168ae9c51933c37c7a02b199c",
+    "worker/src/index.ts": "cdddb83d3d6993bdb10e576ce6c0ae1a3201efe5892ac47a563d5e50d56000f5",
+    "worker/src/auth/guards.ts": "6303229847e8002354cd3ad5062a211a6b665a830cc04cead926a655432fe7c4",
+    "worker/src/auth/permissions.ts": "fa2dabfd943eaf5bd815023ee93ebeefd6e2a3d0fcf670507f36110653665026",
+    "worker/src/auth/sessions.ts": "f44feae388a83e9e597e86de176bc5976f72de14a68a6e1f6f66becac30bd401",
+    "worker/src/auth/crypto.ts": "933c50180b98e95f3d5a9d6dde6afac2f5ce2dd35735eb3cf9b68a6ad28b94d4",
+    "worker/src/auth/passwords.ts": "5a148b436ecb131ee86ea8a887a072852ffb485f890cac714e44951ed48adcef",
+    "worker/src/auth/rateLimits.ts": "59d29d872e8a76693750365ac36ac779a72d16019d0e89ff043642d36720ee35",
+    "worker/src/auth/routes.ts": "0158d2039cc1d8c5591de89402fa0e12520443d3d9b8242130b5f81be668b3d5",
+    "worker/src/auth/service.ts": "080a1725c20fe191b6e5ecf593c39ac884a113cfa1607ad0d979de8f437a293b",
+    "worker/src/auth/emailTokens.ts": "c34e8f9e5824b3a5fd2654d91706ea7fd04371e1eca4786c35dafd60c8bc1792",
+    "worker/src/auth/siwe.ts": "646a71cbd139dbc3ca30f88183004e920327aa2591dea9d557e2f328ca75e257",
+    "worker/src/auth/walletAuth.ts": "05133e21295b9b02eb3591cec31a1a462c7ab1ffdc300680f984d6a5163fea85",
+    "worker/src/auth/account.ts": "8e79990d27d6b908258dcc1b04b443071efbd9988191f453f2c191e981abd84a",
+    "worker/src/catalog/resources.ts": "ba8b72681da34216d2073a3b0cd142a35f6bfc6c30084e8ac9cf4a829dbf0c6b",
+    "worker/src/catalog/associations.ts": "fbda00573ff0627934e45b31cb062e959d237e7a9f56539b1ee54ef2ce93e072",
+    "worker/src/catalog/members.ts": "2b4454ef6124e920dc9ba03379cccde415ea4ebd1581dd88e0c844eb97706d83",
+    "worker/src/catalog/routes.ts": "ebad51e87ea3bb43036a4f1808d8543248c40c8162ca9867d3c0c2eb60a31d70",
+    "worker/src/billing/routes.ts": "fa82eb776c1d72df8185bf1ec54c3f2ed6b6797a69256e441a1c02dfd0dc0be6",
+    "worker/src/chain/plans.ts": "f32357823db66b0123eee5650cc51e3425f7a5ee5999120b51b2079afccf4b55",
+    "worker/src/chain/checkouts.ts": "44c323ffca1b1f00a27b4c94eb3038f3e270dc581f9306b39564c0a81339a973",
+    "worker/src/chain/prepare.ts": "ff6abe64affa092a9dde262a4ad1a54f3e902c921c39e8228ff62cd4ad3d540e",
+    "worker/src/chain/customer.ts": "98ce5e29c0d3c53d4b8e603100781668e818c3b3b11f92fadc17b8abf0e31929",
+    "worker/src/chain/routes.ts": "b82f7fbf98982b92e27d514793454bbe9ef79c89deef59dca6ef6866a1d75de0",
+    "worker/src/chain/lifecycle.ts": "86f1d9931fbe6b216914d56bed4172eb00d46612a3ce030f252b735080e3b053",
+    "worker/migrations/0002_guards.sql": "48726c8bb74ced677c77d50100e69ee88b33ba966566e32423e258a9678a0f21",
+    "worker/migrations/0003_chain_bridge.sql": "8e8ede3be62a5d814432fe1808deb7735260210696e244cb52ee1440a56b2c8c",
+    "scripts/production_config.py": "9ed102a4f784408c4fe9bea12853a3a43a3dc9d7beae49217c232e4f86fbce31",
+    "ops/production.template.json": "fc9de8f7bd07da130a30e02f98f01be5619c017f614a5fa74f39ab6e5fd7b7f0",
+    "scripts/check-phase5-local.py": "ef365792746a784f84d65afe0c2940a8e7a10489f98f03ccfc8f4ce098a68a62",
+    "tests/ops/test_production_config.py": "b04cb5c38c06ff359feb3bd4566842ec2ef5c1d50e84ef171c949b43a672709f",
+    "tests/ops/test_evidence_isolation.py": "29ef59967cd136c3815ece2db1900c5f7be74b38800cf47a8b72d26b81e41133",
+    "tests/ops/test_phase5_runner.py": "92a8254af71d802a2a17b111b41cbc2772bc890c8b00d6bb7dad0e2eff61b969",
+    "tests/ops/arc-readonly-transport.mjs": "111b3edd9e65d55dd6a4fe83925c1e0ca1bad0b152c47fe59862fc029acc4f92",
+    "worker/vitest.config.ts": "a6722b1e44f1598c75081bd1f2eff0b7b3b9f7f15a2a57a0e3eb3856db4dc362",
+    "worker/tests/security-config.test.ts": "b167da4a691fc4c03ef1f0be9649bcc8a76fab8a155dbbc23a5d510ccf024bbe",
+    "worker/tests/security-http.test.ts": "e936fba83be46f24775a38c40ca4187f7e075e2318b5d946325a9e6fdb9bc670",
+    "worker/tests/security-cost.test.ts": "ed4d1d6d34fbb19e60f3384b89c3aa2791e6818212c0906f3f3ad8c170ec206a",
+    "worker/tests/catalog.test.ts": "68e487f3c2b34f567300f4dbd6204e3b6a289f2f53e3eee7354020ca1b684fce",
+    "src/App.tsx": "1c7de4909f7057ceb4b9a5ffef255832b8ab3814eb29231de34789e59e82b50a",
+    "src/main.tsx": "878e6e61e092ffd78571d2c75fcc2e761416014a349ae8d8fbe1dcc75e16c54f",
+    "src/config.ts": "842c00b4daa245b15cd066bf3531510c1dc0e5de93b75cba816a3f7d7f802d6d",
+    "src/app/router.tsx": "b70e2d1161d055ed020422acb8e046f96a54ee937144c30da91eb7ebf9e7c49d",
+    "src/app/RouteBoundary.tsx": "8d856830457ee1003dae3ed8fb8a538b7a7736141f5849cf850cd4f3b29bb369",
+    "src/app/providers/WalletRoutes.tsx": "af473aace963df0eaf655dc6dd030d9b9017efbc9072acae1ae0dc4330cd8f1d",
+    "src/tracing.ts": "b84056625447264048b618d924b640d9f24da57741e875c8ab6fb32e42c18713",
+    "src/console-capture.ts": "d3ac226eed0f96fcbcb7b2d1d8998fc92ea43d173f26cdac4840d3e3d6ff2f66",
+    "src/lib/share.ts": "fe7401b995cb8476761a551897cac873be63cbeb28d8c9ac34c154648dc0901d",
+    "vite.config.ts": "898a577ff992a67752cb8f3084e043bc5737cfcc46cebc9c766c7c2b23bb5086",
+    "index.html": "aeb9e80d5cf418a079b26d64b02bdfef90eb7e62a8ebf14804eb7ea256f322b3",
+    "tests/onchain/frontend-build.test.mjs": "bf8a747178aed0194b2bbf22367a338dec2854fcef00e7ff7da81a09bb04ef3b",
+    "tests/onchain/frontend-routes.browser.test.mjs": "09a39c76bae8097eac3a798c3bfae162ecf8df1cc1774d0d3cef680777b6efb7"
+  },
+  "review_boundaries": {
+    "root": "/home/deseti/projects/retempo",
+    "comparison": "Full named modules against docs/phase-5-contract.md; no Git baseline or diff assumed",
+    "writes": "Only this requested project evidence JSON and isolated scratch reproduction files; no implementation, secrets, credentials, AGENTS, Git, deployment or remote chain writes",
+    "private_pagination": "UNREVIEWED for final acceptance until parent requests a delta. chain-worker/src/service.ts and worker/src/chain/client.ts were inspected only structurally while being edited; no final hashes or completed pagination/indexer verdict are claimed. chain-worker history/projections/indexer pagination remains moving-target scope.",
+    "frozen_contracts": "Reviewed public financial adapters and denial triggers for authority boundaries, not a new Solidity audit or a verification that the entire frozen contract tree is unchanged. No financial-write bypass was identified in the inspected public routes/guard migrations. The email/RBAC issue grants application authority, not contract wallet signatures."
+  },
+  "verification": [
+    {
+      "name": "public-worker-suite",
+      "command": "RETEMPO_EVIDENCE_DIR=/home/deseti/projects/retempo/docs/phase-5-evidence /home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun --no-env-file run test --disableConsoleIntercept",
+      "exitCode": 0,
+      "testFilesPassed": 18,
+      "testsPassed": 121
+    },
+    {
+      "name": "current-ops-suite",
+      "command": "RETEMPO_EVIDENCE_DIR=/home/deseti/projects/retempo/docs/phase-5-evidence PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/ops -v",
+      "exitCode": 0,
+      "testsPassed": 9,
+      "note": "Includes current cold-proof guard and frontend-runner inclusion tests; the earlier first run had seven tests. Isolation test executes real local SDK acceptance in scratch and compares historical evidence."
+    },
+    {
+      "name": "independent-security-probes",
+      "command": "RETEMPO_EVIDENCE_DIR=/home/deseti/projects/retempo/docs/phase-5-evidence /home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun --no-env-file run node node_modules/vitest/vitest.mjs run --config /home/deseti/.hermes/cache/scratch/retempo-independent-review/vitest.config.mts --disableConsoleIntercept",
+      "exitCode": 0,
+      "testsPassed": 2,
+      "note": "Positive exploit/policy-absence assertions passed; this demonstrates defects, not security acceptance."
+    },
+    {
+      "name": "runner-stale-report-probe",
+      "exitCode": 0,
+      "mainExitCode": 1,
+      "persistedPassed": true,
+      "note": "Scratch-only mocked failure; actual final-checks.json not modified."
+    },
+    {
+      "name": "frontend-existing-production-build-regressions",
+      "command": "RETEMPO_EVIDENCE_DIR=/home/deseti/projects/retempo/docs/phase-5-evidence /home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun --no-env-file run node --test tests/onchain/frontend-build.test.mjs tests/onchain/frontend-routes.browser.test.mjs",
+      "exitCode": 0,
+      "testsPassed": 4,
+      "note": "Real Chrome: delayed chunks, failed chunk recovery/home navigation, deferred wallet provider and real ConnectKit modal. Uses existing dist; no fresh build performed in this read-only review and no claim of fresh build/source identity."
+    }
+  ],
+  "positive_observations": [
+    "Production config validation enforces secret shape, canonical HTTPS origins, SIWE/domain/chain agreement, secure cookie policy, bounded session lifetimes and explicit email modes; entropy is not falsely certified.",
+    "Production API-key creation intentionally returns 503 because key authentication is unimplemented; API keys do not bypass session/RBAC. Lists omit hashes/secrets and grants are admin-only.",
+    "API CSRF requires an allowlisted Origin plus exact custom header; JSON media type checks reject JSONP/substrings; body streaming is bounded. Success/error API responses carry no-store, nosniff, no-referrer, restrictive CSP and production HSTS.",
+    "Session tokens and API-key records are HMAC protected; production cookies use __Host prefix, HttpOnly, Secure and SameSite=Lax. SIWE challenges are purpose/user/message-bound and atomically consumed.",
+    "Production configuration generation declares required secret names without serializing values, separates public/private D1 and Worker bindings, disables private public routing/preview and never asserts account ownership or deployment authorization.",
+    "Lazy WalletRoutes uses module-scoped Wagmi config and a stable layout; shared QueryClient remains above the layout. Reload/home recovery is available after lazy import failure.",
+    "The opt-in official RPC transport probe source uses only four read methods, bundles the actual Rpc into workerd, disposes Miniflare in finally and does not deploy. Existing workerd-official-rpc.json records all four succeeding; reviewer inspected but did not rerun its network probe."
+  ],
+  "kdf_and_free_tier_assessment": {
+    "passwordIterations": 600000,
+    "measuredRuntime": "local workerd",
+    "metric": "elapsed wall milliseconds, NOT provider CPU",
+    "observedHashSamplesMs": [
+      563,
+      561,
+      559
+    ],
+    "observedCorrectVerifySamplesMs": [
+      558,
+      560,
+      561
+    ],
+    "observedIncorrectVerifySamplesMs": [
+      552,
+      562,
+      616
+    ],
+    "observedFullSiweRequestSamplesMs": [
+      64,
+      59,
+      69,
+      56,
+      64,
+      59
+    ],
+    "officialLimitsSource": "https://developers.cloudflare.com/workers/platform/limits/",
+    "officialFreeHttpCpuLimitMs": 10,
+    "productionCpuVerified": false,
+    "assessment": "KDF strength is unchanged. Neither native PBKDF2 await wall time nor full SIWE wall time proves provider billed CPU compliance or incompatibility. Actual production Free-tier CPU/traffic profiling remains a launch gate; do not weaken the KDF or claim successful local tests satisfy it."
+  },
+  "issues_encountered": [
+    "bun is not on default PATH; used the pinned project toolchain absolute path.",
+    "Directly executing Vitest under Bun timed out; the documented package test script invokes Node and completed successfully. No lingering test processes were seen in the subsequent process check.",
+    "Scratch Vitest config initially needed ESM .mts and the package test command could not accept duplicate --config; corrected only the scratch harness/invocation.",
+    "Runner sources changed during review; the final current runner/ops files were reread and fingerprinted. No full signed matrix, deployment, remote ownership test or final private-pagination review was performed."
+  ]
+}

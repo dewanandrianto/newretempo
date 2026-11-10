@@ -1,0 +1,248 @@
+{
+  "reviewType": "Fresh assistant independent read-only pagination/private-indexer review; NOT a third-party audit",
+  "reviewedAtUTC": "2026-11-10T11:42:07.022429+00:00",
+  "passed": false,
+  "phase5Complete": false,
+  "verdict": "BLOCKED: two independently rerun defects remain, including canonical-ancestry proof integrity.",
+  "baselineEvidence": [
+    "docs/phase-5-evidence/history-report.md",
+    "docs/phase-5-evidence/history-checks.json"
+  ],
+  "sourceFileCount": 25,
+  "sourceSetEncoding": "SHA256 of Python json.dumps(sourceSha256,sort_keys=True,separators=(',',':')).encode()",
+  "originalSourceSetSHA256": "d07ff9aab4c0fbac5a2c284257fdb37cd43c2bedc158b9c9f3b19d0600062341",
+  "reviewedSourceSetSHA256": "d07ff9aab4c0fbac5a2c284257fdb37cd43c2bedc158b9c9f3b19d0600062341",
+  "originalFingerprintMatchesCurrent": true,
+  "reviewedSHA256": {
+    "chain-worker/migrations/0001_chain.sql": "775d6c775a37452aea83b9f3646fce425c162b3b9892ccd044d9c7059c6946f0",
+    "chain-worker/migrations/0002_unique_binding_identity.sql": "1e6fc3d29983bce5cde4d69572d9d19ad476a89d7b2717fadc38e02357047513",
+    "chain-worker/migrations/0003_binding_capacity.sql": "5dbf59980c516974f8140c69052a6b7ce2f90847abb223bb5a48788bf584b84e",
+    "chain-worker/migrations/0004_history_pages.sql": "7dfdbceee7e593f732e86fde4ffbc229b7f436b70339c62ba184125c76fb064d",
+    "chain-worker/src/bindings.ts": "dc3f424a48966a3a440f59eb65e1374fa6464db00e5f48f135ad26876f4d21dd",
+    "chain-worker/src/customer.ts": "7981ebc8a1e6c6e45c20f0e64c476dec63c522003067749a26e52506dd663d81",
+    "chain-worker/src/history.ts": "c14d1aa58ddcd6e4bd2bbb3f8d916547ec82aa2f99f55f006d4cf95a1141f8ca",
+    "chain-worker/src/index.ts": "be5deb09df1786ce1b57ce05aee340f63dabbcc6b773de1f606b83c81c17aa8f",
+    "chain-worker/src/indexer.ts": "f8b1910315b8eb9373d5de2a897cc6b15ca8564c089c2b77c9d6bb4cb5ef9f01",
+    "chain-worker/src/projections.ts": "1fdb07aed0fc59b181c821cf9924ba727e699fd22f895bff683d71dbb55fd943",
+    "chain-worker/src/service.ts": "e155168ca85d5359a60bdce0bfb8873f143e6a4841848b6a282a6e17d8ee224a",
+    "chain-worker/tests/capacity.test.ts": "4f61a19c00aeee08a241a17554450f4ad93a9411369a5d246718f8cd35c9f14d",
+    "chain-worker/tests/history.test.ts": "959a1672c4f7d585894b4e07725d689bba053fe168439d0517df88dc82ad5cb4",
+    "chain-worker/tests/security.test.ts": "5df7b9e3b49cf44c6fe5bf90b171592e294234b0a539a1507651ea533332d94c",
+    "chain-worker/tests/setup.ts": "da33bac9ea3cee2cd7dbbd12d54a4bcaf2eaba2cb021c97be046aa43000c3757",
+    "chain-worker/tests/wallet.test.ts": "17196384607aa1a6fa5ed075b6aa15e9b89ed39f1e50b8802ff38770c33085ce",
+    "shared/chain.ts": "77191e211b904f0e997f29f8e3ae45043456c9e7118a079524e601e33b76c522",
+    "shared/chainPages.ts": "f3303b8d3f334c816ab7e0930e8c42fc90f33c80760313d2e85616ea0ff564c6",
+    "src/services/billing/liveBillingService.ts": "3f550fcf77089b1beb2ba3c24b3b52c68861ab08a3e59153ede37745b4721d40",
+    "src/services/blockchain/arcService.ts": "abf7d90b713e59a2ed72b71e082e4afa8c02a9ef25c732b9df45b2ebd5084a53",
+    "tests/onchain/historyPages.test.ts": "2d920855dcde5a46c421ae442f185656110d207c66e202142a75b70f3329b911",
+    "worker/src/chain/client.ts": "983ae0c74867f3346d26fc9d6e19fd7cbb5d6cdafb93156469bc56cfb0dd2f17",
+    "worker/src/chain/customer.ts": "d26dd2bc4df06016e341f08f4626100b70e8cf99cbf8656ec073d407fb67298d",
+    "worker/src/chain/routes.ts": "b82f7fbf98982b92e27d514793454bbe9ef79c89deef59dca6ef6866a1d75de0",
+    "worker/tests/history-pages.test.ts": "645835b40948e74862916717fb3b41f286fd1ea09dc79947ab918f9c5d0ac516"
+  },
+  "security_concerns": [
+    {
+      "id": "PAG-001",
+      "path": "chain-worker/src/indexer.ts",
+      "line": 79,
+      "relatedLines": [
+        172,
+        175,
+        180,
+        200,
+        201
+      ],
+      "severity": "high",
+      "title": "A reorganization after the initial ancestor check can permanently bless orphaned financial proofs",
+      "description": "sync checks the previous cursor only before reading the head. Its final block checks cover the new range and endpoint, not the previous cursor. If the previous cursor is reorganized between these checks, it advances to the new fork without detecting that previously stored append-only events belong to the old fork. Subsequent snapshots check only the new cursor and can return old-fork proofs as canonical. D1 atomicity and a pinned pagination cursor do not repair mixed-ancestry history.",
+      "repro": {
+        "command": "node node_modules/vitest/vitest.mjs run --config docs/phase-5-evidence/pagination-review-vitest.config.ts --disableConsoleIntercept",
+        "testPath": "docs/phase-5-evidence/pagination-review-repro.test.ts",
+        "testLines": [
+          8,
+          34
+        ],
+        "runtime": "Real local workerd/D1; injected deterministic RPC transport, not a live-chain reorg",
+        "steps": [
+          "Sync a block-1 Withdrawn proof on fork A.",
+          "On the next sync allow the initial block-1 check, then switch the block-1 hash when eth_blockNumber is called; advance head to block 2 with no new logs.",
+          "Read runtime and wallet snapshot against this switched transport."
+        ],
+        "observed": {
+          "secondSyncStatus": 200,
+          "oldCursorReads": 1,
+          "persistedCursorBlock": "2",
+          "persistedHalted": null,
+          "walletStatus": 200,
+          "walletEvents": 1,
+          "returnedProof": "Old fork-A block-1 Withdrawn event"
+        },
+        "log": "docs/phase-5-evidence/pagination-review-recovered-repro.log"
+      },
+      "requiredMinimalFix": "Retain the previous cursor and revalidate its block hash immediately before committing any advanced cursor; fail-stop and commit no events/cursor on mismatch. Include the extra RPC in capacity reservation and keep the whole-request 40-RPC ceiling. Add a regression switching ancestry after the initial check. This narrows the TOCTOU window; it does not claim RPC/D1 atomic consensus or finality guarantees.",
+      "reviewedSHA256": "f8b1910315b8eb9373d5de2a897cc6b15ca8564c089c2b77c9d6bb4cb5ef9f01"
+    }
+  ],
+  "logic_errors": [
+    {
+      "id": "PAG-002",
+      "path": "chain-worker/src/indexer.ts",
+      "line": 91,
+      "relatedLocations": [
+        {
+          "path": "chain-worker/src/service.ts",
+          "lines": [
+            49,
+            55
+          ]
+        },
+        {
+          "path": "chain-worker/src/indexer.ts",
+          "lines": [
+            94,
+            102
+          ]
+        }
+      ],
+      "severity": "medium",
+      "title": "Bounded oversized RPC responses bypass range shrinking and permanently stall otherwise admissible multi-block history",
+      "description": "The adaptive prefix loop shrinks only after Rpc.call returns a parsed log array. The 512-KiB response guard throws first for a larger eth_getLogs result, exits sync and never retries a smaller range. Every later sync starts at the same cursor and asks the same oversized range. This is distinct from the documented impossible single-block envelope: the reproduced first block is individually admissible.",
+      "repro": {
+        "command": "node node_modules/vitest/vitest.mjs run --config docs/phase-5-evidence/pagination-review-vitest.config.ts --disableConsoleIntercept",
+        "testPath": "docs/phase-5-evidence/pagination-review-repro.test.ts",
+        "testLines": [
+          35,
+          54
+        ],
+        "runtime": "Real local workerd/D1; injected deterministic RPC response bodies",
+        "steps": [
+          "Set head to block 32 and return 16 payment logs in one transaction per block for 32 blocks.",
+          "Invoke sync twice with the same head.",
+          "Set head to block 1 without changing its logs and invoke sync to prove the first complete block can be verified."
+        ],
+        "observed": {
+          "multiBlockResponseBytes": 570652,
+          "singleBlockResponseBytes": 17836,
+          "syncStatuses": [
+            503,
+            503
+          ],
+          "ranges": [
+            [
+              "0x1",
+              "0x20"
+            ],
+            [
+              "0x1",
+              "0x20"
+            ]
+          ],
+          "cursorAfterRetries": null,
+          "haltedAfterRetries": null,
+          "singleBlockStatus": 200,
+          "singleBlockProcessedEvents": 16,
+          "singleBlockCursor": "1"
+        },
+        "log": "docs/phase-5-evidence/pagination-review-recovered-repro.log"
+      },
+      "requiredMinimalFix": "Handle the specific oversized-log-response condition inside the bounded range loop: cancel/consume the failed response, halve a multi-block prefix and retry within the same shared 40-RPC budget; keep explicit refusal for an oversized single block, unchanged cursor on incomplete verification, and no partial block commit. Do not broadly swallow identity, receipt, hash or transport verification failures.",
+      "reviewedSHA256": "f8b1910315b8eb9373d5de2a897cc6b15ca8564c089c2b77c9d6bb4cb5ef9f01",
+      "relatedReviewedSHA256": {
+        "chain-worker/src/service.ts": "e155168ca85d5359a60bdce0bfb8873f143e6a4841848b6a282a6e17d8ee224a"
+      }
+    }
+  ],
+  "checkedProperties": [
+    {
+      "property": "Scoped keyset history bounded before JSON parsing",
+      "result": "Verified source and passing real D1 regressions: 64 selected candidates, 65-row indexed sentinel per selector, maximum 32 selectors, rowid keyset and high-water; plan partial index avoids traversing payment history."
+    },
+    {
+      "property": "Opaque scope/cursor/binding/expiry pinning",
+      "result": "Verified private UUIDv4 token lookup with five-minute absolute expiry; immutable cursor JSON includes block hash; relevant binding hash, scope, high-water and progress live in private D1. Rechecks before response reject binding/cursor/runtime/expiry mutation. Forged, expired, stale and cross-wallet/cross-org tests pass. This depends on correct indexer ancestry, which PAG-001 violates."
+    },
+    {
+      "property": "Exact settlement proof independent of current page",
+      "result": "Verified composite indexed lookup with LIMIT 2, complete immutable charge identity and cursor cutoff. Current-source real D1 regression marks charge 300 paid on page 1 while its proof lies outside the first 64 events; 300 ledger entries sum exactly to 2702159776422297900 base units."
+    },
+    {
+      "property": "Every-page public authorization",
+      "result": "Read routes/customer scope and reran all 3 continuation authorization tests on real public workerd/D1. Org membership and verified SIWE wallet removal block subsequent requests before private fetch. Customer org/wallet lists are rederived server-side; not accepted as public request authority. Membership/header fixes owned by another agent excluded from this verdict."
+    },
+    {
+      "property": "Wallet withdrawal segregation",
+      "result": "Wallet snapshots require owned SIWE account, contain no org bindings and use wallet:event proofs. Organization ledger allowlist excludes Withdrawn and PayoutAddressUpdated; no invented per-org allocation."
+    },
+    {
+      "property": "Complete collector or fail closed",
+      "result": "Read shared collector and both frontend call sites; reran 39 SDK/read-model tests including collector progress beyond 300 pages, cycles/no-progress, changing cursor/bindings/event identity, missing pagination and duplicate proof behavior. No arbitrary lifetime page cutoff or return of partial totals. Legacy first-page pagination-absent protocol remains intentionally accepted."
+    },
+    {
+      "property": "Bounded D1 and RPC work",
+      "result": "Current-source private 91-test suite passes, including EXPLAIN indexed keyset seeks/no temp sort, 5001 unrelated rows, atomic capacity admission, 26-getter request at 40 RPC. Dense fixture independently repeats 1820 relevant events / 26 plans / 64 returned / 40 RPC / 8 D1 invocations / 1692 batched rows read. These are local instrumentation, not provider telemetry. Adaptive scan response bytes still fail as PAG-002."
+    },
+    {
+      "property": "Atomic canonical commit",
+      "result": "D1 batch and lease-constraint guard provide all-or-nothing events/cursor commit; lost lease and invalid-last-receipt tests pass. Canonical-ancestry revalidation is incomplete as PAG-001; atomic SQL commit is not sufficient canonical-chain proof."
+    }
+  ],
+  "executedChecks": [
+    {
+      "name": "independent defect reproductions",
+      "passedTests": 2,
+      "passedFiles": 1,
+      "exitCode": 0,
+      "command": "node node_modules/vitest/vitest.mjs run --config docs/phase-5-evidence/pagination-review-vitest.config.ts --disableConsoleIntercept",
+      "log": "docs/phase-5-evidence/pagination-review-recovered-repro.log",
+      "sha256": "26bd2da0a86b580c5832e738df40e9290645ff1e2ec48c2233553c254e001406"
+    },
+    {
+      "name": "private full regression suite",
+      "passedTests": 91,
+      "passedFiles": 10,
+      "exitCode": 0,
+      "command": "node node_modules/vitest/vitest.mjs run --config chain-worker/vitest.config.ts --disableConsoleIntercept",
+      "log": "docs/phase-5-evidence/pagination-review-private.log",
+      "sha256": "9110d1418784afd2aa7df7c26361be13e3b9b0f6c8aeddf80e7c195fb9b1d04d"
+    },
+    {
+      "name": "public continuation authorization subset",
+      "passedTests": 3,
+      "passedFiles": 1,
+      "exitCode": 0,
+      "command": "node node_modules/vitest/vitest.mjs run --config worker/vitest.config.ts worker/tests/history-pages.test.ts",
+      "log": "docs/phase-5-evidence/pagination-review-public.log",
+      "sha256": "39bdf4954f3dad6c8db193360e93daa45734249d3b4ffd07a937542753cb86d9"
+    },
+    {
+      "name": "SDK/read-model/collector full suite",
+      "passedTests": 39,
+      "passedFiles": 11,
+      "exitCode": 0,
+      "command": "node node_modules/vitest/vitest.mjs run --config tests/onchain/vitest.config.ts",
+      "log": "docs/phase-5-evidence/pagination-review-collector.log",
+      "sha256": "0ddee59ec13e268353bf0fc8443cb3c6c1f01eb6c262f07d051091c6673bae1f"
+    }
+  ],
+  "reproductionArtifacts": {
+    "docs/phase-5-evidence/pagination-review-repro.test.ts": "26c5f184efb754c33996601f61303dea196f59c588fcd577e38b4ff2865d584d",
+    "docs/phase-5-evidence/pagination-review-vitest.config.ts": "6edec91b106268b69835246f5e87127e9038275907f754a78c075c097ad18544"
+  },
+  "limitations": [
+    "Existing limits are 32 bindings per tenant, 26 unique admitted getters, and 32 combined relevant customer bindings; not unlimited scope growth. Private customer scope also limits 20 orgs and 32 verified wallets.",
+    "Cloudflare Free-plan 10ms production CPU and provider subrequest telemetry gate remain unproven. Local elapsed time, D1 invocation counting and RPC counting are not provider CPU/subrequest proof.",
+    "Final genuinely signed browser matrix is parent-owned and not rerun here. Public tests were the continuation subset, not the complete 124-case public suite.",
+    "RPC reproduction transport is deterministic fixture input executed by real workerd/D1; not proof a live Arc reorg occurred.",
+    "Initial pinned Bun invocation of Vitest timed out after 180 seconds; Node Vitest rerun produced captured complete exit-0 output. No test outcome inferred from the interrupted earlier reviewer or timed-out invocation."
+  ],
+  "scopePreservation": {
+    "implementationModified": false,
+    "contractsKDFOrFinancialPolicyChanged": false,
+    "envOrSecretsRead": false,
+    "gitOperations": false,
+    "deploymentOrRemoteWrites": false,
+    "phase4EvidenceModified": false,
+    "movingMembershipHeadersPhase5RunnerExcluded": true
+  },
+  "requiredFollowup": "Fix PAG-001/PAG-002, rerun updated independent regressions and affected capacity checks, refresh source fingerprints, then parent performs final signed browser matrix. Do not call Phase 5 done from this review."
+}

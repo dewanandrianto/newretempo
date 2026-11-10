@@ -1,0 +1,215 @@
+{
+  "scope": "Fresh local ArcAnvil only; no fork or remote RPC",
+  "chainId": 5042,
+  "toolchain": "Arc Foundry v0.8.0-4",
+  "limits": [
+    "Local predeploy and transaction-validation semantics only, not live mainnet acceptance or issuer policy.",
+    "Blocked EOA probe uses a genuinely signed zero-value setPayoutAddress transaction; no Foundry prank or tracer.",
+    "Relay recovery covers credit claimed before blacklisting, not new claims or refunds by a blocked signer.",
+    "Issuer blacklist change alone uses local impersonation; all application transactions use ephemeral signed EOAs.",
+    "Compiled artifacts are supplied by preflight; no contracts are compiled or modified by this test."
+  ],
+  "steps": [
+    {
+      "name": "deploy escrow",
+      "transactionHash": "0xe869420e27f5053adf405b814db6df6b3ac5966c4a96a76a570fb5491cab4fcf",
+      "blockNumber": "1",
+      "status": "success",
+      "gasUsed": "4883264",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "deploy manager",
+      "transactionHash": "0x22fc932ea43e00c1bf4803e6ac49229167b8528fb4fcfbed98b9505f5042fb2c",
+      "blockNumber": "2",
+      "status": "success",
+      "gasUsed": "3840520",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "unpause escrow",
+      "transactionHash": "0xc0fe019e6c99af53b49142ae0a3bc8cdd40ab2c7424ebb919b1bc5111390fc5f",
+      "blockNumber": "3",
+      "status": "success",
+      "gasUsed": "25122",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "unpause manager",
+      "transactionHash": "0x05a64cb0f1806113cb538d1466e5a7d9d2f7b344e87bb51815b5423a26ef02aa",
+      "blockNumber": "4",
+      "status": "success",
+      "gasUsed": "25122",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "allowlist arbitrator",
+      "transactionHash": "0xc7a6d399ed594c06a17592b7c80a30973b308e60eae11169a8971b3a19bd6e28",
+      "blockNumber": "5",
+      "status": "success",
+      "gasUsed": "57091",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "approve native USDC ERC20 view",
+      "transactionHash": "0x3bf2142f7a5dfdd891cf04ea0b9601db2214057f9135c87bd012f1ffbf9a3eb2",
+      "blockNumber": "6",
+      "status": "success",
+      "gasUsed": "55438",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "create escrow plan",
+      "transactionHash": "0x40e1352c9082c1cb55b88b2bfe50c5da4e209cc9926abbf94441ca4df75481e4",
+      "blockNumber": "7",
+      "status": "success",
+      "gasUsed": "124962",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "subscribe 0",
+      "transactionHash": "0x8e274296b82da5d1159eae272e07dfca305c61f3c28687c2dbe82dd0adbe6258",
+      "blockNumber": "8",
+      "status": "success",
+      "gasUsed": "415938",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "subscribe 1",
+      "transactionHash": "0x5db52a98da61c7588bc3492117628781477932f416f693303b6f22588eeb1773",
+      "blockNumber": "9",
+      "status": "success",
+      "gasUsed": "394050",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "two subscriptions exactly funded",
+      "status": "success",
+      "locked": "200000000",
+      "credit": "0"
+    },
+    {
+      "name": "claim first vested credit",
+      "transactionHash": "0x97d9977830af97a74ca1f85ac711290a94bbec28e41f8b1916cead1c51ed7ed4",
+      "blockNumber": "11",
+      "status": "success",
+      "gasUsed": "96085",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "first claim exact liabilities",
+      "status": "success",
+      "locked": "100000000",
+      "credit": "100000000"
+    },
+    {
+      "name": "merchant withdraw",
+      "transactionHash": "0xe3524dcb56c0f6d985811fa43b360b3473a59fab46544609be6e2c2f7a64d6e6",
+      "blockNumber": "12",
+      "status": "success",
+      "gasUsed": "54665",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "first withdrawal exact liabilities",
+      "status": "success",
+      "locked": "100000000",
+      "credit": "0"
+    },
+    {
+      "name": "claim existing credit before blocklist",
+      "transactionHash": "0xd4886b7e2cfa8eda49eae77ebfcf330c047b752e27097f708af36d6d21a2343e",
+      "blockNumber": "13",
+      "status": "success",
+      "gasUsed": "91285",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "existing credit exact liabilities",
+      "status": "success",
+      "locked": "0",
+      "credit": "100000000"
+    },
+    {
+      "name": "local issuer blacklists merchant",
+      "transactionHash": "0xc30c8a3df2d694705467d7757dd93739285a6cb6eaa78f63a69fbfc210948e69",
+      "blockNumber": "14",
+      "status": "success",
+      "gasUsed": "59474",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "clean relayer EIP712 payout update",
+      "transactionHash": "0x9016096df12a89cbd5522287d823aebb0e7a130bac92f8529dfd2ac57fb54aa4",
+      "blockNumber": "15",
+      "status": "success",
+      "gasUsed": "80128",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "clean relayer withdrawToPayout existing blocked credit",
+      "transactionHash": "0x1c2657004b2f9cad42fd14da2838f8a9dc524f9c1bfaa2d0fea1bcb6ed4c2e3a",
+      "blockNumber": "16",
+      "status": "success",
+      "gasUsed": "61359",
+      "effectiveGasPrice": "21000000000"
+    },
+    {
+      "name": "final escrow empty with zero liabilities",
+      "status": "success",
+      "locked": "0",
+      "credit": "0"
+    }
+  ],
+  "probes": {
+    "blocklistedZeroValue": {
+      "outcome": "RPC transaction validation rejection",
+      "error": {
+        "code": -32603,
+        "message": "transaction rejected: address 0x8c1f5Fd0EaceabBF686f48626C1FF707f23bed47 is blocklisted by NativeCoinControl"
+      },
+      "value": "0",
+      "nonceUnchanged": true,
+      "nativeBalanceUnchanged": true
+    },
+    "cleanRelayer": {
+      "payoutUpdate": "success",
+      "existingCreditWithdrawal": "success",
+      "merchantStillBlacklisted": true
+    }
+  },
+  "passed": true,
+  "addresses": {
+    "deployer": "0xc1233d656597E2c25DbFe5D7c1f6efF156354a23",
+    "admin": "0x4d77E65ee2C2207459637AA8e0aBf67FBcc4feE1",
+    "pauser": "0xD27820c10b23d7D2bF1f241349C323e1Ee021988",
+    "config": "0x967102F54f20b5e8f341d52e7aB7B3bceF3d9Aae",
+    "arbManager": "0x147598996073279165f8F27655BF2Db176f16C6b",
+    "arbitrator": "0xdCb4Abe98635aF21e3A4b32286Fe2e1C34Ba2545",
+    "merchant": "0x8c1f5Fd0EaceabBF686f48626C1FF707f23bed47",
+    "customer": "0x67084d2BAAAcDa7e933053c3E1c46f823524E03f",
+    "relayer": "0x4573140DC74Feb03c32DAA8547f3bC40f5214748",
+    "payout": "0x973AE5a53Fb973361BA5338AD3734c243e2a1b46"
+  },
+  "validatedSourceKeccak": {
+    "contracts/RetempoEscrow.sol": "0x7a87350842628b6653558c6c90868fbe033637dcf0ac3ea3784e26547a5539aa",
+    "contracts/interfaces/RetempoErrors.sol": "0xa378ba22490155dc7b2955133ae23690a1607030b2354cddbf69734a7d845d2f",
+    "contracts/RetempoSubscriptionManager.sol": "0x97e5a9c0103dd708edf56e4065aff6feb9807e37524ad165758d27cb79ab58f7",
+    "contracts/interfaces/IRetempoEscrow.sol": "0xe55543a617673b4f7ad6a7669464ffc16028bbe6a8d6c33b8bacbe8b0b35c20e"
+  },
+  "contracts": {
+    "escrow": "0xbcbdf4024b3b4e0ab36a53ba7ae3c5b60e9a661b",
+    "manager": "0xb87bfbd74d98d27c586fee6690752e1dffe80152"
+  },
+  "beneficiaryBalance": {
+    "before": "9999995358013000000000",
+    "after": "10099994210048000000000",
+    "payment": "100000000000000000000",
+    "gasCost": "1147965000000000"
+  },
+  "childStopped": true,
+  "childExit": {
+    "code": 0,
+    "signal": null
+  }
+}

@@ -1,0 +1,5 @@
+{
+ "extends": "../../tsconfig.json",
+ "compilerOptions": { "tsBuildInfoFile": "../../node_modules/.tmp/retempo-onchain.tsbuildinfo" },
+ "include": ["../../src/services/blockchain", "../../src/features/onchain", "../../src/features/customer", "../../src/components/wallet", "../../src/config.ts", "../../src/vite-env.d.ts", "./*.ts"]
+}

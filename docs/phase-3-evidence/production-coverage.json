@@ -1,0 +1,36 @@
+{
+  "contracts/RetempoEscrow.sol": {
+    "lines": {
+      "hit": 307,
+      "total": 310,
+      "percent": 99.03
+    },
+    "branches": {
+      "hit": 70,
+      "total": 72,
+      "percent": 97.22
+    },
+    "functions": {
+      "hit": 60,
+      "total": 60,
+      "percent": 100.0
+    }
+  },
+  "contracts/RetempoSubscriptionManager.sol": {
+    "lines": {
+      "hit": 218,
+      "total": 223,
+      "percent": 97.76
+    },
+    "branches": {
+      "hit": 77,
+      "total": 82,
+      "percent": 93.9
+    },
+    "functions": {
+      "hit": 29,
+      "total": 29,
+      "percent": 100.0
+    }
+  }
+}

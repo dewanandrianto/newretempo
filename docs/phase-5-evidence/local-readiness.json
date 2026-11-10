@@ -1,0 +1,115 @@
+{
+  "phase": 5,
+  "status": "LOCAL_COMPLETE",
+  "phase5Complete": true,
+  "scope": "Authorized local production-readiness implementation and verification only; not unrestricted production launch",
+  "verifiedAtUTC": "2026-11-10T13:26:12.606718+00:00",
+  "productionReady": false,
+  "productionDeploymentAuthorized": false,
+  "phase6Authorized": false,
+  "gitPublicationPerformed": false,
+  "mainnetTransactionsPerformed": false,
+  "matrix": {
+    "passed": true,
+    "artifact": "docs/phase-5-evidence/final-checks.json",
+    "acceptanceCommandGroups": 12,
+    "testScenarioCounts": {
+      "script-tests": 32,
+      "public-worker-tests": 148,
+      "private-worker-tests": 102,
+      "wallet-tests": 39,
+      "signed-sdk": 1,
+      "signed-browser-workers": 1,
+      "frontend-build-routes": 5,
+      "ops": 14
+    },
+    "reportedTestsAndScenarios": 342,
+    "productionSourceFiles": 203,
+    "verificationInputs": 345,
+    "sourceDrift": []
+  },
+  "independentSourceReview": {
+    "passed": true,
+    "artifact": "docs/phase-5-evidence/session-fence-independent-review.json",
+    "sha256": "c10fcbd899b724d689297952d20ff78f8d71605a51a52c9c2858311e126ae962",
+    "reviewedFiles": 27,
+    "reviewedSourceDrift": [],
+    "securityConcerns": [],
+    "logicErrors": [],
+    "thirdPartyFinancialAudit": false
+  },
+  "signedBrowser": {
+    "network": "fresh loopback Arc 5042 with in-memory keys and artificial local balances",
+    "applicationTransactions": 17,
+    "uniqueTransactionHashes": 17,
+    "canonicalEvents": 27,
+    "stages": 9,
+    "responsiveWidths": [
+      320,
+      360,
+      390,
+      768,
+      1440
+    ],
+    "nodeStopped": true,
+    "coldRecovery": {
+      "mode": "Disposed both Workers, copied local persisted state to backup and a new restore directory, restarted against restored state",
+      "cloudflareTimeTravelTested": false,
+      "events": 7,
+      "canonicalCursorPreserved": true,
+      "authenticatedSessionPreserved": true
+    }
+  },
+  "frontend": {
+    "beforeInitialGzipBytes": 641353,
+    "afterInitialGzipBytes": 208207,
+    "reductionPercent": 67.54,
+    "afterInitialRawBytes": 687115,
+    "scope": "Fresh emitted initial static-import graph only; not total route download or HTTP timing",
+    "artifact": "docs/phase-5-evidence/final-frontend-assets.json"
+  },
+  "operations": {
+    "packagingTests": "docs/phase-5-evidence/packaging-test-results.json",
+    "syntheticResourceFixturesOnly": true,
+    "realResourcesVerified": false,
+    "ownerTemplateExpectedExitCode": 2,
+    "cloudflareRemoteTimeTravelTested": false,
+    "phase4EvidencePreservedFiles": 54
+  },
+  "dependencyReview": {
+    "auditExitCode": 1,
+    "flaggedPackageNames": 9,
+    "uniqueAdvisories": 37,
+    "severityCounts": {
+      "high": 15,
+      "low": 6,
+      "moderate": 16
+    },
+    "auditClean": false,
+    "scope": "Affected flagged packages absent in inspected emitted-runtime graphs; lock advisories are not waived and Node/SDK branches remain restricted",
+    "disposition": "docs/phase-5-dependency-boundary.md"
+  },
+  "remainingProductionGates": [
+    "Dedicated Retempo account/resource/domain authorization and exact actual deployment identities",
+    "Cloudflare-hosted CPU/subrequest/daily quota acceptance, including unchanged 600000-iteration KDF",
+    "Agreed traffic/capacity policy: 32 tenant bindings, 26 getters, 32 combined relevant customer bindings; unsupported dense single blocks must not be treated as unrestricted-ready",
+    "Approved custody/roles and concrete funded mainnet deployment/canary costs; no production recurring executor or hosted recovery relayer",
+    "Production email adapter and remote backup/restore/alert operations if enabled",
+    "Dependency branch remediation or specific boundary review before newly reaching affected SDK/tooling paths; audit remains failed",
+    "Independent third-party financial/security assessment appropriate to exposure"
+  ],
+  "historicalFailedReviewsPreserved": [
+    "docs/phase-5-evidence/independent-review.json",
+    "docs/phase-5-evidence/pagination-review.json",
+    "docs/phase-5-evidence/independent-review-final.json"
+  ],
+  "evidenceSha256": {
+    "docs/phase-5-evidence/final-checks.json": "ca32f60ba2e90707a7ae1f6b72c8cdfb1b9d41b115eb93c5f5256872387b74ae",
+    "docs/phase-5-evidence/session-fence-independent-review.json": "c10fcbd899b724d689297952d20ff78f8d71605a51a52c9c2858311e126ae962",
+    "docs/phase-5-evidence/packaging-test-results.json": "4cf8c2717a1d4711f997a1ab6b368963b258f4d078bbd83624329de4fed49247",
+    "docs/phase-5-evidence/final-frontend-assets.json": "c90ce1ed0b76daf7046f8c5f0354094ea8ece476579648f2ceb530c0ee0697d2",
+    "docs/phase-5-evidence/final-production-template-gate.json": "d23cd4dce99421f9bf06207d4f951f010318f60bd2f60190c69d4a91b5bc0b81",
+    "docs/phase-5-evidence/dependency-audit.json": "e1ed4bdd5c350e16909fd58b94ee56261c70887ffa59b4cedab05cb48be4d00c",
+    "docs/phase-5-evidence/dependency-triage.json": "dd6ef07e2e7646bba923811601a976c2b33b8bfb05958a9ed605881a4e2f233e"
+  }
+}

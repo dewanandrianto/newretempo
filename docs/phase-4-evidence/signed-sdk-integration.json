@@ -1,0 +1,70 @@
+{
+  "scope": "Production frontend SDK against fresh signed localhost Arc; artificial local balances and in-memory keys",
+  "passed": true,
+  "steps": [
+    "Actual subscribe and finite 150-USDC mandate; changed windows reject before write; renewed consent revokes it; separate explicit 100-USDC mandate",
+    "Permissionless real recurring charge spends exactly 50 USDC; revoke; separate manual renewal; actual merchant cancellation"
+  ],
+  "signedTransactions": [
+    "0x5ba458e7605b13cb43668519775857dfd110c0ffd1dd718d725eea9bb5954c5e",
+    "0x5f8dc92875355f551fc3cdad49ede75c2650a5e734f1148070a8f5138fe62c47",
+    "0x5017752a084123dc618b5d8dbefa770347bdc5e9dbdd58b9cb03bc433e654304",
+    "0xdf9d0e5e79fd7ab9d8c9f3727e877a6ad1d1612045a2386269f77f714b1af65c",
+    "0xce9c002f5fb47980ec47ba7d0d586040ac1465fa570ca865bebfac9a8a058607",
+    "0x8ccc92cf028cc8c010d315cf02d28436b9b4083b41c01aa44db9213d25bfba41",
+    "0x32301cdf77acd0006f350ae1a604d15b829e7b7d52aea5e873111877b99b25df",
+    "0x8919936bd1ef8b19977d2a10ee0b6cf684ae7acad6a2c7624b6e53581bb5cbf0",
+    "0x6deb54bf56f399895c0cc561eebec46cdc7b8e97cb7ad30900dd235d27657d0a",
+    "0x3d1d6230817c250e05b971f6fa50945caf0f8cd36c1db429ae6694435938c1fa",
+    "0x3fe9d66666711dfe999cb1f25dafb091ed56c0b6c041a00bd2879f3c9cf11f2f",
+    "0xafcbc3a56949f011a997b69230ecbc0577ef9847eea2fdfe83ca6754b00e8253",
+    "0xf682f4a00e6bfd066921fe74d6ab4d98c80347d6c77431e5600dd467768d4846"
+  ],
+  "sdkWrites": [
+    {
+      "kind": "payment",
+      "hash": "0x5ba458e7605b13cb43668519775857dfd110c0ffd1dd718d725eea9bb5954c5e"
+    },
+    {
+      "kind": "approval",
+      "hash": "0x5f8dc92875355f551fc3cdad49ede75c2650a5e734f1148070a8f5138fe62c47"
+    },
+    {
+      "kind": "payment",
+      "hash": "0x5017752a084123dc618b5d8dbefa770347bdc5e9dbdd58b9cb03bc433e654304"
+    },
+    {
+      "kind": "approval",
+      "hash": "0xdf9d0e5e79fd7ab9d8c9f3727e877a6ad1d1612045a2386269f77f714b1af65c"
+    },
+    {
+      "kind": "payment",
+      "hash": "0xce9c002f5fb47980ec47ba7d0d586040ac1465fa570ca865bebfac9a8a058607"
+    },
+    {
+      "kind": "payment",
+      "hash": "0x32301cdf77acd0006f350ae1a604d15b829e7b7d52aea5e873111877b99b25df"
+    },
+    {
+      "kind": "approval",
+      "hash": "0x8919936bd1ef8b19977d2a10ee0b6cf684ae7acad6a2c7624b6e53581bb5cbf0"
+    },
+    {
+      "kind": "payment",
+      "hash": "0x6deb54bf56f399895c0cc561eebec46cdc7b8e97cb7ad30900dd235d27657d0a"
+    },
+    {
+      "kind": "payment",
+      "hash": "0x3fe9d66666711dfe999cb1f25dafb091ed56c0b6c041a00bd2879f3c9cf11f2f"
+    },
+    {
+      "kind": "payment",
+      "hash": "0xafcbc3a56949f011a997b69230ecbc0577ef9847eea2fdfe83ca6754b00e8253"
+    },
+    {
+      "kind": "payment",
+      "hash": "0xf682f4a00e6bfd066921fe74d6ab4d98c80347d6c77431e5600dd467768d4846"
+    }
+  ],
+  "nodeStopped": true
+}

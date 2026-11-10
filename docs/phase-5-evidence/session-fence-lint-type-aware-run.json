@@ -1,0 +1,14 @@
+{
+  "name": "lint-type-aware",
+  "command": [
+    "node_modules/.bin/oxlint",
+    "--type-aware",
+    "src",
+    "scripts",
+    "worker"
+  ],
+  "exitCode": 0,
+  "seconds": 15.467,
+  "startedUTC": "2026-11-10T12:56:31.872244+00:00",
+  "log": "docs/phase-5-evidence/session-fence-lint-type-aware.log"
+}

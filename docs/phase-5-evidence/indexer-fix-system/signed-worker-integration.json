@@ -1,0 +1,46 @@
+{
+  "scope": "Fresh non-forked loopback Arc and two real workerd Workers; in-memory keys and artificial local balances only",
+  "passed": true,
+  "steps": [
+    "Three independent real SIWE wallet sessions",
+    "Server-derived immutable plan and charge bindings; wrong customer denied; stable preparation replay",
+    "Actual signed approval and debit; only private verified projections declare payment, invoice and subscription settled",
+    "Both Worker processes restarted; D1 sessions/bindings/cursor/events survive; replay creates no duplicate payment",
+    "Paired local D1 cold backup/restore preserves exact canonical events, cursor, verified payment and authenticated session",
+    "Second real charge, customer dispute, merchant response, arbitrator split and pinned private dispute state",
+    "Vested claim, actual merchant withdrawal and permissionless fixed-payout customer recovery; gas-independent recipient balance exact",
+    "Wallet proof restricted to SIWE owner; organization history excludes unallocated wallet-wide withdrawals; final liabilities zero"
+  ],
+  "chainTransactions": [
+    "0xae6ac4a0e1b22c40aa7fcc429e1056bad56744ec8e28c5d94ca47262abeb6ada",
+    "0x353fc28091deea0116fc785723fdf9828bbd99eef0f9ddc074a1dc9c66120588",
+    "0x28b44d3d17add03e6989f5a5c0da468538ebe88048ebc759f1a1910238e2bd99",
+    "0x3ef85cca54b9541124bf5ff2e8cfcf0a1141b921bc04ea408f7d389976590e2e",
+    "0xec7e421bdde556d73b7be90c5e356647215579f497449f2eb64ba6354a3b01ef",
+    "0xa31ac8d719821385e15e9635421932284845405383f09a5b9e8219c75faa4dfb",
+    "0xcf996e08520508b8f63d3c29e4d9d2c191c7ac56759367d2c2d59bd90f7cd336",
+    "0xe284271d89616004d9132f9d4809c04b2252c48477391a11273c63a3da36d3e9",
+    "0x691b464fbab2f15c520e5e843ec68d0b029bb077e93a96771956bd96b0cf121e",
+    "0x7aeafe831efba56b185e0a3dc23fcfd757db8c608b80c799f4df0c5410f11ec3",
+    "0x40aa0f4cfecdbce775b5e8e9da8606978ed737c81ae035fa021c69da2d555425",
+    "0xde27c1016bc5a1252e77bc130a7c568d5afa476b040e0b0e6a20dfeb68d1304f",
+    "0xd2a168de344e5c4b2c038b9b321075389a8691f34be091841b22ff66bb737104"
+  ],
+  "coldRecovery": {
+    "mode": "Disposed both Workers, copied local persisted state to backup and a new restore directory, restarted against restored state",
+    "cloudflareTimeTravelTested": false,
+    "events": 7,
+    "canonicalCursorPreserved": true,
+    "authenticatedSessionPreserved": true
+  },
+  "records": {
+    "orgId": "a7ece7c9-d4e6-4054-8558-23e42eb8838d",
+    "subscriptionId": "63e35b7c-7a52-4e57-b2e0-ff8c22fd93bc",
+    "paymentId": "cb69d7a4-c6cf-45f5-b445-068b016b732f",
+    "escrowId": "5cbbb2f2-9aa7-4c34-9dac-a26bf6e44667",
+    "invoiceId": "7302e348-d42a-4f43-a468-c46c9b079ce4"
+  },
+  "replayBaselineEvents": 7,
+  "canonicalEvents": 21,
+  "nodeStopped": true
+}

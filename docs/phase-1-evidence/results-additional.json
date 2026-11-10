@@ -1,0 +1,12 @@
+{
+  "backend-typecheck": {
+    "exit_code": 0,
+    "seconds": 2.74,
+    "log": "/home/deseti/.hermes/cache/scratch/retempo-phase1/backend-typecheck.log"
+  },
+  "lint-all-readonly": {
+    "exit_code": 0,
+    "seconds": 1.02,
+    "log": "/home/deseti/.hermes/cache/scratch/retempo-phase1/lint-all-readonly.log"
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "package.json": {
+    "previous": "02ef91f0ec5e075b4550b2c82b02a4ef7537f6bb9037340095fc4b396d4f8efd",
+    "current": "02ef91f0ec5e075b4550b2c82b02a4ef7537f6bb9037340095fc4b396d4f8efd",
+    "unchanged": true
+  },
+  "bun.lock": {
+    "previous": "2df71760be28936457751a1f2f603686add23dfabbd9ad20b995e7e50f0e5db7",
+    "current": "2df71760be28936457751a1f2f603686add23dfabbd9ad20b995e7e50f0e5db7",
+    "unchanged": true
+  },
+  "worker/src/auth/emailTokens.ts": {
+    "previous": "ee961bbbf2ade11c02cbae4d2d6c494726af289b13f3c2db653449d4096a3606",
+    "current": "ee961bbbf2ade11c02cbae4d2d6c494726af289b13f3c2db653449d4096a3606",
+    "unchanged": true
+  },
+  "worker/src/auth/walletAuth.ts": {
+    "previous": "8a9bc5c20e413e968403dd5d0ee2f75af05f81ef28ee587da2666ced95d9bbfc",
+    "current": "2d34d0c512daa1a97fb7f5a68265598636867ff4bd6017af179077b544cf0fa7",
+    "unchanged": false
+  },
+  "worker/src/auth/sessions.ts": {
+    "previous": "6f21ec06deb25086aa7d291bcca6b073905514b75de6eabfa2cbcc7f6e992b5d",
+    "current": "81fdd81fb7b0b4fcd0de9874f27f057b8debed17df6d038a90e2ae9243d4524f",
+    "unchanged": false
+  },
+  "worker/src/auth/routes.ts": {
+    "previous": "0e58c79b37e32f522d6f8e37868c3e12b9958077386ac3d71337a3290eff6093",
+    "current": "d9235deeb2e264b7178f09fefc0a32e07c071dd1c400d30eb266ba5f494db848",
+    "unchanged": false
+  },
+  "worker/src/auth/account.ts": {
+    "previous": "f8558a30cdb70d6416fd6b874f862d769b32d07ee7e4618783e81c3bf51f8c91",
+    "current": "f8558a30cdb70d6416fd6b874f862d769b32d07ee7e4618783e81c3bf51f8c91",
+    "unchanged": true
+  },
+  "worker/src/auth/guards.ts": {
+    "previous": "13f9b5065a89149bed4d8a5236081cf4e7d3445870c2dabc76b98c6bd37b29f9",
+    "current": "13f9b5065a89149bed4d8a5236081cf4e7d3445870c2dabc76b98c6bd37b29f9",
+    "unchanged": true
+  },
+  "worker/src/auth/service.ts": {
+    "previous": "080a1725c20fe191b6e5ecf593c39ac884a113cfa1607ad0d979de8f437a293b",
+    "current": "8848cf0ce86525fe73986e902eef94178cbe38c0da4ec0e8e13af452dd987188",
+    "unchanged": false
+  },
+  "worker/src/auth/siwe.ts": {
+    "previous": "1bd920bff1e4621399eaa2dbec4510c09d9e36f6de56d99c9c3d937896c7a225",
+    "current": "646a71cbd139dbc3ca30f88183004e920327aa2591dea9d557e2f328ca75e257",
+    "unchanged": false
+  },
+  "worker/src/types.ts": {
+    "previous": "a743f138feb95e15d7d878e628f2d6838c3b91f0c083a704751b61a8d4f06b24",
+    "current": "a743f138feb95e15d7d878e628f2d6838c3b91f0c083a704751b61a8d4f06b24",
+    "unchanged": true
+  },
+  "worker/src/index.ts": {
+    "previous": "cdddb83d3d6993bdb10e576ce6c0ae1a3201efe5892ac47a563d5e50d56000f5",
+    "current": "cdddb83d3d6993bdb10e576ce6c0ae1a3201efe5892ac47a563d5e50d56000f5",
+    "unchanged": true
+  },
+  "worker/src/http.ts": {
+    "previous": "1dd39885d69148bb66422553471ecb94ddd3fe3168ae9c51933c37c7a02b199c",
+    "current": "1dd39885d69148bb66422553471ecb94ddd3fe3168ae9c51933c37c7a02b199c",
+    "unchanged": true
+  },
+  "worker/src/catalog/members.ts": {
+    "previous": "9dcc4000eb7338fd45146077868eae84303120468857f697a03c0a0632be6086",
+    "current": "9dcc4000eb7338fd45146077868eae84303120468857f697a03c0a0632be6086",
+    "unchanged": true
+  },
+  "worker/src/catalog/routes.ts": {
+    "previous": "ebad51e87ea3bb43036a4f1808d8543248c40c8162ca9867d3c0c2eb60a31d70",
+    "current": "ebad51e87ea3bb43036a4f1808d8543248c40c8162ca9867d3c0c2eb60a31d70",
+    "unchanged": true
+  },
+  "worker/src/chain/plans.ts": {
+    "previous": "f32357823db66b0123eee5650cc51e3425f7a5ee5999120b51b2079afccf4b55",
+    "current": "f32357823db66b0123eee5650cc51e3425f7a5ee5999120b51b2079afccf4b55",
+    "unchanged": true
+  },
+  "worker/src/chain/customer.ts": {
+    "previous": "d26dd2bc4df06016e341f08f4626100b70e8cf99cbf8656ec073d407fb67298d",
+    "current": "d26dd2bc4df06016e341f08f4626100b70e8cf99cbf8656ec073d407fb67298d",
+    "unchanged": true
+  },
+  "worker/vitest.config.ts": {
+    "previous": "a6722b1e44f1598c75081bd1f2eff0b7b3b9f7f15a2a57a0e3eb3856db4dc362",
+    "current": "a6722b1e44f1598c75081bd1f2eff0b7b3b9f7f15a2a57a0e3eb3856db4dc362",
+    "unchanged": true
+  },
+  "worker/tests/recovery-security.test.ts": {
+    "previous": "17ff305e11410f46c6958403c34b88db4fc077748eff64040b2a4929805a6b40",
+    "current": "fb0ba8cd47cacb31ab7a0e63046c00c35ce8eaabeb30bb37872c3a80ebcdcdb2",
+    "unchanged": false
+  },
+  "worker/tests/membership-security.test.ts": {
+    "previous": "a016647ed8bef55666dca1e8793276d3b5e0456439cdbebafe34aa5c163eb8d8",
+    "current": "a016647ed8bef55666dca1e8793276d3b5e0456439cdbebafe34aa5c163eb8d8",
+    "unchanged": true
+  },
+  "chain-worker/src/indexer.ts": {
+    "previous": "22abc2cd025a6a653e88c74cc6fef8f378a8b44866c416a245f90b99d43bf81c",
+    "current": "22abc2cd025a6a653e88c74cc6fef8f378a8b44866c416a245f90b99d43bf81c",
+    "unchanged": true
+  },
+  "chain-worker/src/service.ts": {
+    "previous": "85073f2ccd51f2f0bf7ca9e1452615d01665833822d7e7bcf64d85735a59e5fa",
+    "current": "85073f2ccd51f2f0bf7ca9e1452615d01665833822d7e7bcf64d85735a59e5fa",
+    "unchanged": true
+  },
+  "chain-worker/tests/indexer-review.test.ts": {
+    "previous": "8b6fc01d93e264a31e2906b28ea01b206c6d27aeb94789847bc3d0438ceefee4",
+    "current": "8b6fc01d93e264a31e2906b28ea01b206c6d27aeb94789847bc3d0438ceefee4",
+    "unchanged": true
+  },
+  "chain-worker/tests/indexer-overflow.test.ts": {
+    "previous": "b369f2c3a251a9c433b46112d514b25d143ef32a491caeae08e1a4afff9bb1b5",
+    "current": "b369f2c3a251a9c433b46112d514b25d143ef32a491caeae08e1a4afff9bb1b5",
+    "unchanged": true
+  },
+  "chain-worker/tests/indexer-ancestor-budget.test.ts": {
+    "previous": "48d31c0dad4d8bd625ce1aabece92db09c817ab615305b5a7b376b8b8bc9941a",
+    "current": "48d31c0dad4d8bd625ce1aabece92db09c817ab615305b5a7b376b8b8bc9941a",
+    "unchanged": true
+  },
+  "scripts/check-phase5-local.py": {
+    "previous": "47b924fbf326808f1be9e5fab0a33893b8b0687bdc7047d1be9b582071b47038",
+    "current": "3e54b133d11be36a69739e215d17bc9cb3521992806d43194dacd17515885653",
+    "unchanged": false
+  },
+  "tests/ops/test_phase5_runner.py": {
+    "previous": "22d989e4f397d0cdade42a92b9c666ccc8241e69430bf49a7e42b3d07f577b14",
+    "current": "5809525e4a0b7883be7a6c773df9cbe1f5fc00baf8a4b3a4c4d4969d5a2ac8d8",
+    "unchanged": false
+  },
+  "tests/onchain/frontend-build.test.mjs": {
+    "previous": "ba260034106ad78e70bff5a34ed20ef769b35e662e6d0ba53df3a6c580f24b09",
+    "current": "ba260034106ad78e70bff5a34ed20ef769b35e662e6d0ba53df3a6c580f24b09",
+    "unchanged": true
+  },
+  "public/_headers": {
+    "previous": "13007281510d0b8d8b766488b5caedd80b920d3202b724ffc81fb2c7c0b3c792",
+    "current": "13007281510d0b8d8b766488b5caedd80b920d3202b724ffc81fb2c7c0b3c792",
+    "unchanged": true
+  },
+  "docs/phase-5-dependency-boundary.md": {
+    "previous": "fc7544154d570be13999a59460a9550191d818b88183ab0db0633a0f2e099de8",
+    "current": "fc7544154d570be13999a59460a9550191d818b88183ab0db0633a0f2e099de8",
+    "unchanged": true
+  },
+  "docs/phase-5-evidence/independent-review.json": {
+    "previous": "b731547c70560f267062722b78b30bd1cbda5f063bd0b9e6173318e1f8e2d018",
+    "current": "b731547c70560f267062722b78b30bd1cbda5f063bd0b9e6173318e1f8e2d018",
+    "unchanged": true
+  },
+  "docs/phase-5-evidence/pagination-review.json": {
+    "previous": "baaf25681d1df531da0f9135eecec3bf8f550bb0e15fdbf56930640df26387fb",
+    "current": "baaf25681d1df531da0f9135eecec3bf8f550bb0e15fdbf56930640df26387fb",
+    "unchanged": true
+  },
+  "docs/phase-5-evidence/recovery-fix-report.json": {
+    "previous": "75e89f230a1a259386b3234254db158256968388cfb5a2b456bce8848b51b08a",
+    "current": "75e89f230a1a259386b3234254db158256968388cfb5a2b456bce8848b51b08a",
+    "unchanged": true
+  },
+  "docs/phase-5-evidence/indexer-review-fix.json": {
+    "previous": "b7ff1e1e90cf600b4c831cbe6909870fd0c03721aea56001ecc70ee96718839a",
+    "current": "b7ff1e1e90cf600b4c831cbe6909870fd0c03721aea56001ecc70ee96718839a",
+    "unchanged": true
+  },
+  "docs/phase-5-evidence/dependency-triage.json": {
+    "previous": "dd6ef07e2e7646bba923811601a976c2b33b8bfb05958a9ed605881a4e2f233e",
+    "current": "dd6ef07e2e7646bba923811601a976c2b33b8bfb05958a9ed605881a4e2f233e",
+    "unchanged": true
+  },
+  "docs/phase-5-evidence/dependency-audit-metadata.json": {
+    "previous": "bfcefdc040bca784a4ca509243a38fc740cd3494dfc765e35448e64284062003",
+    "current": "bfcefdc040bca784a4ca509243a38fc740cd3494dfc765e35448e64284062003",
+    "unchanged": true
+  }
+}

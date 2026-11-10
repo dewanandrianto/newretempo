@@ -1,0 +1,2008 @@
+{
+  "method": "index.html scripts/modulepreloads plus recursive manifest static imports; gzip per asset, default zlib level; excludes deferred route requests, CSS, HTTP headers and cache effects",
+  "roots": [
+    "assets/index-DVPA29iz.js"
+  ],
+  "edges": [],
+  "files": [
+    {
+      "file": "assets/index-DVPA29iz.js",
+      "bytes": 687028,
+      "gzipBytes": 208179,
+      "sha256": "722330114022bf2e8e1c43d92c7c696099f4830bc5436d3a88fb1ac1c481b580"
+    }
+  ],
+  "initialJsCount": 1,
+  "initialBytes": 687028,
+  "initialGzipBytes": 208179,
+  "emittedJsCount": 130,
+  "emittedJsBytes": 3526447,
+  "manifest": {
+    "_AuthLayout-gd2cHPyu.js": {
+      "file": "assets/AuthLayout-gd2cHPyu.js",
+      "name": "AuthLayout",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_BillingForms-B2rvH42Z.js": {
+      "file": "assets/BillingForms-B2rvH42Z.js",
+      "name": "BillingForms",
+      "imports": [
+        "index.html",
+        "_QueryBoundary-B7p5pWDx.js",
+        "_PageHeader-CW3ADyGU.js",
+        "_Field-CadPg0-U.js",
+        "_shared-BEiCAx8-.js"
+      ]
+    },
+    "_Card-QXvDRIfw.js": {
+      "file": "assets/Card-QXvDRIfw.js",
+      "name": "Card",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_CatalogForms-C3PSIwdZ.js": {
+      "file": "assets/CatalogForms-C3PSIwdZ.js",
+      "name": "CatalogForms",
+      "imports": [
+        "index.html",
+        "_QueryBoundary-B7p5pWDx.js",
+        "_PageHeader-CW3ADyGU.js",
+        "_Field-CadPg0-U.js",
+        "_shared-BEiCAx8-.js"
+      ]
+    },
+    "_ContractAction-DNrdOwc5.js": {
+      "file": "assets/ContractAction-DNrdOwc5.js",
+      "name": "ContractAction",
+      "imports": [
+        "index.html",
+        "_TransactionStatus-C8Ya_0vo.js"
+      ]
+    },
+    "_DataTable-uDUavKe0.js": {
+      "file": "assets/DataTable-uDUavKe0.js",
+      "name": "DataTable",
+      "imports": [
+        "index.html",
+        "_useQuery-CaoZzKEs.js",
+        "_shared-BEiCAx8-.js",
+        "_WalletButton-DRVW9-TH.js",
+        "_arcService-BIn_zVmu.js",
+        "_ContractAction-DNrdOwc5.js",
+        "_TransactionStatus-C8Ya_0vo.js",
+        "_index.es-BkOyMSRJ.js",
+        "_http-CDXbQOVn.js"
+      ]
+    },
+    "_EscrowCard-8pSH6xh9.js": {
+      "file": "assets/EscrowCard-8pSH6xh9.js",
+      "name": "EscrowCard",
+      "imports": [
+        "index.html",
+        "_useQuery-CaoZzKEs.js",
+        "_TransactionStatus-C8Ya_0vo.js",
+        "_ContractAction-DNrdOwc5.js",
+        "_arcService-BIn_zVmu.js",
+        "_Card-QXvDRIfw.js",
+        "_index.es-BkOyMSRJ.js",
+        "_http-CDXbQOVn.js"
+      ]
+    },
+    "_Field-CadPg0-U.js": {
+      "file": "assets/Field-CadPg0-U.js",
+      "name": "Field",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_ListPage-Av2NY5zG.js": {
+      "file": "assets/ListPage-Av2NY5zG.js",
+      "name": "ListPage",
+      "imports": [
+        "index.html",
+        "_Card-QXvDRIfw.js",
+        "_DataTable-uDUavKe0.js",
+        "_PageHeader-CW3ADyGU.js",
+        "_QueryBoundary-B7p5pWDx.js",
+        "_Segmented-B4bNPnUt.js"
+      ]
+    },
+    "_PageHeader-CW3ADyGU.js": {
+      "file": "assets/PageHeader-CW3ADyGU.js",
+      "name": "PageHeader",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_QueryBoundary-B7p5pWDx.js": {
+      "file": "assets/QueryBoundary-B7p5pWDx.js",
+      "name": "QueryBoundary",
+      "imports": [
+        "_useQuery-CaoZzKEs.js",
+        "index.html",
+        "_PageHeader-CW3ADyGU.js"
+      ]
+    },
+    "_Segmented-B4bNPnUt.js": {
+      "file": "assets/Segmented-B4bNPnUt.js",
+      "name": "Segmented",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_TransactionStatus-C8Ya_0vo.js": {
+      "file": "assets/TransactionStatus-C8Ya_0vo.js",
+      "name": "TransactionStatus",
+      "imports": [
+        "index.html",
+        "_arcService-BIn_zVmu.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-BkOyMSRJ.js",
+        "_account-BqcElHp_.js",
+        "_signMessage-CS5rBRr6.js"
+      ]
+    },
+    "_WalletButton-DRVW9-TH.js": {
+      "file": "assets/WalletButton-DRVW9-TH.js",
+      "name": "WalletButton",
+      "imports": [
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_arcService-BIn_zVmu.js",
+        "_wallet-jKwJPTnh.js"
+      ]
+    },
+    "_WalletEntry-D34_haNE.js": {
+      "file": "assets/WalletEntry-D34_haNE.js",
+      "name": "WalletEntry",
+      "imports": [
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_http-CDXbQOVn.js",
+        "_signMessage-CS5rBRr6.js",
+        "_wallet-jKwJPTnh.js"
+      ]
+    },
+    "_account-BqcElHp_.js": {
+      "file": "assets/account-BqcElHp_.js",
+      "name": "account",
+      "imports": [
+        "_http-CDXbQOVn.js"
+      ]
+    },
+    "_arc-BZVhmmt2.js": {
+      "file": "assets/arc-BZVhmmt2.js",
+      "name": "arc",
+      "imports": [
+        "_http-CDXbQOVn.js"
+      ]
+    },
+    "_arcService-BIn_zVmu.js": {
+      "file": "assets/arcService-BIn_zVmu.js",
+      "name": "arcService",
+      "imports": [
+        "index.html",
+        "_http-CDXbQOVn.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js"
+      ]
+    },
+    "_circle-x-DnQ2VaW6.js": {
+      "file": "assets/circle-x-DnQ2VaW6.js",
+      "name": "circle-x",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_core-DDTu8RTR.js": {
+      "file": "assets/core-DDTu8RTR.js",
+      "name": "core",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_http-CDXbQOVn.js"
+      ],
+      "dynamicImports": [
+        "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/basic.js",
+        "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/w3m-modal.js"
+      ]
+    },
+    "_http-CDXbQOVn.js": {
+      "file": "assets/http-CDXbQOVn.js",
+      "name": "http",
+      "imports": [
+        "index.html"
+      ],
+      "dynamicImports": [
+        "node_modules/viem/_esm/utils/ccip.js"
+      ]
+    },
+    "_index-D7M7lNfo.js": {
+      "file": "assets/index-D7M7lNfo.js",
+      "name": "index",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_index-DjwuHhF1.js": {
+      "file": "assets/index-DjwuHhF1.js",
+      "name": "index",
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html"
+      ],
+      "dynamicImports": [
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/add.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/all-wallets.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom-circle.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/app-store.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/apple.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-left.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-right.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-top.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/bank.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/browser.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/card.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark-bold.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-bottom.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-left.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-right.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-top.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chrome-store.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/clock.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/close.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/compass.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/coinPlaceholder.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/copy.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor-transparent.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/desktop.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/disconnect.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/discord.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/etherscan.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/extension.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/external-link.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/facebook.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/farcaster.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/filters.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/github.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/google.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/help-circle.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/image.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/id.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info-circle.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/lightbulb.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mail.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mobile.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/more.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/network-placeholder.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/nftPlaceholder.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/off.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/play-store.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/plus.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/qr-code.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/recycle-horizontal.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/refresh.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/search.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/send.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontal.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalMedium.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalBold.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalRoundedBold.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapVertical.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/telegram.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/three-dots.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitch.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/x.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitterIcon.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify-filled.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/walletconnect.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/walletconnect.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/walletconnect.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet-placeholder.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/warning-circle.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/x.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/exclamation-triangle.js",
+        "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/reown-logo.js"
+      ]
+    },
+    "_index.es-BkOyMSRJ.js": {
+      "file": "assets/index.es-BkOyMSRJ.js",
+      "name": "index.es",
+      "imports": [
+        "index.html",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js"
+      ],
+      "dynamicImports": [
+        "_index.es-Dl8dEYe4.js",
+        "node_modules/@aave/account/lib/index-DrAshLsx.js"
+      ]
+    },
+    "_index.es-Dl8dEYe4.js": {
+      "file": "assets/index.es-Dl8dEYe4.js",
+      "name": "index.es",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ],
+      "dynamicImports": [
+        "_core-DDTu8RTR.js"
+      ]
+    },
+    "_log-out-20kyRo3D.js": {
+      "file": "assets/log-out-20kyRo3D.js",
+      "name": "log-out",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_mail-warning-wMe4X5HF.js": {
+      "file": "assets/mail-warning-wMe4X5HF.js",
+      "name": "mail-warning",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_recoverAddress-Dy8y1uwE.js": {
+      "file": "assets/recoverAddress-Dy8y1uwE.js",
+      "name": "recoverAddress",
+      "imports": [
+        "_http-CDXbQOVn.js",
+        "index.html"
+      ],
+      "dynamicImports": [
+        "_secp256k1-BAOhRpbU.js"
+      ]
+    },
+    "_secp256k1-BAOhRpbU.js": {
+      "file": "assets/secp256k1-BAOhRpbU.js",
+      "name": "secp256k1",
+      "isDynamicEntry": true,
+      "imports": [
+        "_http-CDXbQOVn.js"
+      ]
+    },
+    "_shared-BEiCAx8-.js": {
+      "file": "assets/shared-BEiCAx8-.js",
+      "name": "shared",
+      "imports": [
+        "index.html",
+        "_http-CDXbQOVn.js",
+        "_index-D7M7lNfo.js"
+      ]
+    },
+    "_signMessage-CS5rBRr6.js": {
+      "file": "assets/signMessage-CS5rBRr6.js",
+      "name": "signMessage",
+      "imports": [
+        "_http-CDXbQOVn.js",
+        "_account-BqcElHp_.js"
+      ]
+    },
+    "_trash-2-BeDY1EjA.js": {
+      "file": "assets/trash-2-BeDY1EjA.js",
+      "name": "trash-2",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_useQuery-CaoZzKEs.js": {
+      "file": "assets/useQuery-CaoZzKEs.js",
+      "name": "useQuery",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_wallet-jKwJPTnh.js": {
+      "file": "assets/wallet-jKwJPTnh.js",
+      "name": "wallet",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "index.html": {
+      "file": "assets/index-DVPA29iz.js",
+      "name": "index",
+      "src": "index.html",
+      "isEntry": true,
+      "dynamicImports": [
+        "src/components/layout/DashboardLayout.tsx",
+        "src/features/auth/LoginPage.tsx",
+        "src/features/auth/SignUpPage.tsx",
+        "src/features/auth/OnboardingPage.tsx",
+        "src/features/auth/AccountPages.tsx",
+        "src/features/auth/AccountPages.tsx",
+        "src/features/auth/AccountPages.tsx",
+        "src/features/dashboard/pages/OverviewPage.tsx",
+        "src/features/dashboard/pages/CatalogPages.tsx",
+        "src/features/dashboard/pages/CatalogPages.tsx",
+        "src/features/dashboard/pages/CustomerPages.tsx",
+        "src/features/dashboard/pages/CustomerPages.tsx",
+        "src/features/dashboard/pages/MoneyPages.tsx",
+        "src/features/dashboard/pages/MoneyPages.tsx",
+        "src/features/dashboard/pages/MoneyPages.tsx",
+        "src/features/dashboard/pages/MoneyPages.tsx",
+        "src/features/dashboard/pages/EscrowPage.tsx",
+        "src/features/dashboard/pages/DevelopersPage.tsx",
+        "src/features/dashboard/pages/SettingsPage.tsx",
+        "src/features/customer/CustomerLayout.tsx",
+        "src/features/customer/CheckoutPage.tsx",
+        "src/features/customer/PortalPage.tsx",
+        "src/features/customer/InvoicePage.tsx",
+        "src/app/providers/WalletRoutes.tsx"
+      ],
+      "css": [
+        "assets/index-LVvf_52I.css"
+      ]
+    },
+    "node_modules/@aave/account/lib/index-DrAshLsx.js": {
+      "file": "assets/index-DrAshLsx-Da80udxk.js",
+      "name": "index-DrAshLsx",
+      "src": "node_modules/@aave/account/lib/index-DrAshLsx.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_index.es-BkOyMSRJ.js",
+        "index.html",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js"
+      ]
+    },
+    "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/basic.js": {
+      "file": "assets/basic-BW8LkhCF.js",
+      "name": "basic",
+      "src": "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/basic.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "_index-DjwuHhF1.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_http-CDXbQOVn.js",
+        "_useQuery-CaoZzKEs.js"
+      ]
+    },
+    "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/w3m-modal.js": {
+      "file": "assets/w3m-modal-BFE6BoVw.js",
+      "name": "w3m-modal",
+      "src": "node_modules/@reown/appkit-scaffold-ui/dist/esm/exports/w3m-modal.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "_index-DjwuHhF1.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/add.js": {
+      "file": "assets/add-BQzzXMoG.js",
+      "name": "add",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/add.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/all-wallets.js": {
+      "file": "assets/all-wallets-B8xxiTuy.js",
+      "name": "all-wallets",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/all-wallets.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/app-store.js": {
+      "file": "assets/app-store-2ziAzFXy.js",
+      "name": "app-store",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/app-store.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/apple.js": {
+      "file": "assets/apple-BJI5w_jE.js",
+      "name": "apple",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/apple.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom-circle.js": {
+      "file": "assets/arrow-bottom-circle-BM3yWTjH.js",
+      "name": "arrow-bottom-circle",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom-circle.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom.js": {
+      "file": "assets/arrow-bottom-BH5DKWMp.js",
+      "name": "arrow-bottom",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-bottom.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-left.js": {
+      "file": "assets/arrow-left-DS1N2g1y.js",
+      "name": "arrow-left",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-left.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-right.js": {
+      "file": "assets/arrow-right-_FkGzqGE.js",
+      "name": "arrow-right",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-right.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-top.js": {
+      "file": "assets/arrow-top-_koamTwr.js",
+      "name": "arrow-top",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/arrow-top.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/bank.js": {
+      "file": "assets/bank-DOxkjAaf.js",
+      "name": "bank",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/bank.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/browser.js": {
+      "file": "assets/browser-DU-PXeHy.js",
+      "name": "browser",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/browser.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/card.js": {
+      "file": "assets/card-BRR5do1W.js",
+      "name": "card",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/card.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark-bold.js": {
+      "file": "assets/checkmark-bold-Dynfvm22.js",
+      "name": "checkmark-bold",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark-bold.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark.js": {
+      "file": "assets/checkmark-DLbaOAr_.js",
+      "name": "checkmark",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/checkmark.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-bottom.js": {
+      "file": "assets/chevron-bottom-BYPbQdBk.js",
+      "name": "chevron-bottom",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-bottom.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-left.js": {
+      "file": "assets/chevron-left-DHRbQUUI.js",
+      "name": "chevron-left",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-left.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-right.js": {
+      "file": "assets/chevron-right-XlrfCatS.js",
+      "name": "chevron-right",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-right.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-top.js": {
+      "file": "assets/chevron-top-DIf_r2iK.js",
+      "name": "chevron-top",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chevron-top.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chrome-store.js": {
+      "file": "assets/chrome-store-CdhZGjim.js",
+      "name": "chrome-store",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/chrome-store.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/clock.js": {
+      "file": "assets/clock-DnHyBo46.js",
+      "name": "clock",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/clock.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/close.js": {
+      "file": "assets/close-DouMLS5O.js",
+      "name": "close",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/close.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/coinPlaceholder.js": {
+      "file": "assets/coinPlaceholder-CGiBWgBP.js",
+      "name": "coinPlaceholder",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/coinPlaceholder.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/compass.js": {
+      "file": "assets/compass-CQ9N9Og7.js",
+      "name": "compass",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/compass.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/copy.js": {
+      "file": "assets/copy-CJLibWrq.js",
+      "name": "copy",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/copy.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor-transparent.js": {
+      "file": "assets/cursor-transparent-CNjBUXBh.js",
+      "name": "cursor-transparent",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor-transparent.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor.js": {
+      "file": "assets/cursor-CSmyBLhV.js",
+      "name": "cursor",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/cursor.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/desktop.js": {
+      "file": "assets/desktop-DUUGSM-R.js",
+      "name": "desktop",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/desktop.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/disconnect.js": {
+      "file": "assets/disconnect-MzA8n55r.js",
+      "name": "disconnect",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/disconnect.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/discord.js": {
+      "file": "assets/discord-CPi-n4kv.js",
+      "name": "discord",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/discord.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/etherscan.js": {
+      "file": "assets/etherscan-CKXqQ1mp.js",
+      "name": "etherscan",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/etherscan.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/exclamation-triangle.js": {
+      "file": "assets/exclamation-triangle-CviBQw0J.js",
+      "name": "exclamation-triangle",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/exclamation-triangle.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/extension.js": {
+      "file": "assets/extension-Casu_i-u.js",
+      "name": "extension",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/extension.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/external-link.js": {
+      "file": "assets/external-link-Dnp6mNGW.js",
+      "name": "external-link",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/external-link.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/facebook.js": {
+      "file": "assets/facebook-BUjZYAx1.js",
+      "name": "facebook",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/facebook.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/farcaster.js": {
+      "file": "assets/farcaster-C9zeLsti.js",
+      "name": "farcaster",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/farcaster.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/filters.js": {
+      "file": "assets/filters-CLs1hePJ.js",
+      "name": "filters",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/filters.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/github.js": {
+      "file": "assets/github-BKTXsZH_.js",
+      "name": "github",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/github.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/google.js": {
+      "file": "assets/google-DYifUV6k.js",
+      "name": "google",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/google.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/help-circle.js": {
+      "file": "assets/help-circle-DzHV49aD.js",
+      "name": "help-circle",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/help-circle.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/id.js": {
+      "file": "assets/id-CCe9p4eQ.js",
+      "name": "id",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/id.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/image.js": {
+      "file": "assets/image-DKN0sb7F.js",
+      "name": "image",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/image.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info-circle.js": {
+      "file": "assets/info-circle-CSvwTP0D.js",
+      "name": "info-circle",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info-circle.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info.js": {
+      "file": "assets/info-Sc0OaME7.js",
+      "name": "info",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/lightbulb.js": {
+      "file": "assets/lightbulb-bKz6w06R.js",
+      "name": "lightbulb",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/lightbulb.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mail.js": {
+      "file": "assets/mail-DhQHLZgK.js",
+      "name": "mail",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mail.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mobile.js": {
+      "file": "assets/mobile-CJsMv8jX.js",
+      "name": "mobile",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/mobile.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/more.js": {
+      "file": "assets/more-L5YLT9wu.js",
+      "name": "more",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/more.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/network-placeholder.js": {
+      "file": "assets/network-placeholder-ChLsGOP9.js",
+      "name": "network-placeholder",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/network-placeholder.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/nftPlaceholder.js": {
+      "file": "assets/nftPlaceholder-WU7jbKJf.js",
+      "name": "nftPlaceholder",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/nftPlaceholder.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/off.js": {
+      "file": "assets/off-CAsUWx__.js",
+      "name": "off",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/off.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/play-store.js": {
+      "file": "assets/play-store-C_UlhZpN.js",
+      "name": "play-store",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/play-store.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/plus.js": {
+      "file": "assets/plus-CuqqaY86.js",
+      "name": "plus",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/plus.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/qr-code.js": {
+      "file": "assets/qr-code-et-gN4m2.js",
+      "name": "qr-code",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/qr-code.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/recycle-horizontal.js": {
+      "file": "assets/recycle-horizontal-TzGPRjxX.js",
+      "name": "recycle-horizontal",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/recycle-horizontal.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/refresh.js": {
+      "file": "assets/refresh-BjtkQfFr.js",
+      "name": "refresh",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/refresh.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/reown-logo.js": {
+      "file": "assets/reown-logo-DhODdkZb.js",
+      "name": "reown-logo",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/reown-logo.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/search.js": {
+      "file": "assets/search-CfKyqFyY.js",
+      "name": "search",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/search.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/send.js": {
+      "file": "assets/send-Da1qOiGv.js",
+      "name": "send",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/send.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontal.js": {
+      "file": "assets/swapHorizontal-DANNfePa.js",
+      "name": "swapHorizontal",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontal.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalBold.js": {
+      "file": "assets/swapHorizontalBold-B9dt-8FQ.js",
+      "name": "swapHorizontalBold",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalBold.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalMedium.js": {
+      "file": "assets/swapHorizontalMedium-B8aBvVxS.js",
+      "name": "swapHorizontalMedium",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalMedium.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalRoundedBold.js": {
+      "file": "assets/swapHorizontalRoundedBold-mByuGEr3.js",
+      "name": "swapHorizontalRoundedBold",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapHorizontalRoundedBold.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapVertical.js": {
+      "file": "assets/swapVertical-B27WkxD-.js",
+      "name": "swapVertical",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/swapVertical.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/telegram.js": {
+      "file": "assets/telegram-D1AvzG2s.js",
+      "name": "telegram",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/telegram.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/three-dots.js": {
+      "file": "assets/three-dots-DSXYdHrk.js",
+      "name": "three-dots",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/three-dots.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitch.js": {
+      "file": "assets/twitch-DVc_mUMN.js",
+      "name": "twitch",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitch.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitterIcon.js": {
+      "file": "assets/twitterIcon-u6_-o0al.js",
+      "name": "twitterIcon",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/twitterIcon.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify-filled.js": {
+      "file": "assets/verify-filled-CI639BWY.js",
+      "name": "verify-filled",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify-filled.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify.js": {
+      "file": "assets/verify-BhX6f0Jo.js",
+      "name": "verify",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/verify.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet-placeholder.js": {
+      "file": "assets/wallet-placeholder-16ITQLuS.js",
+      "name": "wallet-placeholder",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet-placeholder.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet.js": {
+      "file": "assets/wallet-51oNWb71.js",
+      "name": "wallet",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/wallet.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/walletconnect.js": {
+      "file": "assets/walletconnect-C8UQeOHF.js",
+      "name": "walletconnect",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/walletconnect.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/warning-circle.js": {
+      "file": "assets/warning-circle-Cr7b8Zmb.js",
+      "name": "warning-circle",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/warning-circle.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/x.js": {
+      "file": "assets/x-CRtOrnEU.js",
+      "name": "x",
+      "src": "node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/x.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_core-DDTu8RTR.js",
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index.es-Dl8dEYe4.js",
+        "_recoverAddress-Dy8y1uwE.js"
+      ]
+    },
+    "node_modules/viem/_esm/utils/ccip.js": {
+      "file": "assets/ccip-CG9KGfp_.js",
+      "name": "ccip",
+      "src": "node_modules/viem/_esm/utils/ccip.js",
+      "isDynamicEntry": true,
+      "imports": [
+        "_http-CDXbQOVn.js",
+        "index.html"
+      ]
+    },
+    "src/app/providers/WalletRoutes.tsx": {
+      "file": "assets/WalletRoutes-DPu617Zs.js",
+      "name": "WalletRoutes",
+      "src": "src/app/providers/WalletRoutes.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_index.es-BkOyMSRJ.js",
+        "_http-CDXbQOVn.js",
+        "_arc-BZVhmmt2.js",
+        "_useQuery-CaoZzKEs.js"
+      ]
+    },
+    "src/components/layout/DashboardLayout.tsx": {
+      "file": "assets/DashboardLayout-BJHZspAi.js",
+      "name": "DashboardLayout",
+      "src": "src/components/layout/DashboardLayout.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_mail-warning-wMe4X5HF.js",
+        "_arcService-BIn_zVmu.js",
+        "_WalletButton-DRVW9-TH.js",
+        "_log-out-20kyRo3D.js",
+        "_index-D7M7lNfo.js",
+        "_http-CDXbQOVn.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_wallet-jKwJPTnh.js"
+      ]
+    },
+    "src/features/auth/AccountPages.tsx": {
+      "file": "assets/AccountPages-VUj-Xg2X.js",
+      "name": "AccountPages",
+      "src": "src/features/auth/AccountPages.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Field-CadPg0-U.js",
+        "_AuthLayout-gd2cHPyu.js",
+        "_circle-x-DnQ2VaW6.js"
+      ]
+    },
+    "src/features/auth/LoginPage.tsx": {
+      "file": "assets/LoginPage-B2qVbpV1.js",
+      "name": "LoginPage",
+      "src": "src/features/auth/LoginPage.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Field-CadPg0-U.js",
+        "_AuthLayout-gd2cHPyu.js",
+        "_WalletEntry-D34_haNE.js",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_signMessage-CS5rBRr6.js",
+        "_account-BqcElHp_.js",
+        "_wallet-jKwJPTnh.js"
+      ]
+    },
+    "src/features/auth/OnboardingPage.tsx": {
+      "file": "assets/OnboardingPage-DLp7GASN.js",
+      "name": "OnboardingPage",
+      "src": "src/features/auth/OnboardingPage.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Card-QXvDRIfw.js",
+        "_Field-CadPg0-U.js",
+        "_WalletButton-DRVW9-TH.js",
+        "_AuthLayout-gd2cHPyu.js",
+        "_index.es-BkOyMSRJ.js",
+        "_http-CDXbQOVn.js",
+        "_mail-warning-wMe4X5HF.js",
+        "_useQuery-CaoZzKEs.js",
+        "_arcService-BIn_zVmu.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_wallet-jKwJPTnh.js"
+      ]
+    },
+    "src/features/auth/SignUpPage.tsx": {
+      "file": "assets/SignUpPage-Do5KEg0o.js",
+      "name": "SignUpPage",
+      "src": "src/features/auth/SignUpPage.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Field-CadPg0-U.js",
+        "_AuthLayout-gd2cHPyu.js",
+        "_WalletEntry-D34_haNE.js",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_signMessage-CS5rBRr6.js",
+        "_account-BqcElHp_.js",
+        "_wallet-jKwJPTnh.js"
+      ]
+    },
+    "src/features/customer/CheckoutPage.tsx": {
+      "file": "assets/CheckoutPage-BBTYumQ6.js",
+      "name": "CheckoutPage",
+      "src": "src/features/customer/CheckoutPage.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_useQuery-CaoZzKEs.js",
+        "_arcService-BIn_zVmu.js",
+        "_TransactionStatus-C8Ya_0vo.js",
+        "_Card-QXvDRIfw.js",
+        "_WalletButton-DRVW9-TH.js",
+        "_index.es-BkOyMSRJ.js",
+        "_http-CDXbQOVn.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_signMessage-CS5rBRr6.js",
+        "_wallet-jKwJPTnh.js"
+      ]
+    },
+    "src/features/customer/CustomerLayout.tsx": {
+      "file": "assets/CustomerLayout-B7zF4Gl8.js",
+      "name": "CustomerLayout",
+      "src": "src/features/customer/CustomerLayout.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_WalletButton-DRVW9-TH.js",
+        "_index.es-BkOyMSRJ.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_arcService-BIn_zVmu.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_wallet-jKwJPTnh.js"
+      ]
+    },
+    "src/features/customer/InvoicePage.tsx": {
+      "file": "assets/InvoicePage-DjAxH8D-.js",
+      "name": "InvoicePage",
+      "src": "src/features/customer/InvoicePage.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "src/features/customer/CheckoutPage.tsx",
+        "_useQuery-CaoZzKEs.js",
+        "_arcService-BIn_zVmu.js",
+        "_http-CDXbQOVn.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_TransactionStatus-C8Ya_0vo.js",
+        "_index.es-BkOyMSRJ.js",
+        "_signMessage-CS5rBRr6.js",
+        "_Card-QXvDRIfw.js",
+        "_WalletButton-DRVW9-TH.js",
+        "_wallet-jKwJPTnh.js"
+      ]
+    },
+    "src/features/customer/PortalPage.tsx": {
+      "file": "assets/PortalPage-DduCT3Ks.js",
+      "name": "PortalPage",
+      "src": "src/features/customer/PortalPage.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_useQuery-CaoZzKEs.js",
+        "_arcService-BIn_zVmu.js",
+        "_TransactionStatus-C8Ya_0vo.js",
+        "_WalletButton-DRVW9-TH.js",
+        "_Card-QXvDRIfw.js",
+        "_ContractAction-DNrdOwc5.js",
+        "_EscrowCard-8pSH6xh9.js",
+        "_index.es-BkOyMSRJ.js",
+        "_http-CDXbQOVn.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_signMessage-CS5rBRr6.js",
+        "_wallet-jKwJPTnh.js"
+      ]
+    },
+    "src/features/dashboard/pages/CatalogPages.tsx": {
+      "file": "assets/CatalogPages-TeSxs1gQ.js",
+      "name": "CatalogPages",
+      "src": "src/features/dashboard/pages/CatalogPages.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_DataTable-uDUavKe0.js",
+        "_QueryBoundary-B7p5pWDx.js",
+        "_PageHeader-CW3ADyGU.js",
+        "_shared-BEiCAx8-.js",
+        "_CatalogForms-C3PSIwdZ.js",
+        "_ListPage-Av2NY5zG.js",
+        "_trash-2-BeDY1EjA.js",
+        "_useQuery-CaoZzKEs.js",
+        "_WalletButton-DRVW9-TH.js",
+        "_index.es-BkOyMSRJ.js",
+        "_http-CDXbQOVn.js",
+        "_arcService-BIn_zVmu.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_wallet-jKwJPTnh.js",
+        "_ContractAction-DNrdOwc5.js",
+        "_TransactionStatus-C8Ya_0vo.js",
+        "_signMessage-CS5rBRr6.js",
+        "_index-D7M7lNfo.js",
+        "_Field-CadPg0-U.js",
+        "_Card-QXvDRIfw.js",
+        "_Segmented-B4bNPnUt.js"
+      ]
+    },
+    "src/features/dashboard/pages/CustomerPages.tsx": {
+      "file": "assets/CustomerPages-D8UnVZqj.js",
+      "name": "CustomerPages",
+      "src": "src/features/dashboard/pages/CustomerPages.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_DataTable-uDUavKe0.js",
+        "_QueryBoundary-B7p5pWDx.js",
+        "_PageHeader-CW3ADyGU.js",
+        "_shared-BEiCAx8-.js",
+        "_CatalogForms-C3PSIwdZ.js",
+        "_ListPage-Av2NY5zG.js",
+        "_trash-2-BeDY1EjA.js",
+        "_useQuery-CaoZzKEs.js",
+        "_WalletButton-DRVW9-TH.js",
+        "_index.es-BkOyMSRJ.js",
+        "_http-CDXbQOVn.js",
+        "_arcService-BIn_zVmu.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_wallet-jKwJPTnh.js",
+        "_ContractAction-DNrdOwc5.js",
+        "_TransactionStatus-C8Ya_0vo.js",
+        "_signMessage-CS5rBRr6.js",
+        "_index-D7M7lNfo.js",
+        "_Field-CadPg0-U.js",
+        "_Card-QXvDRIfw.js",
+        "_Segmented-B4bNPnUt.js"
+      ]
+    },
+    "src/features/dashboard/pages/DevelopersPage.tsx": {
+      "file": "assets/DevelopersPage-CHAxOu5L.js",
+      "name": "DevelopersPage",
+      "src": "src/features/dashboard/pages/DevelopersPage.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_QueryBoundary-B7p5pWDx.js",
+        "_arcService-BIn_zVmu.js",
+        "_Card-QXvDRIfw.js",
+        "_PageHeader-CW3ADyGU.js",
+        "_shared-BEiCAx8-.js",
+        "_Field-CadPg0-U.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_index-D7M7lNfo.js"
+      ]
+    },
+    "src/features/dashboard/pages/EscrowPage.tsx": {
+      "file": "assets/EscrowPage-D6AC9Wn3.js",
+      "name": "EscrowPage",
+      "src": "src/features/dashboard/pages/EscrowPage.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_useQuery-CaoZzKEs.js",
+        "_QueryBoundary-B7p5pWDx.js",
+        "_arcService-BIn_zVmu.js",
+        "_PageHeader-CW3ADyGU.js",
+        "_Card-QXvDRIfw.js",
+        "_DataTable-uDUavKe0.js",
+        "_shared-BEiCAx8-.js",
+        "_BillingForms-B2rvH42Z.js",
+        "_WalletButton-DRVW9-TH.js",
+        "_EscrowCard-8pSH6xh9.js",
+        "_ContractAction-DNrdOwc5.js",
+        "_TransactionStatus-C8Ya_0vo.js",
+        "_index.es-BkOyMSRJ.js",
+        "_http-CDXbQOVn.js",
+        "_trash-2-BeDY1EjA.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_index-D7M7lNfo.js",
+        "_Field-CadPg0-U.js",
+        "_wallet-jKwJPTnh.js",
+        "_signMessage-CS5rBRr6.js"
+      ]
+    },
+    "src/features/dashboard/pages/MoneyPages.tsx": {
+      "file": "assets/MoneyPages-DujRpj8X.js",
+      "name": "MoneyPages",
+      "src": "src/features/dashboard/pages/MoneyPages.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_QueryBoundary-B7p5pWDx.js",
+        "_shared-BEiCAx8-.js",
+        "_PageHeader-CW3ADyGU.js",
+        "_DataTable-uDUavKe0.js",
+        "_BillingForms-B2rvH42Z.js",
+        "_ListPage-Av2NY5zG.js",
+        "_trash-2-BeDY1EjA.js",
+        "_circle-x-DnQ2VaW6.js",
+        "_useQuery-CaoZzKEs.js",
+        "_http-CDXbQOVn.js",
+        "_index-D7M7lNfo.js",
+        "_WalletButton-DRVW9-TH.js",
+        "_index.es-BkOyMSRJ.js",
+        "_arcService-BIn_zVmu.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_wallet-jKwJPTnh.js",
+        "_ContractAction-DNrdOwc5.js",
+        "_TransactionStatus-C8Ya_0vo.js",
+        "_signMessage-CS5rBRr6.js",
+        "_Field-CadPg0-U.js",
+        "_Card-QXvDRIfw.js",
+        "_Segmented-B4bNPnUt.js"
+      ]
+    },
+    "src/features/dashboard/pages/OverviewPage.tsx": {
+      "file": "assets/OverviewPage-CNMLYK_V.js",
+      "name": "OverviewPage",
+      "src": "src/features/dashboard/pages/OverviewPage.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_QueryBoundary-B7p5pWDx.js",
+        "_PageHeader-CW3ADyGU.js",
+        "_Card-QXvDRIfw.js",
+        "_Segmented-B4bNPnUt.js",
+        "_useQuery-CaoZzKEs.js"
+      ]
+    },
+    "src/features/dashboard/pages/SettingsPage.tsx": {
+      "file": "assets/SettingsPage-CcMTnBLF.js",
+      "name": "SettingsPage",
+      "src": "src/features/dashboard/pages/SettingsPage.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_useQuery-CaoZzKEs.js",
+        "_shared-BEiCAx8-.js",
+        "_arcService-BIn_zVmu.js",
+        "_PageHeader-CW3ADyGU.js",
+        "_Card-QXvDRIfw.js",
+        "_Field-CadPg0-U.js",
+        "_WalletButton-DRVW9-TH.js",
+        "_log-out-20kyRo3D.js",
+        "_index.es-BkOyMSRJ.js",
+        "_trash-2-BeDY1EjA.js",
+        "_http-CDXbQOVn.js",
+        "_index-D7M7lNfo.js",
+        "_arc-BZVhmmt2.js",
+        "_recoverAddress-Dy8y1uwE.js",
+        "_secp256k1-BAOhRpbU.js",
+        "_account-BqcElHp_.js",
+        "_wallet-jKwJPTnh.js"
+      ]
+    }
+  }
+}

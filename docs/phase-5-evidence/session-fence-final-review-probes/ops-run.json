@@ -1,0 +1,15 @@
+{
+  "name": "ops",
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests/ops",
+    "-v"
+  ],
+  "exitCode": 0,
+  "seconds": 21.091,
+  "log": "docs/phase-5-evidence/session-fence-final-review-probes/ops.log"
+}

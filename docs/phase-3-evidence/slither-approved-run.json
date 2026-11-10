@@ -1,0 +1,21 @@
+{
+  "exit_code": 0,
+  "source_sha256": {
+    "contracts/RetempoSubscriptionManager.sol": "6d5375fc28cbaeb4561c4e0b6bcde707e15009f9df48bc923d12745c21dacff9",
+    "contracts/RetempoEscrow.sol": "d9fbf5367cf33c5d00d06bd913942a05780c38cde3cfb60520117152ac17ac34"
+  },
+  "duration_seconds": 25.69,
+  "version": "0.11.6",
+  "command": [
+    "/home/deseti/.local/share/retempo/toolchains/slither-phase3/bin/slither",
+    ".",
+    "--filter-paths",
+    "node_modules|lib/|contracts/script|contracts/test",
+    "--exclude",
+    "naming-convention,solc-version,pragma",
+    "--json",
+    "/home/deseti/projects/retempo/docs/phase-3-evidence/slither-approved-results.json",
+    "--fail-none"
+  ],
+  "fail_none_is_not_a_clean_security_result": true
+}

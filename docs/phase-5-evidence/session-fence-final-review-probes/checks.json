@@ -1,0 +1,97 @@
+[
+  {
+    "name": "auth",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "worker/vitest.config.ts",
+      "worker/tests/session-fence.test.ts",
+      "worker/tests/recovery-security.test.ts",
+      "worker/tests/membership-security.test.ts",
+      "worker/tests/auth.test.ts",
+      "worker/tests/auth-account.test.ts",
+      "--disableConsoleIntercept",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=/home/deseti/projects/retempo/docs/phase-5-evidence/session-fence-final-review-probes/auth-tests.json"
+    ],
+    "exitCode": 0,
+    "seconds": 192.522,
+    "log": "docs/phase-5-evidence/session-fence-final-review-probes/auth.log"
+  },
+  {
+    "name": "independent-current-api",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "/home/deseti/projects/retempo/docs/phase-5-evidence/session-fence-final-review-probes/vitest.config.ts",
+      "--disableConsoleIntercept",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=/home/deseti/projects/retempo/docs/phase-5-evidence/session-fence-final-review-probes/independent-tests.json"
+    ],
+    "exitCode": 124,
+    "seconds": 180.06,
+    "log": "docs/phase-5-evidence/session-fence-final-review-probes/independent-current-api.log"
+  },
+  {
+    "name": "indexer",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "chain-worker/vitest.config.ts",
+      "chain-worker/tests/indexer-review.test.ts",
+      "chain-worker/tests/indexer-overflow.test.ts",
+      "chain-worker/tests/indexer-ancestor-budget.test.ts",
+      "--disableConsoleIntercept"
+    ],
+    "exitCode": 0,
+    "seconds": 54.135,
+    "log": "docs/phase-5-evidence/session-fence-final-review-probes/indexer.log"
+  },
+  {
+    "name": "ops",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/ops",
+      "-v"
+    ],
+    "exitCode": 0,
+    "seconds": 21.091,
+    "log": "docs/phase-5-evidence/session-fence-final-review-probes/ops.log"
+  },
+  {
+    "name": "worker-types",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "-p",
+      "worker"
+    ],
+    "exitCode": 0,
+    "seconds": 6.921,
+    "log": "docs/phase-5-evidence/session-fence-final-review-probes/worker-types.log"
+  },
+  {
+    "name": "packaged-spa",
+    "command": [
+      "node",
+      "--test",
+      "tests/onchain/frontend-build.test.mjs"
+    ],
+    "exitCode": 0,
+    "seconds": 4.601,
+    "log": "docs/phase-5-evidence/session-fence-final-review-probes/packaged-spa.log"
+  }
+]

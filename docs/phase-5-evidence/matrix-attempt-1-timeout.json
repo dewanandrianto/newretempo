@@ -1,0 +1,72 @@
+{
+  "scope": "Local Phase 4 acceptance only; no deployment or remote chain writes",
+  "startedAt": "2026-11-10T12:29:00.312693+00:00",
+  "passed": false,
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "run",
+        "typecheck"
+      ],
+      "exitCode": 0,
+      "seconds": 7.86,
+      "log": "docs/phase-5-evidence/final-typecheck.log"
+    },
+    {
+      "name": "indexer-typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "chain-worker"
+      ],
+      "exitCode": 0,
+      "seconds": 1.0,
+      "log": "docs/phase-5-evidence/final-indexer-typecheck.log"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 8.92,
+      "log": "docs/phase-5-evidence/final-lint.log"
+    },
+    {
+      "name": "script-tests",
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "test",
+        "scripts"
+      ],
+      "exitCode": 0,
+      "seconds": 1.1,
+      "log": "docs/phase-5-evidence/final-script-tests.log",
+      "passingTests": 32
+    },
+    {
+      "name": "public-worker-tests",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "worker/vitest.config.ts"
+      ],
+      "exitCode": 124,
+      "seconds": 180.27,
+      "log": "docs/phase-5-evidence/final-public-worker-tests.log"
+    }
+  ],
+  "failure": "Verification exited unsuccessfully (124)",
+  "productionDeploymentAuthorized": false
+}

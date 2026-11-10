@@ -1,0 +1,245 @@
+{
+  "recordedAtUtc": "2026-11-10T05:16:01.200118+00:00",
+  "scope": "Public Worker security and bounded local auth cost; not overall Phase 5 completion",
+  "publicTestsPassed": 121,
+  "baselinePublicTests": 90,
+  "newPublicTests": 31,
+  "checks": [
+    {
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "worker/vitest.config.ts",
+        "--disableConsoleIntercept"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 138.184,
+      "log": "security-public-green.log"
+    },
+    {
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "run",
+        "typecheck"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 8.241,
+      "log": "security-typecheck.log"
+    },
+    {
+      "command": [
+        "/home/deseti/.local/share/retempo/toolchains/bun-v1.3.14/bun",
+        "--no-env-file",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 10.026,
+      "log": "security-lint.log"
+    }
+  ],
+  "benchmarks": [
+    {
+      "name": "pbkdf2-hash",
+      "runtime": "local-workerd",
+      "metric": "elapsed-wall-ms-not-production-cpu",
+      "samplesMs": [
+        567,
+        556,
+        551
+      ],
+      "productionCpuVerified": false,
+      "iterations": 600000,
+      "sampleCount": 3,
+      "minMs": 551,
+      "medianMs": 556,
+      "maxMs": 567
+    },
+    {
+      "name": "pbkdf2-verify-correct",
+      "runtime": "local-workerd",
+      "metric": "elapsed-wall-ms-not-production-cpu",
+      "samplesMs": [
+        558,
+        553,
+        554
+      ],
+      "productionCpuVerified": false,
+      "iterations": 600000,
+      "sampleCount": 3,
+      "minMs": 553,
+      "medianMs": 554,
+      "maxMs": 558
+    },
+    {
+      "name": "pbkdf2-verify-incorrect",
+      "runtime": "local-workerd",
+      "metric": "elapsed-wall-ms-not-production-cpu",
+      "samplesMs": [
+        559,
+        557,
+        553
+      ],
+      "productionCpuVerified": false,
+      "iterations": 600000,
+      "sampleCount": 3,
+      "minMs": 553,
+      "medianMs": 557,
+      "maxMs": 559
+    },
+    {
+      "name": "siwe-eoa-recovery",
+      "runtime": "local-workerd",
+      "metric": "elapsed-wall-ms-not-production-cpu",
+      "samplesMs": [
+        8,
+        5,
+        4,
+        4,
+        4,
+        4
+      ],
+      "productionCpuVerified": false,
+      "sampleCount": 6,
+      "minMs": 4,
+      "medianMs": 4.0,
+      "maxMs": 8
+    },
+    {
+      "name": "siwe-http-d1-session",
+      "runtime": "local-workerd",
+      "metric": "elapsed-wall-ms-not-production-cpu",
+      "samplesMs": [
+        57,
+        45,
+        45,
+        47,
+        46,
+        50
+      ],
+      "productionCpuVerified": false,
+      "signedLogins": 6,
+      "replayDenied": 6,
+      "logoutRevocationsVerified": 6,
+      "sampleCount": 6,
+      "minMs": 45,
+      "medianMs": 46.5,
+      "maxMs": 57
+    },
+    {
+      "name": "invalid-password-burst",
+      "runtime": "local-workerd",
+      "metric": "elapsed-wall-ms-not-production-cpu",
+      "samplesMs": [
+        100,
+        101,
+        5255,
+        5254,
+        5255,
+        5255,
+        5255,
+        5256,
+        5255,
+        5255
+      ],
+      "productionCpuVerified": false,
+      "concurrency": 10,
+      "statuses": [
+        401,
+        401,
+        401,
+        401,
+        401,
+        401,
+        401,
+        401,
+        429,
+        429
+      ],
+      "maxKdfInvocations": 8,
+      "externalFetches": 0,
+      "sampleCount": 10,
+      "minMs": 100,
+      "medianMs": 5255.0,
+      "maxMs": 5256
+    }
+  ],
+  "providerCpuMetricsAvailable": false,
+  "freeTierAuthCpuGate": "OPEN: production per-invocation Cloudflare CPU and exceeded-resource evidence required for all password and SIWE paths; wall time cannot establish 10ms compatibility. Do not lower the KDF work factor.",
+  "sourceFingerprints": {
+    "package.json": "02ef91f0ec5e075b4550b2c82b02a4ef7537f6bb9037340095fc4b396d4f8efd",
+    "worker/migrations/0001_schema.sql": "15bd83e8569aa8b9f947fb763bbfc2a5b838bbd084fbb053e03bf42d5f7f6a52",
+    "worker/migrations/0002_guards.sql": "48726c8bb74ced677c77d50100e69ee88b33ba966566e32423e258a9678a0f21",
+    "worker/migrations/0003_chain_bridge.sql": "8e8ede3be62a5d814432fe1808deb7735260210696e244cb52ee1440a56b2c8c",
+    "worker/src/audit.ts": "9b5880e852aa0db331584fea5cc6e6fa896edb4d2ecdedd874ac1cb4583769d3",
+    "worker/src/auth/account.ts": "8e79990d27d6b908258dcc1b04b443071efbd9988191f453f2c191e981abd84a",
+    "worker/src/auth/audit.ts": "9a378fa33dad92640c6cb6bbcc8bd35656d77de92e0789e1d2179e7e24444108",
+    "worker/src/auth/crypto.ts": "933c50180b98e95f3d5a9d6dde6afac2f5ce2dd35735eb3cf9b68a6ad28b94d4",
+    "worker/src/auth/emailTokens.ts": "c34e8f9e5824b3a5fd2654d91706ea7fd04371e1eca4786c35dafd60c8bc1792",
+    "worker/src/auth/guards.ts": "6303229847e8002354cd3ad5062a211a6b665a830cc04cead926a655432fe7c4",
+    "worker/src/auth/passwords.ts": "5a148b436ecb131ee86ea8a887a072852ffb485f890cac714e44951ed48adcef",
+    "worker/src/auth/permissions.ts": "fa2dabfd943eaf5bd815023ee93ebeefd6e2a3d0fcf670507f36110653665026",
+    "worker/src/auth/rateLimits.ts": "59d29d872e8a76693750365ac36ac779a72d16019d0e89ff043642d36720ee35",
+    "worker/src/auth/routes.ts": "0158d2039cc1d8c5591de89402fa0e12520443d3d9b8242130b5f81be668b3d5",
+    "worker/src/auth/service.ts": "080a1725c20fe191b6e5ecf593c39ac884a113cfa1607ad0d979de8f437a293b",
+    "worker/src/auth/sessions.ts": "f44feae388a83e9e597e86de176bc5976f72de14a68a6e1f6f66becac30bd401",
+    "worker/src/auth/siwe.ts": "646a71cbd139dbc3ca30f88183004e920327aa2591dea9d557e2f328ca75e257",
+    "worker/src/auth/walletAuth.ts": "05133e21295b9b02eb3591cec31a1a462c7ab1ffdc300680f984d6a5163fea85",
+    "worker/src/billing/money.ts": "6a50f711c0b53e1fa87f3be5793c312e6964a002d59d11f7c7e09b663107906d",
+    "worker/src/billing/routes.ts": "fa82eb776c1d72df8185bf1ec54c3f2ed6b6797a69256e441a1c02dfd0dc0be6",
+    "worker/src/catalog/associations.ts": "fbda00573ff0627934e45b31cb062e959d237e7a9f56539b1ee54ef2ce93e072",
+    "worker/src/catalog/db.ts": "11fdd9c3baf459464bdf0bead89ef74c73028d3fe319a52eadb7505dcbac2a60",
+    "worker/src/catalog/members.ts": "2b4454ef6124e920dc9ba03379cccde415ea4ebd1581dd88e0c844eb97706d83",
+    "worker/src/catalog/resources.ts": "ba8b72681da34216d2073a3b0cd142a35f6bfc6c30084e8ac9cf4a829dbf0c6b",
+    "worker/src/catalog/routes.ts": "ebad51e87ea3bb43036a4f1808d8543248c40c8162ca9867d3c0c2eb60a31d70",
+    "worker/src/chain/checkouts.ts": "44c323ffca1b1f00a27b4c94eb3038f3e270dc581f9306b39564c0a81339a973",
+    "worker/src/chain/client.ts": "6ccd4207c3c5d233c3d3c45d7ff15dd19d6518968c029aa705a860fe84543b24",
+    "worker/src/chain/customer.ts": "c44699243e5586f985248278e2a15f2160fddb59f425517b9cbf0b381c8a1e70",
+    "worker/src/chain/invoices.ts": "63794301a7743c4811e7269719dc24ab4a55d5389104682876d9278847bd7a7b",
+    "worker/src/chain/keys.ts": "6c3eece01cc873d841c472d49dabb4a84d7b3fce80b3677fb935866feed7354f",
+    "worker/src/chain/lifecycle.ts": "86f1d9931fbe6b216914d56bed4172eb00d46612a3ce030f252b735080e3b053",
+    "worker/src/chain/plans.ts": "f32357823db66b0123eee5650cc51e3425f7a5ee5999120b51b2079afccf4b55",
+    "worker/src/chain/prepare.ts": "ff6abe64affa092a9dde262a4ad1a54f3e902c921c39e8228ff62cd4ad3d540e",
+    "worker/src/chain/projections.ts": "1555e34153a71824f32ecfce50354aab8bb57b371cc3e314f1d84ef8f012d877",
+    "worker/src/chain/routes.ts": "0dd5d722d8daa68fde44da306993e2762e6aad72a95b05e1a45b9328584c95e6",
+    "worker/src/common.ts": "738c6d3fea4370b5094585f3371cef4df1ddeea5ce094462c3d43a1f4acd268f",
+    "worker/src/config.ts": "e2af27e78aa86f0468a0cee38fefa51f439aaca529c69b68ef87d7206e0f3084",
+    "worker/src/db/client.ts": "85c4f5b621b48661ebd210a5d171b291ae07e9777b794457b12777a17cead3f5",
+    "worker/src/db/schema.ts": "54e848d3095ff3a0ed09b7f341ab03cae6a9656c37c2e1942797a56845c1815d",
+    "worker/src/errors.ts": "75694bfa5f609f46a88454a41ef082ec4f9e5edf45a30c9e8063cd61f2b4c095",
+    "worker/src/http.ts": "1dd39885d69148bb66422553471ecb94ddd3fe3168ae9c51933c37c7a02b199c",
+    "worker/src/index.ts": "cdddb83d3d6993bdb10e576ce6c0ae1a3201efe5892ac47a563d5e50d56000f5",
+    "worker/src/types.ts": "a743f138feb95e15d7d878e628f2d6838c3b91f0c083a704751b61a8d4f06b24",
+    "worker/tests/auth-account.test.ts": "26a247af58e5853906982413ec2a8870f7b42dedbc2ae1a867d1ebc0c53a1055",
+    "worker/tests/auth-passwords.test.ts": "33dfc2ee498635b9eaa48c9b533cfe6194e91a85120a4d17dbbca16b78da212a",
+    "worker/tests/auth.test.ts": "4177f5d243e44b346b306ee7ccf12995985409d2c3d111564f281c067a3633ac",
+    "worker/tests/billing-money.test.ts": "32b861d3ce505fb92e8ab83aeb24c10201f3529021c4cc3ac450f4d7300489ba",
+    "worker/tests/billing.test.ts": "1c2218983a6f03a7105fcaba35196e497198cb1f5361691a1c93cda0af4cdfdc",
+    "worker/tests/catalog.test.ts": "68e487f3c2b34f567300f4dbd6204e3b6a289f2f53e3eee7354020ca1b684fce",
+    "worker/tests/chain-checkout.test.ts": "29dad9ef2006eee856d9b3e51f52271f91c168a49f26bedec50d3de183beda55",
+    "worker/tests/chain-renewal.test.ts": "d364addea36c01d1b77466abb99ddc969f551539f4079d707ed150561d55c5a3",
+    "worker/tests/chain.test.ts": "ebb64beba67b3a7c4a1758f6b07da87bbcd35c6c1051a9d5d30ec2017c16e296",
+    "worker/tests/entry.test.ts": "0b944a9fc8e6d52dcf504a89448ea4a08aaad5682fb861182f044dda9f0edb05",
+    "worker/tests/http.test.ts": "728338d56f63a7b4c33543edfac0e8ab17a7727815a0430b10e8dc9c7f7c11a4",
+    "worker/tests/schema.test.ts": "a282b202a9ad358287af3a8768e3730e0f5cf30a4f7eefd967abee9e9d6bd293",
+    "worker/tests/security-api-keys.test.ts": "0743a59bdac507a28a3d28a5d4441561903a4c894b854167f2ad0f01b3ba3e20",
+    "worker/tests/security-config.test.ts": "b167da4a691fc4c03ef1f0be9649bcc8a76fab8a155dbbc23a5d510ccf024bbe",
+    "worker/tests/security-cost.test.ts": "ed4d1d6d34fbb19e60f3384b89c3aa2791e6818212c0906f3f3ad8c170ec206a",
+    "worker/tests/security-fanout.test.ts": "1db89715d67c4489ffe55d8ee06c6bfb4822981aec26e0920cd13711bc311859",
+    "worker/tests/security-http.test.ts": "e936fba83be46f24775a38c40ca4187f7e075e2318b5d946325a9e6fdb9bc670",
+    "worker/tests/security-metadata.test.ts": "87cb0ed5eb75d331b60490d461c73d67776e9d1f17246ba8b7ee2ac7217abeca",
+    "worker/tests/setup.ts": "a2b0af03eee236aeb5ec561ea05f2d229e4998eda573c5af52fb0e0b393a80c6",
+    "worker/vitest.config.ts": "a6722b1e44f1598c75081bd1f2eff0b7b3b9f7f15a2a57a0e3eb3856db4dc362"
+  },
+  "redEvidenceExitCodes": {
+    "security-config-red.log": 1,
+    "security-secret-red.log": 1,
+    "security-http-red.log": 1,
+    "security-api-keys-red.log": 1,
+    "security-fanout-red.log": 1,
+    "security-metadata-red.log": 1
+  }
+}

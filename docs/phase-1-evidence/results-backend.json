@@ -1,0 +1,6 @@
+{
+  "exit_code": 0,
+  "seconds": 17.66,
+  "database": "dedicated disposable PostgreSQL 18 container; exported database not used",
+  "log": "/home/deseti/.hermes/cache/scratch/retempo-phase1/backend-tests.log"
+}

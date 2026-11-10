@@ -1,0 +1,124 @@
+{
+  "inventory_tests": 470,
+  "verified_unique_tests": 470,
+  "failed": 0,
+  "skipped": 0,
+  "partitions": {
+    "functional-approved": {
+      "passed": 451,
+      "exit_code": 0,
+      "relevant_source_matches_current": true
+    },
+    "escrow-invariants-approved": {
+      "passed": 9,
+      "exit_code": 0,
+      "relevant_source_matches_current": true
+    },
+    "manager-invariants-approved": {
+      "passed": 10,
+      "exit_code": 0,
+      "relevant_source_matches_current": true
+    }
+  },
+  "invariants": [
+    {
+      "name": "invariant_FrozenWithinBalance",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_I1_Solvency",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_I2_ClaimsWithinVestedEligibleBalance",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_I3_RefundsWithinRefundableBalance",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_I4_AllocationBoundedAndExactWhenClosed",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_I8_RolesNeverTouchFundsAndOutflowEqualsWithdrawn",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_LedgerSumsAndCreditConservation",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_RulingsNeverExceedFrozen",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_Conservation_PaymentsRouteExactly",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_I5_NoChargeOnRevokedReplacedCanceledOrExpiredMandate",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_I6_MandateCapsAndSpentAccounting",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_I7_BillingPeriodNeverChargedTwice",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_I8_RolesAndStrangersCannotAlterTermsOrFunds",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_I9_ManagerHoldsNothingAndNoResidualAllowance",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_LivenessWhenAllChecksPass",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    },
+    {
+      "name": "invariant_PaymentNeverAboveMaxPaymentAmount",
+      "runs": 256,
+      "calls": 25600,
+      "reverts": 0
+    }
+  ],
+  "invariant_calls_total": 409600,
+  "artifact_dependency_attestation": "artifact-attestation.json",
+  "escrow_partition_note": "The manager source changed during independent work but is not in the escrow invariant compilation dependency graph. Every one of that artifact\u2019s 59 compiled source dependencies, including its actual harness and escrow, matches current source."
+}

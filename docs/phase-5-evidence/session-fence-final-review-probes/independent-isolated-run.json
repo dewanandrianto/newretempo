@@ -1,0 +1,17 @@
+{
+  "name": "independent-current-api-isolated",
+  "command": [
+    "node",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "--config",
+    "docs/phase-5-evidence/session-fence-final-review-probes/vitest.config.ts",
+    "--disableConsoleIntercept",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=docs/phase-5-evidence/session-fence-final-review-probes/independent-isolated-tests.json"
+  ],
+  "exitCode": 0,
+  "seconds": 41.635,
+  "log": "docs/phase-5-evidence/session-fence-final-review-probes/independent-isolated.log"
+}

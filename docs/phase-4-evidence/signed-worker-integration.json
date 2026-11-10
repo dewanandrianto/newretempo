@@ -1,0 +1,94 @@
+{
+  "scope": "Fresh non-forked loopback Arc and two real workerd Workers; in-memory keys and artificial local balances only",
+  "passed": true,
+  "steps": [
+    "Three independent real SIWE wallet sessions",
+    "Server-derived immutable plan and charge bindings; wrong customer denied; stable preparation replay",
+    "Actual signed approval and debit; only private verified projections declare payment, invoice and subscription settled",
+    "Both Worker processes restarted; D1 sessions/bindings/cursor/events survive; replay creates no duplicate payment",
+    "Real merchant renewal invoice creation/finalization/capability, exact UTC period, customer browser renewal, new paid charge and settled escrow",
+    "Second real charge, customer dispute, merchant response, arbitrator split and pinned private dispute state",
+    "Vested claim, actual merchant withdrawal and permissionless fixed-payout customer recovery; gas-independent recipient balance exact",
+    "Wallet proof restricted to SIWE owner; organization history excludes unallocated wallet-wide withdrawals; final liabilities zero"
+  ],
+  "chainTransactions": [
+    "0x9b9c5d87660c67010304d2cc2a7c8b645d8e05c1ce72c6af47c830100995157e",
+    "0xafefd22dfac88e2553e20202aa436b8aa32e2b74c29d7b91c9b53e7d2dca6113",
+    "0xe5bed4f8d5ce13f54a31deb07604223a666f7e4afbca8619a3452b34b502da7d",
+    "0x21b4e0a6cc02243aa226d8f1cb8505e85d478a9ca6044441a0c95b4b6fd14243",
+    "0x1a86d96fd8421e6e4a9c8a9c9a73304ec3e062b9586aa789972d516e9adea4ba",
+    "0x718e4c94af778670915f87e90d12ff9975351270300061fa63bb41d897daf74f",
+    "0x6b87e1a82c1c95aeb214c66f1c90fddc967e4e096027b9aca729b742f2d140b5",
+    "0x8beeb586d1f84487605d919e225b9f53d2e23c0f61c825b07dfa2ea44e12ddc6",
+    "0x9adf70eb82b592f87c5c258f19c31266bd2a0cc850d5ca4bec13216fcc9de2d7",
+    "0xbddab3e7a8e879c3749fcb9cd14ca86a3c1008d6357fd40701498bbae4b86166",
+    "0x591a0ef02ef54c0b6e5697429997eaf3e55a5768f55762cae93f4bd16a0bc47c",
+    "0x452f429fbcf0a25a544e0e4dc4e3173b60b2de4ea129340851952ade71c5f5e0",
+    "0x927c5db6dbc6532697685e357364bc2ed9fdbf442584558431fd87b0f0b22f2e",
+    "0xe8de6eb10c42220e2b70cc0796684fbb229460c9223601a2bb2c178e8583087d",
+    "0xddebde40582a92c17521aa5a905ed8d3f88c04940f0546b0ab5ac97f1a3b8fc8",
+    "0x84d25d2c2364b5b691834a414cb05304c38bf4aee2037da59e118c2188491d8c",
+    "0x88d1dc470dcb2ba7b838855bb8cef4c0bb09fdda47dafc97a9dcd853c037d9b6"
+  ],
+  "merchantBrowser": {
+    "signedWalletRequests": [
+      {
+        "hash": "0x9b9c5d87660c67010304d2cc2a7c8b645d8e05c1ce72c6af47c830100995157e",
+        "to": "0xd93928f847dc5a63903a4cefc640ed3ef6ed4ec0",
+        "status": "success"
+      }
+    ],
+    "capabilityCreatedThroughUI": true
+  },
+  "browser": {
+    "signedWalletRequests": [
+      {
+        "hash": "0xafefd22dfac88e2553e20202aa436b8aa32e2b74c29d7b91c9b53e7d2dca6113",
+        "to": "0x3600000000000000000000000000000000000000",
+        "status": "success"
+      },
+      {
+        "hash": "0xe5bed4f8d5ce13f54a31deb07604223a666f7e4afbca8619a3452b34b502da7d",
+        "to": "0xd93928f847dc5a63903a4cefc640ed3ef6ed4ec0",
+        "status": "success"
+      }
+    ],
+    "wrongWorldBlockedBeforeApproval": true,
+    "rejectionBeforeSubmission": true,
+    "reloadRetryDidNotDoublePay": true,
+    "responsiveWidths": [
+      320,
+      360,
+      390,
+      768,
+      1440
+    ],
+    "pageErrors": []
+  },
+  "renewalBrowser": {
+    "invoiceId": "2315e12e-41ae-4dca-afd1-533ead2b7939",
+    "exactPeriodStart": "2026-12-09T17:33:27.000Z",
+    "signedWalletRequests": [
+      {
+        "hash": "0xe8de6eb10c42220e2b70cc0796684fbb229460c9223601a2bb2c178e8583087d",
+        "to": "0x3600000000000000000000000000000000000000",
+        "status": "success"
+      },
+      {
+        "hash": "0xddebde40582a92c17521aa5a905ed8d3f88c04940f0546b0ab5ac97f1a3b8fc8",
+        "to": "0xd93928f847dc5a63903a4cefc640ed3ef6ed4ec0",
+        "status": "success"
+      }
+    ]
+  },
+  "records": {
+    "orgId": "6c78d11c-7429-48c3-9ec0-c885f9f0628c",
+    "subscriptionId": "892450f1-6c93-499b-9e75-a62fe4148e91",
+    "paymentId": "edccc9e2-5fce-4acc-9659-78d0e6acd0e7",
+    "escrowId": "c7d0e19b-d760-4044-895f-4b350b2e1217",
+    "invoiceId": "a79795d9-1f36-4ce8-8f32-e02f5f75806c"
+  },
+  "replayBaselineEvents": 7,
+  "canonicalEvents": 27,
+  "nodeStopped": true
+}

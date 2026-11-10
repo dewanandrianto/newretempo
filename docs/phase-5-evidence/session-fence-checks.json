@@ -1,0 +1,101 @@
+[
+  {
+    "name": "public",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "worker/vitest.config.ts",
+      "--disableConsoleIntercept",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=docs/phase-5-evidence/session-fence-public-tests.json"
+    ],
+    "exitCode": 0,
+    "seconds": 212.255,
+    "startedUTC": "2026-11-10T12:56:23.161656+00:00",
+    "log": "docs/phase-5-evidence/session-fence-public.log"
+  },
+  {
+    "name": "root-types",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit"
+    ],
+    "exitCode": 0,
+    "seconds": 8.709,
+    "startedUTC": "2026-11-10T12:56:23.162996+00:00",
+    "log": "docs/phase-5-evidence/session-fence-root-types.log"
+  },
+  {
+    "name": "worker-types",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "-p",
+      "worker"
+    ],
+    "exitCode": 0,
+    "seconds": 8.169,
+    "startedUTC": "2026-11-10T12:56:23.164404+00:00",
+    "log": "docs/phase-5-evidence/session-fence-worker-types.log"
+  },
+  {
+    "name": "backend-types",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "-p",
+      "backend"
+    ],
+    "exitCode": 0,
+    "seconds": 3.224,
+    "startedUTC": "2026-11-10T12:56:31.334210+00:00",
+    "log": "docs/phase-5-evidence/session-fence-backend-types.log"
+  },
+  {
+    "name": "lint-type-aware",
+    "command": [
+      "node_modules/.bin/oxlint",
+      "--type-aware",
+      "src",
+      "scripts",
+      "worker"
+    ],
+    "exitCode": 0,
+    "seconds": 15.467,
+    "startedUTC": "2026-11-10T12:56:31.872244+00:00",
+    "log": "docs/phase-5-evidence/session-fence-lint-type-aware.log"
+  },
+  {
+    "name": "lint-full",
+    "command": [
+      "node_modules/.bin/oxlint",
+      "."
+    ],
+    "exitCode": 0,
+    "seconds": 1.174,
+    "startedUTC": "2026-11-10T12:56:34.558965+00:00",
+    "log": "docs/phase-5-evidence/session-fence-lint-full.log"
+  },
+  {
+    "name": "ops",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/ops",
+      "-v"
+    ],
+    "exitCode": 0,
+    "seconds": 21.434,
+    "startedUTC": "2026-11-10T12:56:35.733221+00:00",
+    "log": "docs/phase-5-evidence/session-fence-ops.log"
+  }
+]

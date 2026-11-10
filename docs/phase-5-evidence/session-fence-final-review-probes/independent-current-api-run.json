@@ -1,0 +1,17 @@
+{
+  "name": "independent-current-api",
+  "command": [
+    "node",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "--config",
+    "/home/deseti/projects/retempo/docs/phase-5-evidence/session-fence-final-review-probes/vitest.config.ts",
+    "--disableConsoleIntercept",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=/home/deseti/projects/retempo/docs/phase-5-evidence/session-fence-final-review-probes/independent-tests.json"
+  ],
+  "exitCode": 124,
+  "seconds": 180.06,
+  "log": "docs/phase-5-evidence/session-fence-final-review-probes/independent-current-api.log"
+}

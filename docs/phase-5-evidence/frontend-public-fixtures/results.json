@@ -1,0 +1,45 @@
+[
+  {
+    "case": "disabled",
+    "width": 320,
+    "viewport": 320,
+    "document": 320,
+    "errors": []
+  },
+  {
+    "case": "disabled",
+    "width": 360,
+    "viewport": 360,
+    "document": 360,
+    "errors": []
+  },
+  {
+    "case": "disabled",
+    "width": 390,
+    "viewport": 390,
+    "document": 390,
+    "errors": []
+  },
+  {
+    "case": "disabled",
+    "width": 768,
+    "viewport": 768,
+    "document": 768,
+    "errors": []
+  },
+  {
+    "case": "disabled",
+    "width": 1440,
+    "viewport": 1440,
+    "document": 1440,
+    "errors": []
+  },
+  {
+    "case": "invalid-invoice",
+    "passed": true
+  },
+  {
+    "case": "disabled-portal",
+    "passed": true
+  }
+]
