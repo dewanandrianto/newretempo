@@ -1,5 +1,5 @@
 import { createPublicClient, custom, erc20Abi, http, type Address, type WalletClient } from 'viem'
-import { arc } from 'viem/chains'
+import { arcTestnet } from 'viem/chains'
 import type { ChainConfiguration, ChainCheckout, ChainSnapshot, ChainSyncResult, ChainPlanPreparation } from '../../../shared/chain'
 import { get, post } from '../api/client'
 import { assertDeployment } from './guards'
@@ -21,7 +21,7 @@ export const chainApi = {
 }
 export function configuredReader(configuration:ChainConfiguration) {
  assertDeployment(configuration)
- return createPublicClient({chain:{...arc,rpcUrls:{default:{http:[configuration.rpcUrl]}}},transport:http(configuration.rpcUrl,{retryCount:0})})
+ return createPublicClient({chain:{...arcTestnet,rpcUrls:{default:{http:[configuration.rpcUrl]}}},transport:http(configuration.rpcUrl,{retryCount:0})})
 }
 export function createRetempoClient(configuration:ChainConfiguration,wallet:WalletClient):RetempoClient {
  const reader=configuredReader(configuration)
@@ -47,8 +47,8 @@ export function createRetempoClient(configuration:ChainConfiguration,wallet:Wall
  return sdk
 }
 export const arcBlockchainService:BlockchainService={
- network:{chainId:arc.id,name:'Arc',explorerBase:arc.blockExplorers.default.url,usdcAddress:'0x3600000000000000000000000000000000000000',usdcDecimals:6},
+ network:{chainId:arcTestnet.id,name:'Arc Testnet',explorerBase:arcTestnet.blockExplorers.default.url,usdcAddress:'0x3600000000000000000000000000000000000000',usdcDecimals:6},
  async getUsdcBalance(owner){const c=await chainApi.configuration();const reader=configuredReader(c);return displayUsdc(await reader.readContract({address:c.usdc,abi:erc20Abi,functionName:'balanceOf',args:[owner]}))},
  async getEscrowContractState(){const c=await chainApi.configuration();return c.configured&&c.escrow?{state:'deployed',address:c.escrow}:{state:'not_deployed'}},
 }
-export const explorerAddressUrl=(address:string)=>`${arc.blockExplorers.default.url}/address/${address}`
+export const explorerAddressUrl=(address:string)=>`${arcTestnet.blockExplorers.default.url}/address/${address}`

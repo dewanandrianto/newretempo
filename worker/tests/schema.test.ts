@@ -59,19 +59,19 @@ describe('D1 schema', () => {
   });
   it('fails closed on all financial authoritative fields',async()=>{
     const f=await fixture(),payment=crypto.randomUUID(),escrow=crypto.randomUUID();
-    await run("INSERT INTO payments(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash) VALUES (?,?,?,?,'1',5042,'payment-key','hash')",payment,f.org,f.invoice,f.customer);
-    await run("INSERT INTO escrows(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash) VALUES (?,?,?,?,'1',5042,'escrow-key','hash')",escrow,f.org,f.invoice,f.customer);
+    await run("INSERT INTO payments(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash) VALUES (?,?,?,?,'1',5042002,'payment-key','hash')",payment,f.org,f.invoice,f.customer);
+    await run("INSERT INTO escrows(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash) VALUES (?,?,?,?,'1',5042002,'escrow-key','hash')",escrow,f.org,f.invoice,f.customer);
     for(const sql of ["UPDATE payments SET status='succeeded'", "UPDATE payments SET tx_hash='0x"+'a'.repeat(64)+"'", "UPDATE payments SET chain_id=1", "UPDATE escrows SET status='funded'", "UPDATE escrows SET onchain_escrow_id='1'", "UPDATE escrows SET chain_id=1", "UPDATE invoices SET amount_paid='1'", "UPDATE invoices SET status='paid'", 'DELETE FROM payments']) {
       await expect(run(sql)).rejects.toThrow();
     }
-    await expect(run("INSERT INTO transactions(id,org_id,kind,direction,amount,chain_id,tx_hash,log_index,block_number,occurred_at) VALUES (?,?,'payment','in','1',5042,?,0,1,'2026-11-08T00:00:00.000Z')",crypto.randomUUID(),f.org,'0x'+'a'.repeat(64))).rejects.toThrow();
+    await expect(run("INSERT INTO transactions(id,org_id,kind,direction,amount,chain_id,tx_hash,log_index,block_number,occurred_at) VALUES (?,?,'payment','in','1',5042002,?,0,1,'2026-11-08T00:00:00.000Z')",crypto.randomUUID(),f.org,'0x'+'a'.repeat(64))).rejects.toThrow();
     await run("UPDATE payments SET status='canceled' WHERE id=?",payment);
     await run('UPDATE escrows SET release_after_days=3 WHERE id=?',escrow);
   });
   it('enforces one live payment and escrow per invoice and immutable idempotency',async()=>{
     const f=await fixture();
     for(const table of ['payments','escrows']) {
-      const insert=`INSERT INTO ${table}(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash) VALUES (?,?,?,?,'1',5042,?,'hash')`;
+      const insert=`INSERT INTO ${table}(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash) VALUES (?,?,?,?,'1',5042002,?,'hash')`;
       const id=crypto.randomUUID();
       await run(insert,id,f.org,f.invoice,f.customer,'unique-key');
       await expect(run(insert,crypto.randomUUID(),f.org,f.invoice,f.customer,'other-key')).rejects.toThrow();
@@ -82,7 +82,7 @@ describe('D1 schema', () => {
   it('protects financial insert, replace, and accounting paths without a capability switch',async()=>{
     const f=await fixture(),pay=crypto.randomUUID();
     const base=[pay,f.org,f.invoice,f.customer];
-    const insert="INSERT INTO payments(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash) VALUES (?,?,?,?,'1',5042,'payment-key','hash')";
+    const insert="INSERT INTO payments(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash) VALUES (?,?,?,?,'1',5042002,'payment-key','hash')";
     await run(insert,...base);
     await expect(run(insert.replace('INSERT INTO','INSERT OR REPLACE INTO'),crypto.randomUUID(),f.org,f.invoice,f.customer)).rejects.toThrow();
     await expect(run(insert.replace("'payment-key'","'second-key'").replace('INSERT INTO','INSERT OR REPLACE INTO'),crypto.randomUUID(),f.org,f.invoice,f.customer)).rejects.toThrow();
@@ -99,9 +99,9 @@ describe('D1 schema', () => {
     await expect(run("INSERT INTO subscriptions(id,org_id,customer_id,plan_id,amount,\"interval\",status) VALUES (?,?,?,?,'1','month','active')",sub,f.org,f.customer,f.plan)).rejects.toThrow();
     await run("INSERT INTO subscriptions(id,org_id,customer_id,plan_id,amount,\"interval\") VALUES (?,?,?,?,'1','month')",sub,f.org,f.customer,f.plan);
     const address='0x'+'a'.repeat(40);
-    await expect(run("INSERT INTO mandates(id,org_id,subscription_id,customer_id,payer_address,chain_id,token_address,max_amount_per_period,period_seconds,status) VALUES (?,?,?,?,?,5042,?,'1',86400,'active')",crypto.randomUUID(),f.org,sub,f.customer,address,address)).rejects.toThrow();
-    await expect(run("INSERT INTO escrows(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash,status) VALUES (?,?,?,?,'1',5042,'escrow-key','hash','funded')",crypto.randomUUID(),f.org,f.invoice,f.customer)).rejects.toThrow();
-    await expect(run("INSERT INTO payments(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash,payer_address) VALUES (?,?,?,?,'1',5042,'payment-key','hash',?)",crypto.randomUUID(),f.org,f.invoice,f.customer,address)).rejects.toThrow();
+    await expect(run("INSERT INTO mandates(id,org_id,subscription_id,customer_id,payer_address,chain_id,token_address,max_amount_per_period,period_seconds,status) VALUES (?,?,?,?,?,5042002,?,'1',86400,'active')",crypto.randomUUID(),f.org,sub,f.customer,address,address)).rejects.toThrow();
+    await expect(run("INSERT INTO escrows(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash,status) VALUES (?,?,?,?,'1',5042002,'escrow-key','hash','funded')",crypto.randomUUID(),f.org,f.invoice,f.customer)).rejects.toThrow();
+    await expect(run("INSERT INTO payments(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash,payer_address) VALUES (?,?,?,?,'1',5042002,'payment-key','hash',?)",crypto.randomUUID(),f.org,f.invoice,f.customer,address)).rejects.toThrow();
     await expect(run("INSERT INTO invoices(id,org_id,customer_id,number,total_amount,amount_paid,line_items,due_at,idempotency_key,request_hash,status) VALUES (?,?,?,'INV-2','1','1','[]','2026-11-09T00:00:00.000Z','invoice-two','hash','paid')",crypto.randomUUID(),f.org,f.customer)).rejects.toThrow();
   });
   it('requires a unique invoice for each subscription billing period',async()=>{

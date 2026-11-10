@@ -10,7 +10,7 @@ async function fixture(){
  await bindings.DB.batch([
   bindings.DB.prepare('INSERT INTO users(id,display_name) VALUES (?,?)').bind(user,'History test'),
   bindings.DB.prepare("INSERT INTO sessions(id,user_id,token_hash,auth_method,idle_expires_at,expires_at) VALUES (?,?,?,'siwe','2099-01-01T00:00:00.000Z','2099-01-01T00:00:00.000Z')").bind(crypto.randomUUID(),user,await hmac(bindings.SESSION_SECRET,token)),
-  bindings.DB.prepare("INSERT INTO wallets(id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042,?,'siwe')").bind(walletId,user,wallet,new Date().toISOString()),
+  bindings.DB.prepare("INSERT INTO wallets(id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042002,?,'siwe')").bind(walletId,user,wallet,new Date().toISOString()),
   bindings.DB.prepare('INSERT INTO organizations(id,name,slug,industry,country,created_by) VALUES (?,?,?,?,?,?)').bind(org,'History',org,'Software','US',user),
   bindings.DB.prepare("INSERT INTO memberships(id,org_id,user_id,role) VALUES (?,?,?,'owner')").bind(crypto.randomUUID(),org,user)
  ])

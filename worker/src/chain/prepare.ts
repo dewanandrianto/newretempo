@@ -11,7 +11,7 @@ export async function prepareCheckout(c:C){
  const auth=requireWorkerAuth(c)
  const input=await readBody(c,z.object({wallet:address}).strict())
  const wallet=await verifiedWallet(c,input.wallet),row=await checkoutRecord(c),d=await checkoutContext(c,row)
- if(!await c.env.DB.prepare("SELECT id FROM wallets WHERE purpose='customer' AND org_id=? AND customer_id=? AND address=? AND chain_id=5042").bind(row.org_id,d.customer_id,wallet).first())throw forbidden('This checkout belongs to a different customer wallet')
+ if(!await c.env.DB.prepare("SELECT id FROM wallets WHERE purpose='customer' AND org_id=? AND customer_id=? AND address=? AND chain_id=5042002").bind(row.org_id,d.customer_id,wallet).first())throw forbidden('This checkout belongs to a different customer wallet')
  await enabledConfiguration(c.env)
  const p=await storedPlan(c,row.org_id,d.plan_id)
  if(d.subscription_status==='canceled'||!['open','paid'].includes(d.invoice_status))throw conflict('This checkout is not payable')
@@ -30,9 +30,9 @@ export async function prepareCheckout(c:C){
  if(!charge)throw conflict('Charge identity is unavailable')
  const key=`chain:${row.invoice_id}`
  const paymentId=crypto.randomUUID(),escrowId=crypto.randomUUID()
- const queries=[c.env.DB.prepare("INSERT INTO payments(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash) SELECT ?,?,?,?,?,5042,?,? WHERE NOT EXISTS (SELECT 1 FROM payments WHERE org_id=? AND invoice_id=? AND status IN ('pending','processing','succeeded'))").bind(paymentId,row.org_id,row.invoice_id,d.customer_id,p.amount,key,key,row.org_id,row.invoice_id),
+ const queries=[c.env.DB.prepare("INSERT INTO payments(id,org_id,invoice_id,customer_id,amount,chain_id,idempotency_key,request_hash) SELECT ?,?,?,?,?,5042002,?,? WHERE NOT EXISTS (SELECT 1 FROM payments WHERE org_id=? AND invoice_id=? AND status IN ('pending','processing','succeeded'))").bind(paymentId,row.org_id,row.invoice_id,d.customer_id,p.amount,key,key,row.org_id,row.invoice_id),
  c.env.DB.prepare("INSERT INTO audit_logs(id,org_id,actor_user_id,actor_type,action,resource_type,resource_id,metadata,request_id) SELECT ?,?,?,'user','chain.checkout_prepared','payment',?,?,? WHERE changes()=1").bind(crypto.randomUUID(),row.org_id,auth.userId,paymentId,JSON.stringify({invoiceId:row.invoice_id,chargeNumber:charge.charge_number,status:'pending'}),c.get('requestId'))]
- if(p.vestDuration>0)queries.push(c.env.DB.prepare("INSERT INTO escrows(id,org_id,invoice_id,customer_id,amount,release_after_days,chain_id,idempotency_key,request_hash) SELECT ?,?,?,?,?,?,5042,?,? WHERE NOT EXISTS (SELECT 1 FROM escrows WHERE org_id=? AND invoice_id=? AND status IN ('pending_funding','funded','disputed'))").bind(escrowId,row.org_id,row.invoice_id,d.customer_id,p.amount,p.vestDuration/86400,key,key,row.org_id,row.invoice_id))
+ if(p.vestDuration>0)queries.push(c.env.DB.prepare("INSERT INTO escrows(id,org_id,invoice_id,customer_id,amount,release_after_days,chain_id,idempotency_key,request_hash) SELECT ?,?,?,?,?,?,5042002,?,? WHERE NOT EXISTS (SELECT 1 FROM escrows WHERE org_id=? AND invoice_id=? AND status IN ('pending_funding','funded','disputed'))").bind(escrowId,row.org_id,row.invoice_id,d.customer_id,p.amount,p.vestDuration/86400,key,key,row.org_id,row.invoice_id))
  await c.env.DB.batch(queries)
  const payment=await c.env.DB.prepare('SELECT id,amount,status FROM payments WHERE org_id=? AND invoice_id=? AND idempotency_key=?').bind(row.org_id,row.invoice_id,key).first<{id:string;amount:string;status:string}>()
  const escrow=p.vestDuration>0?await c.env.DB.prepare('SELECT id,amount FROM escrows WHERE org_id=? AND invoice_id=? AND idempotency_key=?').bind(row.org_id,row.invoice_id,key).first<{id:string;amount:string}>():null

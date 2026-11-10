@@ -1,0 +1,30 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "retempo-beta",
+  "main": "worker/src/index.ts",
+  "compatibility_date": "2026-11-08",
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "vars": {
+    "APP_ENV": "production",
+    "APP_ORIGINS": "https://retempo-beta.retempo.workers.dev",
+    "SIWE_DOMAIN": "retempo-beta.retempo.workers.dev",
+    "SIWE_URI": "https://retempo-beta.retempo.workers.dev",
+    "SIWE_CHAIN_ID": "5042002",
+    "EMAIL_MODE": "disabled",
+    "COOKIE_SECURE": "true",
+    "REQUIRE_VERIFIED_EMAIL": "true"
+  },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "retempo-prod-testnet",
+    "database_id": "edf58fc2-a4c1-4b8f-bab8-2e5cad51d8ce",
+    "migrations_dir": "worker/migrations"
+  }]
+}

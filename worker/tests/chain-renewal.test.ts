@@ -9,7 +9,7 @@ const env = testEnv as unknown as WorkerBindings
 const app = createWorkerApp()
 const merchant = '0x1111111111111111111111111111111111111111'
 const zero = '0x0000000000000000000000000000000000000000'
-const config: ChainConfiguration = { chainId:5042, mode:'local', configured:true, rpcUrl:'http://127.0.0.1:8545', explorerUrl:'', manager:'0x3333333333333333333333333333333333333333', escrow:'0x4444444444444444444444444444444444444444', usdc:'0x3600000000000000000000000000000000000000', usdcDecimals:6, startBlock:'0' }
+const config: ChainConfiguration = { chainId:5042002, mode:'local', configured:true, rpcUrl:'http://127.0.0.1:8545', explorerUrl:'', manager:'0x3333333333333333333333333333333333333333', escrow:'0x4444444444444444444444444444444444444444', usdc:'0x3600000000000000000000000000000000000000', usdcDecimals:6, startBlock:'0' }
 let org: string, customer: string, plan: string, sub: string, invoice: string, token: string
 let bindings: ChainBinding[], projections: ChainProjection[]
 // Only the private service is a fixture; HTTP, migrations and guarded DB run in workerd/D1.
@@ -29,7 +29,7 @@ beforeEach(async()=>{
  await env.DB.prepare("DELETE FROM wallets WHERE purpose='login' AND address=?").bind(merchant).run()
  await env.DB.prepare('INSERT INTO users(id,display_name) VALUES (?,?)').bind(user,'Merchant').run()
  await env.DB.prepare('INSERT INTO sessions(id,user_id,token_hash,auth_method,idle_expires_at,expires_at) VALUES (?,?,?,?,?,?)').bind(crypto.randomUUID(),user,await hmac(env.SESSION_SECRET,token),'siwe','2099-01-01T00:00:00.000Z','2099-01-01T00:00:00.000Z').run()
- await env.DB.prepare("INSERT INTO wallets(id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042,?,'siwe')").bind(crypto.randomUUID(),user,merchant,new Date().toISOString()).run()
+ await env.DB.prepare("INSERT INTO wallets(id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042002,?,'siwe')").bind(crypto.randomUUID(),user,merchant,new Date().toISOString()).run()
  await env.DB.prepare('INSERT INTO organizations(id,name,slug,industry,country,created_by) VALUES (?,?,?,?,?,?)').bind(org,'Merchant',org,'Software','US',user).run()
  await env.DB.prepare("INSERT INTO memberships(id,org_id,user_id,role) VALUES (?,?,?,'owner')").bind(crypto.randomUUID(),org,user).run()
  const product=crypto.randomUUID()

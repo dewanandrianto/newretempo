@@ -12,7 +12,7 @@ import type { ApiInvoice, ApiSubscription } from '../shared/types'
 import { buildLiveEscrow, buildLiveDisputes, buildLiveLedger, buildLiveOverview, type LiveBillingRecords } from '../src/services/billing/chainMappers'
 
 const empty: ChainSnapshot = {
-  configuration: { chainId: 5042, mode: 'disabled', configured: false, rpcUrl: 'https://rpc.mainnet.arc.io', explorerUrl: 'https://explorer.arc.io', usdc: '0x3600000000000000000000000000000000000000', usdcDecimals: 6, manager: null, escrow: null, startBlock: null },
+  configuration: { chainId: 5042002, mode: 'disabled', configured: false, rpcUrl: 'https://rpc.testnet.arc.io', explorerUrl: 'https://explorer.testnet.arc.io', usdc: '0x3600000000000000000000000000000000000000', usdcDecimals: 6, manager: null, escrow: null, startBlock: null },
   cursor: null, bindings: [], events: [], projections: [],
 }
 const records: LiveBillingRecords = { orgId: 'org-1', plans: [], subscriptions: [], invoices: [], escrows: [] }
@@ -69,7 +69,7 @@ void test('empty live data returns honest zero/empty metrics, never sample busin
 })
 
 const event = (overrides: Partial<VerifiedChainEvent> = {}): VerifiedChainEvent => ({
-  id: 'fixture-event', chainId: 5042, address: '0x1111111111111111111111111111111111111111',
+  id: 'fixture-event', chainId: 5042002, address: '0x1111111111111111111111111111111111111111',
   blockNumber: '5', blockHash: `0x${'1'.repeat(64)}`, transactionHash: `0x${'2'.repeat(64)}`,
   transactionIndex: 0, logIndex: 0, timestamp: '2026-11-07T00:00:00.000Z',
   name: 'SubscriptionPaymentProcessed', args: { amount: '900719925474099' }, ...overrides,

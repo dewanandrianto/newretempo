@@ -29,7 +29,7 @@ export function validateBindings(env: WorkerBindings): void {
   const origins = (env.APP_ORIGINS || '').split(',').map(value => value.trim())
   if (!origins.length || origins.some(value => !value || productionUrl(value).origin !== value)) unsafe()
   const siwe = productionUrl(env.SIWE_URI)
-  if (siwe.host !== env.SIWE_DOMAIN || !origins.includes(siwe.origin) || env.SIWE_CHAIN_ID !== '5042') unsafe()
+  if (siwe.host !== env.SIWE_DOMAIN || !origins.includes(siwe.origin) || env.SIWE_CHAIN_ID !== '5042002') unsafe()
   if (env.COOKIE_SECURE !== undefined && env.COOKIE_SECURE !== 'true') unsafe()
   if (env.REQUIRE_VERIFIED_EMAIL !== undefined && env.REQUIRE_VERIFIED_EMAIL !== 'true') unsafe()
   if (env.EMAIL_MODE !== 'disabled' && env.EMAIL_MODE !== 'delivery') unsafe()

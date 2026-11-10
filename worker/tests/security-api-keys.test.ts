@@ -6,7 +6,7 @@ import { randomToken } from '../src/auth/crypto'
 import type { WorkerBindings } from '../src/types'
 
 // Fresh ephemeral secret in memory, never a reusable production credential.
-const bindings: WorkerBindings = { ...env, APP_ENV: 'production', SESSION_SECRET: randomToken(), APP_ORIGINS: 'https://app.retempo.xyz', SIWE_DOMAIN: 'app.retempo.xyz', SIWE_URI: 'https://app.retempo.xyz', SIWE_CHAIN_ID: '5042', COOKIE_SECURE: 'true', EMAIL_MODE: 'disabled', REQUIRE_VERIFIED_EMAIL: 'true' } as WorkerBindings
+const bindings: WorkerBindings = { ...env, APP_ENV: 'production', SESSION_SECRET: randomToken(), APP_ORIGINS: 'https://app.retempo.xyz', SIWE_DOMAIN: 'app.retempo.xyz', SIWE_URI: 'https://app.retempo.xyz', SIWE_CHAIN_ID: '5042002', COOKIE_SECURE: 'true', EMAIL_MODE: 'disabled', REQUIRE_VERIFIED_EMAIL: 'true' } as WorkerBindings
 
 test('production does not mint development API tokens for the unimplemented API-key authentication feature', async () => {
   const app = createWorkerApp()

@@ -1,7 +1,7 @@
 import type { ChainAddress, ChainBinding, ChainConfiguration, ChainSnapshot, ChainSyncResult } from '../../../shared/chain'
 import type { WorkerBindings } from '../types'
 import { unavailable } from '../errors'
-export const disabledConfiguration: ChainConfiguration = { chainId: 5042, mode: 'disabled', configured: false, rpcUrl: 'https://rpc.mainnet.arc.io', explorerUrl: 'https://explorer.arc.io', usdc: '0x3600000000000000000000000000000000000000', usdcDecimals: 6, manager: null, escrow: null, startBlock: null, reason: 'Chain service is not configured' }
+export const disabledConfiguration: ChainConfiguration = { chainId: 5042002, mode: 'disabled', configured: false, rpcUrl: 'https://rpc.testnet.arc.io', explorerUrl: 'https://explorer.testnet.arc.io', usdc: '0x3600000000000000000000000000000000000000', usdcDecimals: 6, manager: null, escrow: null, startBlock: null, reason: 'Arc Testnet contract service is not configured; payments and settlement are disabled' }
 export async function privateRequest<T>(env: WorkerBindings, path: string, body?: unknown): Promise<T> {
   if (!env.CHAIN) throw unavailable('Chain service is not configured', 'chain_unavailable')
   let response: Response

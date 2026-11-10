@@ -15,7 +15,7 @@ export default defineConfig({
         APP_ORIGINS: 'https://app.test',
         SIWE_DOMAIN: 'app.test',
         SIWE_URI: 'https://app.test',
-        SIWE_CHAIN_ID: '5042',
+        SIWE_CHAIN_ID: '5042002',
         EMAIL_MODE: 'test',
         REQUIRE_VERIFIED_EMAIL: 'false',
         COOKIE_SECURE: 'false',

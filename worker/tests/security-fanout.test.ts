@@ -12,7 +12,7 @@ test('refuses excess customer tenant fanout before service requests rather than 
   const address = '0x' + randomToken(20)
   await bindings.DB.prepare('INSERT INTO users(id,display_name) VALUES (?,?)').bind(user, 'Fanout fixture').run()
   await bindings.DB.prepare("INSERT INTO sessions(id,user_id,token_hash,auth_method,idle_expires_at,expires_at) VALUES (?,?,?,'siwe','2099-01-01T00:00:00.000Z','2099-01-01T00:00:00.000Z')").bind(crypto.randomUUID(), user, await hmac(bindings.SESSION_SECRET, token)).run()
-  await bindings.DB.prepare("INSERT INTO wallets(id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042,?,'siwe')").bind(crypto.randomUUID(), user, address, new Date().toISOString()).run()
+  await bindings.DB.prepare("INSERT INTO wallets(id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042002,?,'siwe')").bind(crypto.randomUUID(), user, address, new Date().toISOString()).run()
   // Actual D1 relationships, not a SQL emulator. The service below is an explicit empty-state fixture.
   const orgs: string[] = []
   for (let i = 0; i < 21; i++) {
@@ -21,7 +21,7 @@ test('refuses excess customer tenant fanout before service requests rather than 
     await bindings.DB.batch([
       bindings.DB.prepare('INSERT INTO organizations(id,name,slug,industry,country,created_by) VALUES (?,?,?,?,?,?)').bind(org, 'Fanout fixture', org, 'Software', 'US', user),
       bindings.DB.prepare('INSERT INTO customers(id,org_id,name,email) VALUES (?,?,?,?)').bind(customer, org, 'Customer', 'fanout@example.test'),
-      bindings.DB.prepare("INSERT INTO wallets(id,purpose,org_id,customer_id,address,chain_id) VALUES (?,'customer',?,?,?,5042)").bind(crypto.randomUUID(), org, customer, address),
+      bindings.DB.prepare("INSERT INTO wallets(id,purpose,org_id,customer_id,address,chain_id) VALUES (?,'customer',?,?,?,5042002)").bind(crypto.randomUUID(), org, customer, address),
     ])
   }
   let calls = 0

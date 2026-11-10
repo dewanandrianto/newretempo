@@ -10,7 +10,7 @@ import type { WorkerBindings, WorkerContext } from '../src/types'
 
 const db = (env as unknown as WorkerBindings).DB
 const mail: { to: string; link: string; kind: string }[] = []
-const bindings = (extra: Partial<WorkerBindings> = {}) => ({ ...env, APP_ENV: 'test', EMAIL_MODE: 'test', SESSION_SECRET: 'auth-test-secret-minimum-thirty-two-characters', APP_ORIGINS: 'https://app.test', SIWE_DOMAIN: 'app.test', SIWE_URI: 'https://app.test', SIWE_CHAIN_ID: '5042', MAILER: { fetch: async (r: Request) => { mail.push(await r.json()); return new Response('ok') } }, ...extra }) as WorkerBindings
+const bindings = (extra: Partial<WorkerBindings> = {}) => ({ ...env, APP_ENV: 'test', EMAIL_MODE: 'test', SESSION_SECRET: 'auth-test-secret-minimum-thirty-two-characters', APP_ORIGINS: 'https://app.test', SIWE_DOMAIN: 'app.test', SIWE_URI: 'https://app.test', SIWE_CHAIN_ID: '5042002', MAILER: { fetch: async (r: Request) => { mail.push(await r.json()); return new Response('ok') } }, ...extra }) as WorkerBindings
 function app() {
   const a = new Hono<WorkerContext>()
   a.use('*', async (c, next) => { c.set('ip', '192.0.2.5'); c.set('requestId', crypto.randomUUID()); c.set('auth', await resolveAuth(c)); await next() })
@@ -65,7 +65,7 @@ describe('Workers authentication API', () => {
     const results = await Promise.all([req('siwe/verify', { message: challenge.message, signature }), req('siwe/verify', { message: challenge.message, signature })])
     expect(results.map(r => r.status).sort()).toEqual([200, 401])
     expect((await req('siwe/verify', { message: challenge.message, signature })).status).toBe(401)
-    const wrong = await issue(), wrongMessage = wrong.message.replace('Chain ID: 5042', 'Chain ID: 1')
+    const wrong = await issue(), wrongMessage = wrong.message.replace('Chain ID: 5042002', 'Chain ID: 1')
     expect((await req('siwe/verify', { message: wrongMessage, signature: await account.signMessage({ message: wrongMessage }) })).status).toBe(401)
     const expired = await issue()
     await db.prepare('UPDATE siwe_nonces SET expires_at=? WHERE nonce=?').bind('2000-01-01T00:00:00.000Z', expired.nonce).run()
@@ -87,7 +87,7 @@ describe('Workers authentication API', () => {
     expect((await req('siwe/link/verify', body, otherCookie)).status).toBe(401)
     const success = await req('siwe/link/verify', body, ownerCookie)
     expect(success.status).toBe(200)
-    expect(await success.json()).toMatchObject({user:{wallets:expect.arrayContaining([{address:linked.address.toLowerCase(),chainId:5042}]) as unknown}})
+    expect(await success.json()).toMatchObject({user:{wallets:expect.arrayContaining([{address:linked.address.toLowerCase(),chainId:5042002}]) as unknown}})
     expect((await req('siwe/link/verify', body, ownerCookie)).status).toBe(401)
     const duplicate = await (await req('siwe/link/nonce', {address:linked.address}, otherCookie)).json() as {message:string}
     expect((await req('siwe/link/verify', {message:duplicate.message,signature:await linked.signMessage({message:duplicate.message})}, otherCookie)).status).toBe(409)

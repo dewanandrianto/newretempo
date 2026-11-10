@@ -46,7 +46,7 @@ test.each(['owner', 'admin', 'member'])('legacy unverified %s membership cannot 
   const f = await fixture()
   await db.prepare('INSERT INTO memberships (id,org_id,user_id,role) VALUES (?,?,?,?)').bind(crypto.randomUUID(), f.org.id, f.userId, role).run()
   const wallet = privateKeyToAccount(generatePrivateKey())
-  await db.prepare("INSERT INTO wallets (id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042,?,'siwe')").bind(crypto.randomUUID(), f.userId, wallet.address.toLowerCase(), new Date().toISOString()).run()
+  await db.prepare("INSERT INTO wallets (id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042002,?,'siwe')").bind(crypto.randomUUID(), f.userId, wallet.address.toLowerCase(), new Date().toISOString()).run()
   const nonce = await (await f.request('auth/siwe/nonce', { address: wallet.address })).json<{ message: string }>()
   const login = await f.request('auth/siwe/verify', { message: nonce.message, signature: await wallet.signMessage({ message: nonce.message }) })
   const siweCookie = login.headers.get('set-cookie')!.split(';')[0]
@@ -95,7 +95,7 @@ test('email recovery denies a legacy preclaim-linked wallet and subsequent admin
   const f = await fixture()
   const attackerWallet = privateKeyToAccount(generatePrivateKey())
   // Seed the previously admitted binding to prove recovery protects existing accounts too.
-  await db.prepare("INSERT INTO wallets (id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042,?,'siwe')").bind(crypto.randomUUID(), f.userId, attackerWallet.address.toLowerCase(), new Date().toISOString()).run()
+  await db.prepare("INSERT INTO wallets (id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042002,?,'siwe')").bind(crypto.randomUUID(), f.userId, attackerWallet.address.toLowerCase(), new Date().toISOString()).run()
   expect((await f.request('auth/forgot-password', { email: f.email })).status).toBe(200)
   expect((await f.request('auth/reset-password', { token: f.token(), password: 'Recovered-owner-password-92!' })).status).toBe(200)
   expect((await f.request('auth/me', undefined, f.cookie)).status).toBe(401)

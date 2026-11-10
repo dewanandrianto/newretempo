@@ -17,7 +17,7 @@ const app = createHttpApp({ resolveAuth: c => {
 } })
 registerBillingRoutes(app)
 async function request(path: string, method = 'GET', body?: unknown, key?: string, user = owner, tenant = org) {
-  return app.request(`http://local/api/orgs/${tenant}/${path}`, { method, headers: { 'content-type': 'application/json', 'Origin': 'https://app.test', 'X-Requested-With': 'retempo', 'x-test-user': user, ...(key ? { 'Idempotency-Key': key } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) }, { ...env, APP_ENV: 'test', SIWE_CHAIN_ID: '5042' })
+  return app.request(`http://local/api/orgs/${tenant}/${path}`, { method, headers: { 'content-type': 'application/json', 'Origin': 'https://app.test', 'X-Requested-With': 'retempo', 'x-test-user': user, ...(key ? { 'Idempotency-Key': key } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) }, { ...env, APP_ENV: 'test', SIWE_CHAIN_ID: '5042002' })
 }
 const invoiceBody = (amount = big) => ({ customerId: customer, dueAt: '2026-12-01T00:00:00.000Z', lineItems: [{ description: 'Exact', quantity: 2, unitAmount: amount }], memo: '' })
 async function invoice(open = true) {

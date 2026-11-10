@@ -13,7 +13,7 @@ export const zero = '0x0000000000000000000000000000000000000000'
 export const intervals = {week:604800,month:2592000,year:31536000} as const
 export async function verifiedWallet(c: C, requested?: string): Promise<ChainAddress> {
  const auth = requireWorkerAuth(c)
- const wallets = await c.env.DB.prepare("SELECT address FROM wallets WHERE user_id=? AND purpose='login' AND verified_at IS NOT NULL AND verification_method='siwe' AND chain_id=5042 ORDER BY address").bind(auth.userId).all<{address:ChainAddress}>()
+ const wallets = await c.env.DB.prepare("SELECT address FROM wallets WHERE user_id=? AND purpose='login' AND verified_at IS NOT NULL AND verification_method='siwe' AND chain_id=5042002 ORDER BY address").bind(auth.userId).all<{address:ChainAddress}>()
  const wallet = requested ? wallets.results.find(w => w.address === requested) : wallets.results.length===1 ? wallets.results[0] : undefined
  if (!wallet) throw forbidden('A verified wallet owned by this session is required')
  return wallet.address

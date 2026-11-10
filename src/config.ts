@@ -1,13 +1,13 @@
 import { http, createConfig } from 'wagmi'
-import { mainnet, arc } from 'viem/chains'
+import { arcTestnet } from 'viem/chains'
 import { injected } from 'wagmi/connectors'
 import { registerChain } from './tracing'
 
-// The wallet transport is independent of the configured read RPC. Verify both worlds before signing.
-const arcRpcUrl = 'https://rpc.mainnet.arc.io'
-registerChain(arc.id, arcRpcUrl)
+// Beta wallet transport is pinned to the official Arc Testnet RPC only.
+const arcRpcUrl = 'https://rpc.testnet.arc.io'
+registerChain(arcTestnet.id, arcRpcUrl)
 export const config = createConfig({
- chains: [arc, mainnet],
+ chains: [arcTestnet],
  connectors: [injected()],
- transports: { [arc.id]: http(arcRpcUrl), [mainnet.id]: http('https://cloudflare-eth.com') },
+ transports: { [arcTestnet.id]: http(arcRpcUrl) },
 })

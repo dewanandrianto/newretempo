@@ -5,8 +5,8 @@ export type ChainValue = string | boolean | null
 export type ChainValues = Record<string, ChainValue>
 
 export interface ChainConfiguration {
-  chainId: 5042
-  mode: 'disabled' | 'local' | 'mainnet'
+  chainId: 5042002
+  mode: 'disabled' | 'local' | 'mainnet' | 'testnet'
   configured: boolean
   rpcUrl: string
   explorerUrl: string
@@ -38,7 +38,7 @@ export interface ChainBinding {
 
 export interface VerifiedChainEvent {
   id: string
-  chainId: 5042
+  chainId: 5042002
   address: ChainAddress
   blockNumber: string
   blockHash: ChainHash

@@ -5,7 +5,7 @@ import type { ApiCustomer, ApiPayment, ApiInvoice } from '../shared/types'
 import { toCustomer, toInvoice } from '../src/services/billing/mappers'
 
 const customer: ApiCustomer = { id: 'customer', name: 'Actual customer', email: 'fixture@example.test', company: '', status: 'active', createdAt: '2026-11-01T00:00:00.000Z' }
-const payment = (overrides: Partial<ApiPayment> = {}): ApiPayment => ({ id: 'payment', invoiceId: 'invoice', invoiceNumber: 'INV-1', customerId: customer.id, customerName: customer.name, amount: '9007199254740993', status: 'succeeded', chainId: 5042, txHash: `0x${'12'.repeat(32)}`, createdAt: customer.createdAt, ...overrides })
+const payment = (overrides: Partial<ApiPayment> = {}): ApiPayment => ({ id: 'payment', invoiceId: 'invoice', invoiceNumber: 'INV-1', customerId: customer.id, customerName: customer.name, amount: '9007199254740993', status: 'succeeded', chainId: 5042002, txHash: `0x${'12'.repeat(32)}`, createdAt: customer.createdAt, ...overrides })
 
 void test('customer confirmed collections use exact successful owned payments, never catalog estimates or pending debits', () => {
   const result = toCustomer(customer, [], [payment(), payment({ id: 'second', amount: '1' }), payment({ id: 'foreign', customerId: 'someone-else' }), payment({ id: 'pending', status: 'pending' })])

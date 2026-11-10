@@ -8,7 +8,7 @@ const production = (): WorkerBindings => ({
   ...env, APP_ENV: 'production',
   SESSION_SECRET: randomToken(),
   APP_ORIGINS: 'https://app.retempo.xyz', SIWE_DOMAIN: 'app.retempo.xyz',
-  SIWE_URI: 'https://app.retempo.xyz', SIWE_CHAIN_ID: '5042', EMAIL_MODE: 'disabled',
+  SIWE_URI: 'https://app.retempo.xyz', SIWE_CHAIN_ID: '5042002', EMAIL_MODE: 'disabled',
   COOKIE_SECURE: 'true', REQUIRE_VERIFIED_EMAIL: 'true',
 } as WorkerBindings)
 const health = (extra: Record<string, unknown> = {}) => createWorkerApp().request('https://app.retempo.xyz/api/health', {}, { ...production(), ...extra })

@@ -40,7 +40,7 @@ function PublishPlanForm({plan}:{plan:Plan}) {
  if(!c?.configured)return <p role="alert" className="text-sm text-caution">{chain.configuration.error?.message??c?.reason??'Onchain publishing is disabled.'}</p>
  return <div className="space-y-4" data-testid={`publish-plan-${plan.id}`}>
   <WalletButton compact />
-  <p className="text-xs text-dim">{c.mode==='local'?'Local Arc simulation — not mainnet funds.':'Arc mainnet · chain 5042'}</p>
+  <p className="text-xs text-dim">{c.mode==='local'?'Local Arc simulation — not mainnet funds.':'Arc Testnet · chain 5042002'}</p>
   {published?<p role="status" className="text-sm text-cyan">This plan is published in the verified backend.</p>:<>
    {!prepared?<>
     <label className="block space-y-2 text-sm text-dim"><span>Payout address</span><input className={merchantInput} value={payout} onChange={e=>setPayout(e.target.value)} /></label>

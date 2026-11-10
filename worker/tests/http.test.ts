@@ -8,7 +8,7 @@ import type { WorkerBindings } from '../src/types'
 const bindings = {
   APP_ENV: 'test', SESSION_SECRET: 'a-local-test-secret-of-at-least-32-characters',
   APP_ORIGINS: 'https://app.test', SIWE_DOMAIN: 'app.test', SIWE_URI: 'https://app.test',
-  SIWE_CHAIN_ID: '5042', EMAIL_MODE: 'disabled',
+  SIWE_CHAIN_ID: '5042002', EMAIL_MODE: 'disabled',
 } as WorkerBindings
 const app = createHttpApp({ resolveAuth: () => null })
 app.get('/api/probe', (c) => c.json({ ok: true }))

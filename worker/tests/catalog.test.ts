@@ -14,7 +14,7 @@ const app = createHttpApp({ resolveAuth: c => {
   return { userId: id, sessionId: crypto.randomUUID(), method: 'password', user: { id, email: `${id}@test.com`, displayName: 'Test', emailVerified: c.req.header('x-test-unverified') !== 'true' } }
 } })
 registerCatalogRoutes(app)
-const bindings = () => ({ ...env, APP_ENV: 'test', SESSION_SECRET: 'catalog-integration-only-secret-32-bytes', SIWE_CHAIN_ID: '5042', REQUIRE_VERIFIED_EMAIL: 'false' }) as WorkerBindings
+const bindings = () => ({ ...env, APP_ENV: 'test', SESSION_SECRET: 'catalog-integration-only-secret-32-bytes', SIWE_CHAIN_ID: '5042002', REQUIRE_VERIFIED_EMAIL: 'false' }) as WorkerBindings
 async function request(path: string, method = 'GET', body?: unknown, user = owner) {
   return app.request(`http://local/api/orgs${path}`, { method, headers: { 'content-type': 'application/json', 'x-test-user': user, origin: 'https://app.test', 'x-requested-with': 'retempo' }, body: body === undefined ? undefined : JSON.stringify(body) }, bindings())
 }

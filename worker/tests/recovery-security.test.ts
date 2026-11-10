@@ -61,7 +61,7 @@ test('recovered owner sees no revoked login wallets, relinks with fresh signatur
   expect((await f.request('reset-password', { token: resetToken, password: 'Another-strong-password-93!' })).status).toBe(401)
   const login = await f.request('siwe/verify', await f.sign('login'))
   expect(login.status).toBe(200)
-  expect(await login.json()).toMatchObject({ user: { id: f.user, wallets: [{ address: f.wallet.address.toLowerCase(), chainId: 5042 }] } })
+  expect(await login.json()).toMatchObject({ user: { id: f.user, wallets: [{ address: f.wallet.address.toLowerCase(), chainId: 5042002 }] } })
 })
 
 test('revoked binding remains reserved against another authenticated wallet-only account', async () => {
@@ -142,8 +142,8 @@ test('reset revokes every login wallet but leaves customer and payout records by
   await db.batch([
     db.prepare("INSERT INTO organizations(id,name,slug,industry,country,created_by) VALUES (?,'Recovery',?,'Software','Indonesia',?)").bind(org, `recovery-${org.slice(0, 8)}`, f.user),
     db.prepare("INSERT INTO customers(id,org_id,name,email) VALUES (?,?,'Customer','customer@example.com')").bind(customer, org),
-    db.prepare("INSERT INTO wallets(id,purpose,org_id,address,chain_id,label) VALUES (?,'payout',?,?,5042,'Keep payout')").bind(crypto.randomUUID(), org, f.wallet.address.toLowerCase()),
-    db.prepare("INSERT INTO wallets(id,purpose,org_id,customer_id,address,chain_id,label) VALUES (?,'customer',?,?,?,5042,'Keep customer')").bind(crypto.randomUUID(), org, customer, f.wallet.address.toLowerCase()),
+    db.prepare("INSERT INTO wallets(id,purpose,org_id,address,chain_id,label) VALUES (?,'payout',?,?,5042002,'Keep payout')").bind(crypto.randomUUID(), org, f.wallet.address.toLowerCase()),
+    db.prepare("INSERT INTO wallets(id,purpose,org_id,customer_id,address,chain_id,label) VALUES (?,'customer',?,?,?,5042002,'Keep customer')").bind(crypto.randomUUID(), org, customer, f.wallet.address.toLowerCase()),
   ])
   const financial = () => db.prepare("SELECT * FROM wallets WHERE purpose IN ('payout','customer') AND org_id=? ORDER BY id").bind(org).all()
   const before = (await financial()).results
