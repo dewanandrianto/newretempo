@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter, useLocation } from 'react-router-dom'
 import { AuthProvider } from '@/features/auth/AuthProvider'
+import { PrivyRuntime } from '@/features/auth/PrivyRuntime'
 import { AppRoutes } from '@/app/router'
 
 /** Reset scroll on route changes, except for in-page anchors on the landing page. */
@@ -16,9 +17,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
+      <PrivyRuntime>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </PrivyRuntime>
     </BrowserRouter>
   )
 }

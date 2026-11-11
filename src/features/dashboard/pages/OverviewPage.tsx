@@ -60,7 +60,7 @@ export function RevenueCard({ data }: { data: DashboardOverview }) {
             </ul>
           </>
         ) : (
-          <EmptyState title="No verified revenue" description="Revenue history appears here only after verified Arc Testnet payment events exist." />
+          <EmptyState title="No verified revenue" description="Revenue history appears here only after verified payment events exist." />
         )}
       </CardBody>
     </Card>
@@ -199,7 +199,7 @@ export default function OverviewPage() {
             <Card className="p-6">
               <EmptyState
                 title="No verified billing activity"
-                description="Revenue, subscriptions, invoices, escrow, and transactions appear here only when backed by live account records and verified testnet events."
+                description="Revenue, subscriptions, invoices, escrow, and transactions appear here only when backed by live account records and verified payment events."
               />
             </Card>
           )

@@ -28,6 +28,7 @@ export const sessions = sqliteTable('sessions', {
   user_id: text('user_id').notNull(),
   token_hash: text('token_hash').notNull(),
   auth_method: text('auth_method').notNull(),
+  auth_provider: text('auth_provider'),
   ip: text('ip'),
   user_agent: text('user_agent'),
   last_seen_at: text('last_seen_at').notNull().default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ','now'))`),
@@ -39,6 +40,7 @@ export const sessions = sqliteTable('sessions', {
   updated_at: text('updated_at').notNull().default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ','now'))`),
 }, (t) => [
   check('sessions_check_1', sql`auth_method IN ('password', 'siwe')`),
+  check('sessions_check_auth_provider', sql`auth_provider IS NULL OR auth_provider = 'privy'`),
   check('sessions_check_2', sql`last_seen_at IS NULL OR (typeof(last_seen_at) = 'text' AND length(last_seen_at) = 24 AND strftime('%Y-%m-%dT%H:%M:%fZ', last_seen_at) IS NOT NULL AND strftime('%Y-%m-%dT%H:%M:%fZ', last_seen_at) = last_seen_at)`),
   check('sessions_check_3', sql`idle_expires_at IS NULL OR (typeof(idle_expires_at) = 'text' AND length(idle_expires_at) = 24 AND strftime('%Y-%m-%dT%H:%M:%fZ', idle_expires_at) IS NOT NULL AND strftime('%Y-%m-%dT%H:%M:%fZ', idle_expires_at) = idle_expires_at)`),
   check('sessions_check_4', sql`expires_at IS NULL OR (typeof(expires_at) = 'text' AND length(expires_at) = 24 AND strftime('%Y-%m-%dT%H:%M:%fZ', expires_at) IS NOT NULL AND strftime('%Y-%m-%dT%H:%M:%fZ', expires_at) = expires_at)`),
@@ -47,6 +49,18 @@ export const sessions = sqliteTable('sessions', {
   check('sessions_check_7', sql`updated_at IS NULL OR (typeof(updated_at) = 'text' AND length(updated_at) = 24 AND strftime('%Y-%m-%dT%H:%M:%fZ', updated_at) IS NOT NULL AND strftime('%Y-%m-%dT%H:%M:%fZ', updated_at) = updated_at)`),
   index('sessions_user_idx').on(t.user_id).where(sql`revoked_at IS NULL`),
   uniqueIndex('sessions_token_hash_key').on(t.token_hash),
+  foreignKey({ columns: [t.user_id], foreignColumns: [users.id] }).onDelete('cascade'),
+]);
+
+export const privyIdentities = sqliteTable('privy_identities', {
+  privy_user_id: text('privy_user_id').primaryKey().notNull(),
+  user_id: text('user_id').notNull(),
+  created_at: text('created_at').notNull().default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ','now'))`),
+}, (t) => [
+  check('privy_identities_check_1', sql`length(privy_user_id) BETWEEN 10 AND 255 AND substr(privy_user_id, 1, 10) = 'did:privy:'`),
+  check('privy_identities_check_2', sql`typeof(created_at) = 'text' AND length(created_at) = 24 AND strftime('%Y-%m-%dT%H:%M:%fZ', created_at) IS NOT NULL AND strftime('%Y-%m-%dT%H:%M:%fZ', created_at) = created_at`),
+  uniqueIndex('privy_identities_user_key').on(t.user_id),
+  index('privy_identities_user_idx').on(t.user_id),
   foreignKey({ columns: [t.user_id], foreignColumns: [users.id] }).onDelete('cascade'),
 ]);
 

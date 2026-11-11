@@ -6,15 +6,17 @@ import { TextField } from '@/components/ui/Field'
 import { AuthLayout } from './AuthLayout'
 import { useAuth } from './AuthProvider'
 import { OrDivider, WalletEntry } from './WalletEntry'
+import { PrivyAuthButtonLazy } from './PrivyAuthButtonLazy'
 
 type FieldName = 'name' | 'email' | 'password'
 
 export default function SignUpPage() {
-  const { signUp, session } = useAuth()
+  const { signUp, session, privyEnabled } = useAuth()
   const navigate = useNavigate()
   const [form, setForm] = useState({ name: '', email: '', password: '' })
   const [errors, setErrors] = useState<Partial<Record<FieldName | 'form', string>>>({})
   const [busy, setBusy] = useState(false)
+  const [showLegacy, setShowLegacy] = useState(false)
 
   if (session) return <Navigate to={session.organization ? '/app' : '/onboarding'} replace />
 
@@ -47,36 +49,41 @@ export default function SignUpPage() {
       <h1 className="display mt-2 text-3xl font-semibold text-fg">Create your merchant account</h1>
       <p className="mt-2 text-sm text-dim">Set up billing for your SaaS in a few minutes.</p>
 
-      <form onSubmit={submit} className="mt-8 space-y-4" noValidate>
-        <TextField label="Full name" autoComplete="name" value={form.name} onChange={set('name')} error={errors.name} />
-        <TextField label="Work email" type="email" autoComplete="email" value={form.email} onChange={set('email')} error={errors.email} />
-        <TextField
-          label="Password"
-          type="password"
-          autoComplete="new-password"
-          value={form.password}
-          onChange={set('password')}
-          error={errors.password}
-          hint="At least 10 characters. A passphrase works well."
-        />
-        {errors.form && (
-          <p role="alert" className="rounded-lg border border-negative/30 bg-negative/10 px-3 py-2 text-sm text-negative">
-            {errors.form}
-          </p>
-        )}
-        <Button type="submit" size="lg" className="w-full" loading={busy}>
-          Create account
-        </Button>
-      </form>
+      {privyEnabled && (
+        <div className="mt-8 space-y-3">
+          <PrivyAuthButtonLazy mode="login" />
+          <p className="text-center text-xs text-faint">Sign up or return with email OTP, Google, X, or an external wallet.</p>
+          {!showLegacy && (
+            <Button type="button" variant="ghost" className="w-full" onClick={() => setShowLegacy(true)}>
+              Create an account with the legacy password flow
+            </Button>
+          )}
+        </div>
+      )}
 
-      <OrDivider />
-      <WalletEntry />
+      {(!privyEnabled || showLegacy) && (
+        <>
+          {privyEnabled && (
+            <Button type="button" variant="ghost" className="mt-3 w-full" onClick={() => setShowLegacy(false)}>
+              Back to Privy sign-in
+            </Button>
+          )}
+          <OrDivider />
+          <form onSubmit={submit} className="mt-4 space-y-4" noValidate>
+            <TextField label="Full name" autoComplete="name" value={form.name} onChange={set('name')} error={errors.name} />
+            <TextField label="Work email" type="email" autoComplete="email" value={form.email} onChange={set('email')} error={errors.email} />
+            <TextField label="Password" type="password" autoComplete="new-password" value={form.password} onChange={set('password')} error={errors.password} hint="At least 10 characters. A passphrase works well." />
+            {errors.form && <p role="alert" className="rounded-lg border border-negative/30 bg-negative/10 px-3 py-2 text-sm text-negative">{errors.form}</p>}
+            <Button type="submit" size="lg" className="w-full" loading={busy}>Create account</Button>
+          </form>
+          <OrDivider />
+          <WalletEntry />
+        </>
+      )}
 
       <p className="mt-8 text-center text-sm text-dim">
         Already have an account?{' '}
-        <Link to="/login" className="font-medium text-cyan hover:text-cyan-soft">
-          Log in
-        </Link>
+        <Link to="/login" className="font-medium text-cyan hover:text-cyan-soft">Log in</Link>
       </p>
     </AuthLayout>
   )

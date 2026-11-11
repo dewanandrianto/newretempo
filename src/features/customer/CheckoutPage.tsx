@@ -55,11 +55,11 @@ function Checkout({checkout:c,token,invoice}:{checkout:ChainCheckout;token:strin
   </Card>
   <Card className="h-fit min-w-0 space-y-5 p-6">
    <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-lg font-semibold text-fg">Review & subscribe</h2><WalletButton compact /></div>
-   <p className="text-xs text-dim">{c.configuration.mode==='local'?'Local Arc simulation — not mainnet funds.':'Arc Testnet · chain 5042002'}</p>
+   <p className="text-xs text-dim">{c.configuration.mode==='local'?'Local preview. No payment is processed.':'Configured payment network'}</p>
    {pauseMessage&&<p role="status" className="rounded-lg border border-line p-3 text-sm text-caution">{pauseMessage}</p>}
    <dl className="flex justify-between gap-3 text-sm"><dt className="text-dim">Due today</dt><dd className="num break-all text-fg">{displayUsdc(due)} USDC + gas</dd></dl>
    {availability&&availability!==pauseMessage&&<p role="status" className="rounded-lg border border-line p-3 text-sm text-caution">{availability}</p>}
-   {wrongNetwork&&<p role="alert" className="text-sm text-caution">Wrong network. Switch to Arc Testnet (5042002), then ensure the wallet uses the same RPC world shown here.</p>}
+   {wrongNetwork&&<p role="alert" className="text-sm text-caution">Wrong network. Switch your wallet to the network used for this invoice before continuing.</p>}
    {short&&<p role="alert" className="text-sm text-caution">Insufficient USDC. Add funds for the exact payment and native USDC gas.</p>}
    {canReadChain&&windows.isPending&&<p className="text-sm text-dim">Loading live contract terms…</p>}
    {subscription.isError&&<p role="alert" className="text-sm text-caution">Subscription state could not be verified. <button className="underline" onClick={()=>void subscription.refetch()}>Retry state</button></p>}

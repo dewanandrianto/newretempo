@@ -4,7 +4,7 @@ import { Coins, LockKeyhole, Repeat } from 'lucide-react'
 import { Logo } from '@/components/ui/Logo'
 
 const points = [
-  { icon: Coins, title: 'Settle in USDC', body: 'One stable asset for pricing, payment and gas on Arc.' },
+  { icon: Coins, title: 'Settle in USDC', body: 'One stable asset for clear pricing and subscription billing.' },
   { icon: LockKeyhole, title: 'Escrow by design', body: 'Hold funds until the release window closes.' },
   { icon: Repeat, title: 'Recurring, programmable', body: 'Subscriptions you can drive from your own product.' },
 ]
@@ -18,9 +18,9 @@ export function AuthLayout({ children, wide = false }: { children: ReactNode; wi
         <div className="relative flex h-full flex-col justify-between p-12">
           <Logo />
           <div>
-            <p className="eyebrow">Onchain Subscription &amp; Payment Infrastructure</p>
+            <p className="eyebrow">Subscription billing infrastructure</p>
             <h2 className="display mt-4 max-w-md text-4xl leading-[1.1] font-semibold text-fg">
-              Recurring revenue, settled on Arc.
+              Recurring revenue, made simple.
             </h2>
             <ul className="mt-10 space-y-6">
               {points.map((p) => (
@@ -36,7 +36,7 @@ export function AuthLayout({ children, wide = false }: { children: ReactNode; wi
               ))}
             </ul>
           </div>
-          <p className="text-xs text-faint">Phase 1 preview. Arc Testnet only. No mainnet funds are ever touched.</p>
+          <p className="text-xs text-faint">Preview mode. Payment and settlement features are currently unavailable.</p>
         </div>
       </aside>
       <main className="flex flex-col px-5 py-8 sm:px-10">

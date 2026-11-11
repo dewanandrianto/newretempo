@@ -18,6 +18,7 @@ import { WalletButton, useUsdcBalance } from '@/components/wallet/WalletButton'
 import { ConfirmAction, CreateDialog, useMerchantMutation } from '../actions'
 import { FormFooter } from '../forms/shared'
 import { MembersCard } from '../MembersCard'
+import { PrivyLinkPanel } from '@/features/auth/PrivyLinkPanel'
 
 function ProfileCard() {
   const { session, refresh } = useAuth()
@@ -155,6 +156,7 @@ export default function SettingsPage() {
         <div className="xl:col-span-2">
           <MembersCard />
         </div>
+        <PrivyLinkPanel />
         <Card>
           <CardHeader title="Security" />
           <CardBody className="space-y-4">

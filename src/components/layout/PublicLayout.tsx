@@ -92,7 +92,7 @@ function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(2,1fr)]">
           <div>
             <Logo />
-            <p className="mt-4 max-w-xs text-sm text-dim">Onchain Subscription &amp; Payment Infrastructure. USDC billing for SaaS, built for Arc.</p>
+            <p className="mt-4 max-w-xs text-sm text-dim">Subscription billing infrastructure for SaaS, with clear pricing and customer payment flows.</p>
             <p className="mono mt-4 text-xs text-faint">retempo.xyz</p>
           </div>
           {footerColumns.map((col) => (
@@ -121,7 +121,7 @@ function Footer() {
           ))}
         </div>
         <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 text-xs text-faint sm:flex-row sm:justify-between">
-          <p>&copy; 2026 RETEMPO. Phase 1 interface preview on Arc Testnet. Payment and settlement actions remain paused.</p>
+          <p>&copy; 2026 RETEMPO. Preview environment. Payment and settlement features are currently unavailable.</p>
         </div>
       </div>
     </footer>

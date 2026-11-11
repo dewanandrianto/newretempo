@@ -1,5 +1,5 @@
 import type { Membership, Organization, Session } from '@shared/types'
-import { ApiError, get, post } from '@/services/api/client'
+import { ApiError, get, post, postWithBearer } from '@/services/api/client'
 import type { AuthService } from './types'
 
 interface AccountResponse {
@@ -46,6 +46,16 @@ export const apiAuthService: AuthService = {
   async logIn(input) {
     return toSession(await post<AccountResponse>('/auth/login', input))
   },
+
+  async logInWithPrivy(accessToken) {
+    return toSession(await postWithBearer<AccountResponse>('/auth/privy/login', accessToken))
+  },
+
+  async linkPrivyAccount(accessToken) {
+    await postWithBearer('/auth/privy/link', accessToken)
+  },
+
+  privyLinkStatus: () => get<{ enabled: boolean; linked: boolean }>('/auth/privy/status'),
 
   async signOut() {
     await post('/auth/logout')

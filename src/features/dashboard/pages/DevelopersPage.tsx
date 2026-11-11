@@ -52,14 +52,14 @@ export default function DevelopersPage() {
         )}
 
         <Card>
-          <CardHeader title="Network" description="Verified facts for the chain RETEMPO targets first" />
+          <CardHeader title="Network" description="Verified connection settings for this workspace" />
           <CardBody>
             <dl className="grid gap-4 text-sm sm:grid-cols-2 xl:grid-cols-4">
               {[
-                ['Network', 'Arc Testnet'],
+                ['Network', 'Configured network'],
                 ['Chain ID', String(chain.chainId)],
                 ['Gas and payment asset', 'USDC'],
-                ['RPC', 'https://rpc.blockdaemon.testnet.arc.io'],
+                ['Connection', 'Managed by RETEMPO'],
               ].map(([k, v]) => (
                 <div key={k}>
                   <dt className="text-xs text-faint">{k}</dt>

@@ -7,6 +7,7 @@ import { registerChain } from './tracing'
 const arcRpcUrl = 'https://rpc.blockdaemon.testnet.arc.io'
 const configuredArcTestnet = {
   ...arcTestnet,
+  name: 'Configured network',
   rpcUrls: { ...arcTestnet.rpcUrls, default: { ...arcTestnet.rpcUrls.default, http: [arcRpcUrl] } },
 }
 registerChain(arcTestnet.id, arcRpcUrl)

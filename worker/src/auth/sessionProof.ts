@@ -4,4 +4,5 @@
  */
 export type PasswordSessionProof = Readonly<{ method: 'password'; userId: string; passwordHash: string }>
 export type SiweSessionProof = Readonly<{ method: 'siwe'; userId: string; passwordHash: string | null; address: `0x${string}` }>
-export type SessionProof = PasswordSessionProof | SiweSessionProof
+export type PrivySessionProof = Readonly<{ method: 'privy'; userId: string; privyUserId: string }>
+export type SessionProof = PasswordSessionProof | SiweSessionProof | PrivySessionProof

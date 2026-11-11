@@ -8,6 +8,9 @@ export interface AuthService {
   loadSession(): Promise<Session | null>
   signUp(input: SignUpInput): Promise<{ session: Session; verificationEmailSent: boolean }>
   logIn(input: LoginInput): Promise<Session>
+  logInWithPrivy(accessToken: string): Promise<Session>
+  linkPrivyAccount(accessToken: string): Promise<void>
+  privyLinkStatus(): Promise<{ enabled: boolean; linked: boolean }>
   signOut(): Promise<void>
   /** Step 1 of Sign-In with Ethereum: the server returns the exact message to sign. */
   requestWalletChallenge(address: `0x${string}`): Promise<{ message: string }>

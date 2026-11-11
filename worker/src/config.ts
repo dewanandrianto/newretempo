@@ -23,6 +23,9 @@ export function validateBindings(env: WorkerBindings): void {
   if (!['development', 'test', 'production'].includes(env.APP_ENV)) unsafe()
   if (!env.SESSION_SECRET || env.SESSION_SECRET.length < 32) unsafe()
   if (!env.SIWE_DOMAIN || !env.SIWE_URI || !/^\d+$/.test(env.SIWE_CHAIN_ID) || !Number.isSafeInteger(Number(env.SIWE_CHAIN_ID)) || Number(env.SIWE_CHAIN_ID) <= 0) unsafe()
+  if (env.PRIVY_AUTH_ENABLED !== undefined && env.PRIVY_AUTH_ENABLED !== 'true' && env.PRIVY_AUTH_ENABLED !== 'false') unsafe()
+  if (env.PRIVY_TEST_VERIFICATION_KEY && env.APP_ENV !== 'test') unsafe()
+  if (env.PRIVY_AUTH_ENABLED === 'true' && (!env.PRIVY_APP_ID || !/^[a-z0-9]{10,80}$/.test(env.PRIVY_APP_ID) || !env.PRIVY_APP_SECRET || env.PRIVY_APP_SECRET.length < 16)) unsafe()
   if (env.APP_ENV !== 'production') return
   // Generate 32 random bytes encoded as lowercase hex; shape checks do not certify entropy.
   if (!/^[0-9a-f]{64}$/.test(env.SESSION_SECRET) || new Set(env.SESSION_SECRET).size < 8 || /^(.{1,32})\1+$/.test(env.SESSION_SECRET)) unsafe()

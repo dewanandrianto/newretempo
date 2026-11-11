@@ -17,20 +17,23 @@ interface RequestOptions {
   body?: unknown
   /** Required by the server for payment, escrow and invoice creation so retries are safe. */
   idempotencyKey?: string
+  /** Short-lived Privy access token, used only for this same-origin auth handoff request. */
+  authorization?: string
   signal?: AbortSignal
 }
 
 export const newIdempotencyKey = () => crypto.randomUUID()
 
 /**
- * Same-origin JSON client. The session lives in an HttpOnly cookie the browser attaches by
- * itself, so no token ever passes through JavaScript. `X-Requested-With` is the CSRF header
- * the server requires on every state-changing request.
+ * Same-origin JSON client. RETEMPO sessions stay in HttpOnly cookies. A Privy access token may
+ * be passed in memory for one login/link handoff request; it is not persisted. `X-Requested-With`
+ * is the CSRF header the server requires on every state-changing request.
  */
 export async function api<T = unknown>(method: string, path: string, options: RequestOptions = {}): Promise<T> {
   const headers: Record<string, string> = { Accept: 'application/json', 'X-Requested-With': 'retempo' }
   if (options.body !== undefined) headers['Content-Type'] = 'application/json'
   if (options.idempotencyKey) headers['Idempotency-Key'] = options.idempotencyKey
+  if (options.authorization) headers.Authorization = options.authorization
 
   let res: Response
   try {
@@ -64,6 +67,7 @@ export async function api<T = unknown>(method: string, path: string, options: Re
 
 export const get = <T>(path: string) => api<T>('GET', path)
 export const post = <T>(path: string, body?: unknown, idempotencyKey?: string) => api<T>('POST', path, { body: body ?? {}, idempotencyKey })
+export const postWithBearer = <T>(path: string, accessToken: string) => api<T>('POST', path, { authorization: `Bearer ${accessToken}` })
 export const patch = <T>(path: string, body: unknown) => api<T>('PATCH', path, { body })
 export const del = (path: string) => api<void>('DELETE', path)
 

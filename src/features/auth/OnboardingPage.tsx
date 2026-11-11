@@ -230,7 +230,7 @@ export default function OnboardingPage() {
                   </div>
                 ))}
               </dl>
-              <Notice title="Testnet workspace">Your workspace targets Arc Testnet. No mainnet connection is made.</Notice>
+              <Notice title="Preview workspace">Payment and settlement features are currently unavailable in this preview.</Notice>
               {error && (
                 <p role="alert" className="text-sm text-negative">
                   {error}

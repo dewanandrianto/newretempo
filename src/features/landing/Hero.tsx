@@ -13,7 +13,7 @@ function HeroPreview() {
             <span className="size-2.5 rounded-full bg-white/10" />
           </div>
           <span className="rounded-full border border-line-strong bg-raised px-2.5 py-1 text-xs text-dim">
-            Arc Testnet · chain 5042002
+            Preview environment
           </span>
         </div>
         <div className="rounded-2xl border border-line bg-midnight/60 p-6 sm:p-8">
@@ -25,13 +25,13 @@ function HeroPreview() {
               <p className="eyebrow">Billing activity</p>
               <h2 className="display mt-2 text-xl font-semibold text-fg">No public activity data</h2>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-dim">
-                This preview starts empty. Business data appears only when it comes from real account records and verified Arc Testnet events.
+                This preview starts empty. Business data appears only when it comes from real account records and verified payment activity.
               </p>
             </div>
           </div>
           <div className="mt-6 rounded-xl border border-caution/25 bg-caution/5 p-4">
             <p className="text-sm font-medium text-fg">Payments and settlement are disabled</p>
-            <p className="mt-1 text-sm text-dim">This beta is limited to Arc Testnet. No mainnet or user funds are used.</p>
+            <p className="mt-1 text-sm text-dim">Payments and settlements are not processed in this preview.</p>
           </div>
         </div>
       </div>
@@ -46,16 +46,16 @@ export function Hero() {
       <div className="mx-auto max-w-4xl text-center">
         <div className="animate-rise inline-flex items-center gap-2 rounded-full border border-line-strong bg-raised/60 px-3.5 py-1.5 text-xs text-dim">
           <span className="size-1.5 rounded-full bg-cyan" />
-          Phase 1 preview · Arc Testnet · USDC
+          Billing preview · USDC
         </div>
         <h1
           className="display animate-rise mt-7 text-[2.6rem] leading-[1.04] font-semibold text-fg sm:text-6xl lg:text-7xl"
           style={{ animationDelay: '0.05s' }}
         >
-          Explore subscription billing on <span className="bg-gradient-to-r from-electric-soft to-cyan bg-clip-text text-transparent">Arc Testnet</span>.
+          Explore subscription billing, built for SaaS.
         </h1>
         <p className="animate-rise mx-auto mt-6 max-w-2xl text-lg text-dim" style={{ animationDelay: '0.1s' }}>
-          RETEMPO provides a testnet-only billing interface for SaaS teams on Arc Testnet. Payment and settlement actions remain disabled; the app shows only real account records and verified Arc Testnet activity, or an empty state.
+          RETEMPO helps SaaS teams manage recurring billing. Payment and settlement actions are currently unavailable; activity appears only when backed by real account records and verified payment data.
         </p>
         <div className="animate-rise mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row" style={{ animationDelay: '0.15s' }}>
           <LinkButton to="/signup" size="lg" icon={undefined} className="w-full sm:w-auto">

@@ -10,7 +10,7 @@ export function checkoutActionsPaused(configuration: ChainConfiguration): boolea
 export function checkoutPauseMessage(configuration: ChainConfiguration): string | null {
  if (!configuration.configured) return null
  const pause = configuration as ChainConfiguration & ContractPauseState
- if (pause.managerPaused === true || pause.escrowPaused === true) return 'Verified Arc Testnet contracts are paused; payments and on-chain actions are unavailable.'
+ if (pause.managerPaused === true || pause.escrowPaused === true) return 'Verified payment contracts are paused; payments and on-chain actions are unavailable.'
  if (pause.managerPaused !== false || pause.escrowPaused !== false) return 'Payments and on-chain actions are disabled because the live contract pause state could not be verified.'
  return null
 }

@@ -3,7 +3,7 @@ import type { Hono } from 'hono'
 export interface AuthContext {
   sessionId: string
   userId: string
-  method: 'password' | 'siwe'
+  method: 'password' | 'siwe' | 'privy'
   user: { id: string; email: string | null; emailVerified: boolean; displayName: string }
 }
 
@@ -26,6 +26,13 @@ export interface WorkerBindings {
   MAILER?: Fetcher
   /** Resend credential supplied only through Worker secret storage, never plaintext vars. */
   RESEND_API_KEY?: string
+  /** Public Privy Testnet app ID. The app secret is a Worker secret and never exposed to the client. */
+  PRIVY_APP_ID?: string
+  PRIVY_APP_SECRET?: string
+  /** Must remain false until the reviewed Testnet rollout is approved. Missing means disabled. */
+  PRIVY_AUTH_ENABLED?: string
+  /** Synthetic-key-only verifier for isolated tests; production config rejects this binding. */
+  PRIVY_TEST_VERIFICATION_KEY?: string
 }
 
 export interface AuthRequest {

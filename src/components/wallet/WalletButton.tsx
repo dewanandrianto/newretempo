@@ -39,7 +39,7 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
               icon={<AlertTriangle className="size-4 text-caution" />}
               onClick={() => switchChain({ chainId: network.chainId })}
             >
-              Switch to {network.name}
+              Switch to the configured network
             </Button>
           )
         }
