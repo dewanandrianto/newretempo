@@ -4,27 +4,12 @@ import { blockchain } from '@/services/blockchain'
 import { buildAddressExplorerUrl, requireChain } from '@/onchain-facts'
 import { Button } from '@/components/ui/Button'
 import { Card, CardBody, CardHeader } from '@/components/ui/Card'
-import { CodeBlock } from '@/components/ui/CodeBlock'
 import { EmptyState } from '@/components/ui/States'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { QueryBoundary } from '@/components/ui/QueryBoundary'
-import { DemoBadge } from '@/components/ui/Badge'
 import { shortAddress } from '@/lib/format'
 import { useCan } from '@/features/auth/permissions'
 import { ApiKeysCard } from '../ApiKeysCard'
-
-const preview = `// Preview of the planned RETEMPO SDK. Not published yet.
-import { Retempo } from '@retempo/sdk'
-
-const retempo = new Retempo({ apiKey: process.env.RETEMPO_API_KEY })
-
-const session = await retempo.checkout.create({
-  plan: 'plan_growth',
-  customerEmail: 'billing@example.com',
-  successUrl: 'https://yourapp.com/welcome',
-})
-
-// Redirect the customer to session.url to pay in USDC on Arc.`
 
 export default function DevelopersPage() {
   const canManage = useCan('apiKeys')
@@ -71,10 +56,10 @@ export default function DevelopersPage() {
           <CardBody>
             <dl className="grid gap-4 text-sm sm:grid-cols-2 xl:grid-cols-4">
               {[
-                ['Network', chain.name],
+                ['Network', 'Arc Testnet'],
                 ['Chain ID', String(chain.chainId)],
                 ['Gas and payment asset', 'USDC'],
-                ['RPC', chain.rpcUrls[0]],
+                ['RPC', 'https://rpc.blockdaemon.testnet.arc.io'],
               ].map(([k, v]) => (
                 <div key={k}>
                   <dt className="text-xs text-faint">{k}</dt>
@@ -97,9 +82,9 @@ export default function DevelopersPage() {
         </Card>
 
         <Card>
-          <CardHeader title="Integration preview" action={<DemoBadge />} description="How checkout creation is planned to look. This SDK does not exist yet." />
+          <CardHeader title="SDK examples" description="No SDK is published in this beta." />
           <CardBody>
-            <CodeBlock code={preview} language="typescript" />
+            <EmptyState title="No integration examples available" description="Retempo SDK examples and webhook delivery are unavailable in this beta." />
           </CardBody>
         </Card>
       </div>

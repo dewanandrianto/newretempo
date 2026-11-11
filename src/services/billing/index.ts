@@ -2,8 +2,8 @@ import { liveBillingService } from './liveBillingService'
 import type { BillingService } from './types'
 
 /**
- * Single injection point for billing data. Merchant records are read from the backend;
- * analytics, the ledger and disputes remain labeled demo data until chain data is indexed.
+ * Single injection point for billing data. Merchant records come from the live backend;
+ * analytics, ledger entries, and disputes are derived from verified chain data.
  */
 export const billing: BillingService = liveBillingService
 

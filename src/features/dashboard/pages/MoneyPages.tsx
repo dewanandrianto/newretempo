@@ -172,7 +172,7 @@ export function PaymentsPage() {
       ]}
       footer={
         <Notice title="Verified settlement" className="mt-4">
-          Payment records remain pending until a successful Arc transaction is independently indexed. Creating a record does not move funds.
+          Payment records remain pending until a successful Arc Testnet transaction is independently indexed. Creating a record does not move funds.
         </Notice>
       }
     />

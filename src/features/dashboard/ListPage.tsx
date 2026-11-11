@@ -3,7 +3,6 @@ import type { UseQueryResult } from '@tanstack/react-query'
 import type { Sourced } from '@/services/billing'
 import { Card } from '@/components/ui/Card'
 import { DataTable, type Column } from '@/components/ui/DataTable'
-import { DemoNotice } from '@/components/ui/Notice'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { QueryBoundary } from '@/components/ui/QueryBoundary'
 import { Segmented } from '@/components/ui/Segmented'
@@ -28,16 +27,14 @@ interface ListPageProps<T> {
   footer?: ReactNode
 }
 
-/** Shared list screen. The demo badge and notice only appear when the rows are demo data. */
+/** Shared list screen for live account records, with an empty state when no rows exist. */
 export function ListPage<T>({ title, description, query, columns, rowKey, empty, actions, filters, onRowClick, footer }: ListPageProps<T>) {
   const [filter, setFilter] = useState('all')
   const active = useMemo(() => filters?.find((f) => f.value === filter), [filters, filter])
-  const isDemo = query.data?.source === 'demo'
 
   return (
     <>
-      <PageHeader title={title} description={description} demo={isDemo} actions={actions} />
-      {isDemo && <DemoNotice />}
+      <PageHeader title={title} description={description} actions={actions} />
       <Card className="overflow-hidden">
         <QueryBoundary query={query} isEmpty={(rows) => rows.length === 0} empty={empty}>
           {(rows) => {

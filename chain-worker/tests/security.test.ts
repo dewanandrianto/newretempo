@@ -126,15 +126,22 @@ it('persists fail-stop on canonical mismatch even if RPC later returns the old f
   }), b, f.transport)).status).toBe(503);
 });
 it('persists fail-stop when a scanned log disagrees with its canonical block',async()=>{const f=new Fixture(),b=e();f.logs=[{...paymentLog(hash('s'),hash('p')),blockHash:hash('not-canonical')}];expect((await handle(req('sync'),b,f.transport)).status).toBe(503);expect((await b.CHAIN_DB.prepare('SELECT halted FROM runtime').first<{halted:string}>())?.halted).toBeTruthy();f.logs=[];expect((await handle(req('sync'),b,f.transport)).status).toBe(503)})
-it('bounds scans to 32 blocks even when the RPC head is far ahead', async () => {
+it('bounds scans to 256 blocks even when the RPC head is far ahead', async () => {
   const f = new Fixture(),
     b = e();
   f.head = '0x100000';
-  const r = await handle(req('sync'), b, f.transport);
+  const ranges: string[] = [];
+  const transport: typeof fetch = async (input, init) => {
+    const q = JSON.parse(String(init?.body));
+    if (q.method === 'eth_getLogs') ranges.push(q.params[0].toBlock);
+    return f.transport(input, init);
+  };
+  const r = await handle(req('sync'), b, transport);
   expect(r.status).toBe(200);
+  expect(ranges).toEqual(['0x100']);
   expect(await r.json()).toMatchObject({
     cursor: {
-      blockNumber: '32'
+      blockNumber: '256'
     }
   });
 });

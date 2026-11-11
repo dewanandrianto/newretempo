@@ -26,5 +26,9 @@
     "database_name": "retempo-prod-testnet",
     "database_id": "edf58fc2-a4c1-4b8f-bab8-2e5cad51d8ce",
     "migrations_dir": "worker/migrations"
+  }],
+  "services": [{
+    "binding": "CHAIN",
+    "service": "retempo-chain"
   }]
 }

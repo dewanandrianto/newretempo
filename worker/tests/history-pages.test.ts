@@ -5,6 +5,7 @@ import { hmac, randomToken } from '../src/auth/crypto'
 import { disabledConfiguration } from '../src/chain/client'
 import type { WorkerBindings } from '../src/types'
 const bindings=env as unknown as WorkerBindings
+const readOnlyConfiguration={...disabledConfiguration,configured:true,mode:'testnet' as const,manager:'0x3333333333333333333333333333333333333333',escrow:'0x4444444444444444444444444444444444444444',managerPaused:true,escrowPaused:true}
 async function fixture(){
  const user=crypto.randomUUID(),org=crypto.randomUUID(),token=randomToken(),wallet='0x'+randomToken(20),walletId=crypto.randomUUID()
  await bindings.DB.batch([
@@ -19,7 +20,7 @@ async function fixture(){
   calls++
   const path=new URL(request.url).pathname,body=await request.json() as Record<string,unknown>
   if(path==='/v1/customer-snapshot')expect(body).toMatchObject({orgIds:[],wallets:[wallet]})
-  return Response.json({configuration:disabledConfiguration,cursor:null,bindings:[],events:[],projections:[],pagination:{snapshotId:'fixture',nextToken:null,complete:true,after:0,through:0,highWater:0}})
+  return Response.json({configuration:readOnlyConfiguration,cursor:null,bindings:[],events:[],projections:[],pagination:{snapshotId:'fixture',nextToken:null,complete:true,after:0,through:0,highWater:0}})
  }} as Fetcher
  const request=(path:string)=>createWorkerApp().request('https://app.test/api/'+path,{headers:{Cookie:`retempo_session=${token}`}},{...bindings,CHAIN:service})
  return {user,org,wallet,walletId,request,calls:()=>calls}

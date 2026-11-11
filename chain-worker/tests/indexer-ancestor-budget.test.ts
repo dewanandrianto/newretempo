@@ -3,7 +3,7 @@ import { expect, it } from 'vitest';
 import { handle, type Env } from '../src/service';
 import { Fixture, settings, hash, paymentLog } from './fixtures';
 const request = () => new Request('https://private/v1/sync', {method:'POST',body:'{}'});
-it('reserves the final ancestor read while shrinking a sparse advancing scan inside 40 calls', async () => {
+ it('reserves the final ancestor read while shrinking a sparse advancing scan inside 42 calls', async () => {
   const e = {...env,...settings} as unknown as Env, f = new Fixture();
   expect((await handle(request(),e,f.transport)).status).toBe(200);
   f.head='0x20';
@@ -18,7 +18,7 @@ it('reserves the final ancestor read while shrinking a sparse advancing scan ins
   };
   const response=await handle(request(),e,transport);const body=await response.json() as {cursor:{blockNumber:string};processedEvents:number};
   console.info(JSON.stringify({fixture:'advancing-sparse-ancestor-reservation',rpcCalls:Number(response.headers.get('x-chain-rpc-calls')),ranges,body,oldCursorReads:blockReads.filter(n=>n==='0x1').length,lastRpc:methods.at(-1),lastBlockRead:blockReads.at(-1)}));
-  expect(response.status).toBe(200);expect(Number(response.headers.get('x-chain-rpc-calls'))).toBe(30);
+  expect(response.status).toBe(200);expect(Number(response.headers.get('x-chain-rpc-calls'))).toBe(32);
   expect(body.processedEvents).toBe(4);expect(body.cursor.blockNumber).toBe('5');expect(ranges).toEqual(['0x20','0x11','0x9','0x5']);
   expect(blockReads.filter(n=>n==='0x1')).toHaveLength(2);
   expect(methods.at(-1)).toBe('eth_getBlockByNumber');expect(blockReads.at(-1)).toBe('0x1');

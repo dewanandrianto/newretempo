@@ -16,12 +16,12 @@ it('distinguishes and cancels byte overflow, without confusing shared-budget exh
   const rpc = new Rpc(settings.ARC_RPC_URL, async () => oversized(() => { canceled++; }));
   await expect(rpc.call('eth_getLogs', [])).rejects.toBeInstanceOf(OversizedRpcResponseError);
   expect(canceled).toBe(1);
-  expect(rpc.remaining).toBe(39);
-  const budget = new Rpc(settings.ARC_RPC_URL, async () => { throw Error('must not fetch'); }, { calls: 40 });
+  expect(rpc.remaining).toBe(41);
+  const budget = new Rpc(settings.ARC_RPC_URL, async () => { throw Error('must not fetch'); }, { calls: 42 });
   await expect(budget.call('eth_getLogs', [])).rejects.toBeInstanceOf(CapacityError);
 });
 it('refuses a single oversized block explicitly, canceling each bounded prefix and committing nothing', async () => {
-  const e = environment(), f = new Fixture(); f.head = '0x20';
+  const e = environment(), f = new Fixture(); f.head = '0x1000';
   let canceled = 0; const ranges: string[] = [];
   const transport: typeof fetch = async (input, init) => {
     const q = JSON.parse(String(init?.body));
@@ -31,9 +31,9 @@ it('refuses a single oversized block explicitly, canceling each bounded prefix a
   const response = await handle(request(), e, transport);
   expect(response.status).toBe(503);
   expect(await response.json()).toMatchObject({ error: expect.stringContaining('Single block response capacity exceeded') });
-  expect(ranges).toEqual(['0x20', '0x10', '0x8', '0x4', '0x2', '0x1']);
-  expect(canceled).toBe(6);
-  expect(Number(response.headers.get('x-chain-rpc-calls'))).toBe(17);
+  expect(ranges).toEqual(['0x100', '0x80', '0x40', '0x20', '0x10', '0x8', '0x4', '0x2', '0x1']);
+  expect(canceled).toBe(9);
+  expect(Number(response.headers.get('x-chain-rpc-calls'))).toBe(22);
   expect(await e.CHAIN_DB.prepare('SELECT cursor,halted,lease FROM runtime').first()).toMatchObject({cursor:null,halted:null,lease:null});
   expect(await e.CHAIN_DB.prepare('SELECT COUNT(*) AS n FROM events').first('n')).toBe(0);
 });

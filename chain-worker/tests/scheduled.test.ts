@@ -31,7 +31,7 @@ it('uses bounded atomic sync from the scheduled entry point and sanitizes failur
  }finally{log.mockRestore()}
 });
 it('requires production identity pins even when the cron is explicitly enabled',async()=>{
- const f=new Fixture(),e={...env,...settings,APP_ENV:'production',ARC_RPC_URL:'https://rpc.mainnet.arc.io',ARC_SYNC_CRON_ENABLED:'true'} as unknown as Env;
+ const f=new Fixture(),e={...env,...settings,APP_ENV:'production',ARC_RPC_URL:'https://rpc.blockdaemon.testnet.arc.io',ARC_SYNC_CRON_ENABLED:'true'} as unknown as Env;
  const log=vi.spyOn(console,'error').mockImplementation(()=>{});
  try{await run(e,f.transport);expect(f.calls).toHaveLength(0);expect(log).toHaveBeenCalledWith('Retempo scheduled chain sync failed',{code:'verification_failed'});}finally{log.mockRestore()}
 });

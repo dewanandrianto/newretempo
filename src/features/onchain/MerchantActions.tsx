@@ -11,7 +11,7 @@ import { Modal } from '@/components/ui/Modal'
 import { WalletButton } from '@/components/wallet/WalletButton'
 import { chainApi, displayUsdc } from '@/services/blockchain'
 import { ContractAction } from './ContractAction'
-import { useRetempoTransactions } from './useRetempoTransactions'
+import { chainActionPauseMessage, chainActionsPaused, useRetempoTransactions } from './useRetempoTransactions'
 import { assertPreparedMerchant } from './merchantModel'
 
 export const merchantInput='w-full min-w-0 rounded-lg border border-line bg-midnight p-3 text-sm text-fg'
@@ -23,12 +23,13 @@ export function useMerchantChain() {
 }
 function PublishPlanForm({plan}:{plan:Plan}) {
  const chain=useMerchantChain(),{address}=useAccount(),c=chain.configuration.data
+ const pauseMessage=chainActionPauseMessage(c)
  const tx=useRetempoTransactions(c,`publish:${plan.id}`,chain.loadSnapshot)
  const [payout,setPayout]=useState(address??''),[arbitrator,setArbitrator]=useState(''),[refund,setRefund]=useState(false)
  const [prepared,setPrepared]=useState<ChainPlanPreparation>(),[error,setError]=useState<string>(),[busy,setBusy]=useState(false),[consent,setConsent]=useState(false)
  const published=chain.snapshot.data?.projections.some(p=>p.kind==='plan'&&p.recordId===plan.id&&p.state==='active')
  const prepare=async()=>{
-  if(!chain.orgId||!address||!c||!tx.verifiedWallet)return
+  if(!chain.orgId||!address||!c||chainActionsPaused(c)||!tx.verifiedWallet)return
   setBusy(true);setError(undefined)
   try {
    await tx.client().assertWallet()
@@ -41,17 +42,18 @@ function PublishPlanForm({plan}:{plan:Plan}) {
  return <div className="space-y-4" data-testid={`publish-plan-${plan.id}`}>
   <WalletButton compact />
   <p className="text-xs text-dim">{c.mode==='local'?'Local Arc simulation — not mainnet funds.':'Arc Testnet · chain 5042002'}</p>
+  {pauseMessage&&<p role="status" className="text-sm text-caution">{pauseMessage}</p>}
   {published?<p role="status" className="text-sm text-cyan">This plan is published in the verified backend.</p>:<>
    {!prepared?<>
     <label className="block space-y-2 text-sm text-dim"><span>Payout address</span><input className={merchantInput} value={payout} onChange={e=>setPayout(e.target.value)} /></label>
     {plan.escrowDays>0&&<><label className="block space-y-2 text-sm text-dim"><span>Arbitrator address</span><input className={merchantInput} value={arbitrator} onChange={e=>setArbitrator(e.target.value)} /></label><label className="flex gap-3 text-sm text-dim"><input type="checkbox" checked={refund} onChange={e=>setRefund(e.target.checked)} />Allow customer unvested refunds</label></>}
     {!tx.verifiedWallet&&<Button variant="secondary" disabled={!address} loading={tx.busy} onClick={()=>void tx.signIn()}>Verify merchant wallet</Button>}
-    <Button loading={busy} disabled={!tx.verifiedWallet||!isAddress(payout)||payout===zeroAddress||(plan.escrowDays>0&&(!isAddress(arbitrator)||arbitrator===zeroAddress))} onClick={()=>void prepare()}>Prepare plan publication</Button>
+    <Button loading={busy} disabled={chainActionsPaused(c)||!tx.verifiedWallet||!isAddress(payout)||payout===zeroAddress||(plan.escrowDays>0&&(!isAddress(arbitrator)||arbitrator===zeroAddress))} onClick={()=>void prepare()}>Prepare plan publication</Button>
    </>:<>
     <p className="break-all text-sm text-dim">Publish {displayUsdc(prepared.amount)} USDC every {prepared.intervalSeconds} seconds; trial {prepared.trialSeconds} seconds; grace {prepared.graceSeconds} seconds; linear vesting {prepared.vestDuration} seconds.</p>
     <p className="break-all text-xs text-dim">Merchant: {prepared.merchant}<br />Payout: {prepared.payout}<br />Arbitrator: {prepared.arbitrator}<br />Customer unvested refunds: {prepared.customerMayRefundUnvested?'Enabled':'Disabled'}</p>
     <label className="flex gap-3 text-sm text-dim"><input type="checkbox" checked={consent} onChange={e=>setConsent(e.target.checked)} />I reviewed these exact immutable plan terms.</label>
-    <ContractAction configuration={c} operationKey={`publish:${plan.id}`} label="Publish plan onchain" disabled={!consent||address?.toLowerCase()!==prepared.merchant.toLowerCase()} snapshot={chain.loadSnapshot} target={{kind:'plan',key:prepared.planKey,states:['active'],eventNames:['PlanCreated']}} action={(sdk,write)=>{assertPreparedMerchant(prepared,c,sdk.io.account,plan.id);return sdk.publishPlan(prepared,write)}} />
+    <ContractAction configuration={c} operationKey={`publish:${plan.id}`} label="Publish plan onchain" disabled={chainActionsPaused(c)||!consent||address?.toLowerCase()!==prepared.merchant.toLowerCase()} snapshot={chain.loadSnapshot} target={{kind:'plan',key:prepared.planKey,states:['active'],eventNames:['PlanCreated']}} action={(sdk,write)=>{assertPreparedMerchant(prepared,c,sdk.io.account,plan.id);return sdk.publishPlan(prepared,write)}} />
    </>}
   </>}
   {(error||tx.error)&&<p role="alert" className="text-sm text-caution">{error??tx.error}</p>}
@@ -64,11 +66,12 @@ export function PublishPlanAction({plan}:{plan:Plan}) {
 }
 /** Actual expiring capability creation, never a private invoice UUID link. */
 export function CheckoutLinkAction({subscriptionId,invoiceId}:{subscriptionId:string;invoiceId?:string}) {
- const {session}=useAuth(),can=useCan(invoiceId?'invoices':'subscriptions'),orgId=session?.organization?.id
+ const chain=useMerchantChain(),can=useCan(invoiceId?'invoices':'subscriptions'),orgId=chain.orgId,config=chain.configuration.data
+ const pauseMessage=chainActionPauseMessage(config),blocked=chain.configuration.isPending||chainActionsPaused(config)
  const [open,setOpen]=useState(false),[url,setUrl]=useState(''),[error,setError]=useState<string>(),[busy,setBusy]=useState(false)
- const create=async()=>{if(!orgId)return;setBusy(true);setError(undefined);try{const result=await chainApi.createCheckout(orgId,{subscriptionId,...(invoiceId?{invoiceId}:{}),expiresInSeconds:86400});setUrl(new URL(result.url,window.location.origin).href)}catch(e){setError(e instanceof Error?e.message:'Checkout link creation failed.')}finally{setBusy(false)}}
+ const create=async()=>{if(!orgId||chainActionsPaused(config))return;setBusy(true);setError(undefined);try{const result=await chainApi.createCheckout(orgId,{subscriptionId,...(invoiceId?{invoiceId}:{}),expiresInSeconds:86400});setUrl(new URL(result.url,window.location.origin).href)}catch(e){setError(e instanceof Error?e.message:'Checkout link creation failed.')}finally{setBusy(false)}}
  if(!can)return null
- return <><Button size="sm" variant="secondary" onClick={()=>setOpen(true)}>Checkout link</Button><Modal open={open} onClose={()=>setOpen(false)} title="Create secure checkout link"><div className="space-y-4"><p className="text-sm text-dim">Creates a real 24-hour payment capability. Anyone holding this link may view payment terms; payment still requires the verified customer wallet. Share it privately.</p><Button loading={busy} onClick={()=>void create()}>Create 24-hour checkout link</Button>{url&&<label className="block space-y-2 text-sm text-dim"><span>Private checkout URL</span><input aria-label="Private checkout URL" className={merchantInput} readOnly value={url} onFocus={e=>e.target.select()} /><a className="text-cyan underline" href={url} target="_blank" rel="noreferrer">Open checkout</a></label>}{error&&<p role="alert" className="text-sm text-caution">{error}</p>}</div></Modal></>
+ return <><div className="space-y-2">{pauseMessage&&<p role="status" className="text-sm text-caution">{pauseMessage}</p>}<Button size="sm" variant="secondary" disabled={blocked} onClick={()=>setOpen(true)}>Checkout link</Button></div><Modal open={open} onClose={()=>setOpen(false)} title="Create secure checkout link"><div className="space-y-4"><p className="text-sm text-dim">Creates a real 24-hour payment capability. Anyone holding this link may view payment terms; payment still requires the verified customer wallet. Share it privately.</p>{pauseMessage&&<p role="status" className="text-sm text-caution">{pauseMessage}</p>}<Button loading={busy} disabled={blocked} onClick={()=>void create()}>Create 24-hour checkout link</Button>{url&&<label className="block space-y-2 text-sm text-dim"><span>Private checkout URL</span><input aria-label="Private checkout URL" className={merchantInput} readOnly value={url} onFocus={e=>e.target.select()} /><a className="text-cyan underline" href={url} target="_blank" rel="noreferrer">Open checkout</a></label>}{error&&<p role="alert" className="text-sm text-caution">{error}</p>}</div></Modal></>
 }
 export function MerchantSubscriptionAction({subscriptionId}:{subscriptionId:string}) {
  const can=useCan('subscriptions'),chain=useMerchantChain(),{address}=useAccount(),[open,setOpen]=useState(false),[consent,setConsent]=useState(false)

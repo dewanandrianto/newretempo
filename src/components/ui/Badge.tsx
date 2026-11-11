@@ -64,17 +64,3 @@ export function StatusBadge({ status }: { status: string }) {
     </Badge>
   )
 }
-
-/** Marks any surface that renders sample data rather than verified onchain or backend data. */
-export function DemoBadge({ className }: { className?: string }) {
-  return (
-    <span
-      className={cn(
-        'inline-flex items-center rounded-md border border-caution/30 bg-caution/10 px-1.5 py-0.5 text-[10px] font-semibold tracking-[0.08em] text-caution uppercase',
-        className,
-      )}
-    >
-      Demo data
-    </span>
-  )
-}

@@ -48,7 +48,7 @@ it('PAG-002: oversized multiblock logs shrink to complete individually admissibl
  };
  const statuses=[];const counts:number[]=[];
  for(let i=0;i<2;i++){const response=await handle(request('sync'),e,transport);statuses.push(response.status);counts.push(Number(response.headers.get('x-chain-rpc-calls')));}
- expect(counts).toEqual([21,23]);expect(await e.CHAIN_DB.prepare('SELECT COUNT(*) AS n FROM events').first('n')).toBe(32);console.info(JSON.stringify({measurement:'overflow-shrinking-rpc',counts}));
+ expect(counts).toEqual([23,25]);expect(await e.CHAIN_DB.prepare('SELECT COUNT(*) AS n FROM events').first('n')).toBe(32);console.info(JSON.stringify({measurement:'overflow-shrinking-rpc',counts}));
  const state=await e.CHAIN_DB.prepare('SELECT cursor,halted FROM runtime').first();
  console.info(JSON.stringify({repro:'oversized-multiblock-response',responseBytes:bytes,singleBlockBytes:new TextEncoder().encode(JSON.stringify({result:logs.slice(0,16)})).length,statuses,ranges,state}));
  expect(statuses).toEqual([200,200]);expect(ranges.slice(0,6)).toEqual([['0x1','0x20'],['0x1','0x10'],['0x1','0x8'],['0x1','0x4'],['0x1','0x2'],['0x1','0x1']]);expect(state).toMatchObject({halted:null});expect(JSON.parse(String(state!.cursor)).blockNumber).toBe('2');

@@ -6,6 +6,19 @@ import { useAuth } from '@/features/auth/AuthProvider'
 import { chainApi, createRetempoClient, RetempoClient, TransactionRunner, type TransactionState, type WriteTransaction } from '@/services/blockchain'
 import { projectionProves, transactionId, type ProjectionTarget } from './proof'
 import type { RememberVerification } from '@/services/blockchain/transactions'
+type ContractPauseState = { managerPaused?: boolean | null; escrowPaused?: boolean | null }
+/** The UI distinguishes confirmed pause from an unavailable deployment or unknown pause state. */
+export function chainActionPauseMessage(configuration: ChainConfiguration | undefined): string | null {
+ if (!configuration?.configured) return 'On-chain actions are disabled until a verified Arc Testnet deployment is available.'
+ const pause = configuration as ChainConfiguration & ContractPauseState
+ if (pause.managerPaused === true || pause.escrowPaused === true) return 'Verified Arc Testnet contracts are paused; payments and on-chain actions are unavailable.'
+ if (pause.managerPaused !== false || pause.escrowPaused !== false) return 'On-chain actions are disabled because the live contract pause state could not be verified.'
+ return null
+}
+/** Missing or unknown pause state is unsafe; both contracts must explicitly be unpaused. */
+export function chainActionsPaused(configuration: ChainConfiguration | undefined): boolean {
+ return chainActionPauseMessage(configuration) !== null
+}
 export function useRetempoTransactions(configuration:ChainConfiguration|undefined,operationKey:string,loadSnapshot:()=>Promise<ChainSnapshot>=chainApi.customerSnapshot) {
  const {address}=useAccount(),{data:wallet}=useWalletClient()
  const auth=useAuth(),queryClient=useQueryClient()
@@ -38,10 +51,12 @@ export function useRetempoTransactions(configuration:ChainConfiguration|undefine
   await queryClient.invalidateQueries({queryKey:['customer-chain']});await queryClient.invalidateQueries({queryKey:['public-checkout']});await queryClient.invalidateQueries({queryKey:['merchant-chain']});await queryClient.invalidateQueries({queryKey:['billing']})
  }),[guarded,id,runner,loadSnapshot,queryClient,configuration])
  const execute=useCallback((task:(sdk:RetempoClient,write:WriteTransaction,remember:RememberVerification)=>Promise<void>)=>guarded(async()=>{
+  const pauseMessage=chainActionPauseMessage(configuration)
+  if(pauseMessage)throw new Error(pauseMessage)
   const sdk=client();if(!id)throw new Error('Wallet operation identity is missing.')
   await ensureWalletSession(sdk)
   await runner.run(id,(write,remember)=>task(sdk,write,remember))
- }),[guarded,client,id,ensureWalletSession,runner])
+ }),[guarded,configuration,client,id,ensureWalletSession,runner])
  const resume=useCallback(()=>guarded(async()=>{const sdk=client();await sdk.assertWallet();await runner.resume(id,hash=>sdk.io.receipt(hash))}),[guarded,client,id,runner])
  const verifiedWallet=Boolean(address&&auth.session?.user.wallets.some(w=>w.toLowerCase()===address.toLowerCase()))
  return {state:visibleState,busy,error:error??recovered.error,execute,sync,resume,signIn,verifiedWallet,client}

@@ -10,7 +10,7 @@ const request = (body: unknown) => new Request('https://private/v1/wallet-snapsh
 const environment = () => ({ ...env, ...settings }) as unknown as Env;
 async function seed(e: Env, count: number, wallet = customer) {
   await e.CHAIN_DB.batch(Array.from({ length: count }, (_, i) => {
-    const event: VerifiedChainEvent = { id: wallet + i, chainId: 5042, address: escrow, blockNumber: '1', blockHash: hash('0x1'), transactionHash: hash(wallet + i), transactionIndex: 0, logIndex: i, timestamp: '2023-11-14T22:13:20.000Z', name: 'Withdrawn', args: { account: wallet, amount: '9007199254740993' } };
+    const event: VerifiedChainEvent = { id: wallet + i, chainId: 5042002, address: escrow, blockNumber: '1', blockHash: hash('0x1'), transactionHash: hash(wallet + i), transactionIndex: 0, logIndex: i, timestamp: '2023-11-14T22:13:20.000Z', name: 'Withdrawn', args: { account: wallet, amount: '9007199254740993' } };
     return e.CHAIN_DB.prepare('INSERT INTO events(id,block_number,body) VALUES(?,?,?)').bind(event.id, '1', JSON.stringify(event));
   }));
 }
@@ -94,7 +94,7 @@ it('collects exact 300-payment tenant revenue and finds a paid proof outside the
   f.getters.getMandate={perChargeCap:0n,totalCap:0n,spent:0n,expiry:0,nonce:0,active:false};
   await seed(e,300); // Unrelated wallet events must not affect tenant page size or totals.
   await e.CHAIN_DB.batch(Array.from({length:300},(_,i)=>{
-    const event:VerifiedChainEvent={id:'revenue'+i,chainId:5042,address:settings.ARC_MANAGER_ADDRESS as `0x${string}`,blockNumber:'1',blockHash:hash('0x1'),transactionHash:hash('revenue'+i),transactionIndex:0,logIndex:i,timestamp:'2023-11-14T22:13:20.000Z',name:'SubscriptionPaymentProcessed',args:{subKey,planKey,merchant,customer,chargeNumber:String(i+1),amount:'9007199254740993',periodStart:'1700000000',nextChargeAt:'1702592000'}};
+    const event:VerifiedChainEvent={id:'revenue'+i,chainId:5042002,address:settings.ARC_MANAGER_ADDRESS as `0x${string}`,blockNumber:'1',blockHash:hash('0x1'),transactionHash:hash('revenue'+i),transactionIndex:0,logIndex:i,timestamp:'2023-11-14T22:13:20.000Z',name:'SubscriptionPaymentProcessed',args:{subKey,planKey,merchant,customer,chargeNumber:String(i+1),amount:'9007199254740993',periodStart:'1700000000',nextChargeAt:'1702592000'}};
     return e.CHAIN_DB.prepare('INSERT INTO events(id,block_number,body) VALUES(?,?,?)').bind(event.id,'1',JSON.stringify(event));
   }));
   const first=await (await call('snapshot',{orgId})).json() as ChainSnapshot;
@@ -107,7 +107,7 @@ it('collects exact 300-payment tenant revenue and finds a paid proof outside the
   const customerState=await collectChainPages(async pageToken=>{const response=await call('customer-snapshot',{orgIds:[orgId],wallets:[customer],...(pageToken?{pageToken}:{})});expect(response.status).toBe(200);return response.json() as Promise<ChainSnapshot>});
   expect(customerState.events).toHaveLength(300);expect(customerState.projections.filter(p=>p.kind==='ledger')).toHaveLength(300);
 });
-it('keeps a dense 26-plan page inside 40 RPC and bounded D1 invocations',async()=>{
+it('keeps a dense 26-plan page inside 42 RPC and bounded D1 invocations',async()=>{
  const e=environment(),f=new Fixture();
  await handle(new Request('https://private/v1/sync',{method:'POST',body:'{}'}),e,f.transport);
  const bound=Array.from({length:26},(_,i)=>({orgId:'dense-page',kind:'plan',recordId:'p'+i,key:actorKey(merchant,reference('dense-page','plan','p'+i)),merchant}));
@@ -119,7 +119,7 @@ it('keeps a dense 26-plan page inside 40 RPC and bounded D1 invocations',async()
  e.CHAIN_DB=new Proxy(db,{get(target,key){if(key==='prepare')return(sql:string)=>wrap(target.prepare(sql));if(key==='batch')return async(statements:D1PreparedStatement[])=>{invocations++;const result=await target.batch(statements);read+=result.reduce((n,r)=>n+r.meta.rows_read,0);return result};return Reflect.get(target,key)}});
  f.calls=[];
  const response=await handle(new Request('https://private/v1/snapshot',{method:'POST',body:JSON.stringify({orgId:'dense-page'})}),e,f.transport);
- expect(response.status).toBe(200);expect((await response.json() as ChainSnapshot).events).toHaveLength(64);expect(f.calls).toHaveLength(40);expect(invocations).toBeLessThanOrEqual(9);
+ expect(response.status).toBe(200);expect((await response.json() as ChainSnapshot).events).toHaveLength(64);expect(f.calls).toHaveLength(42);expect(invocations).toBeLessThanOrEqual(9);
  console.info(JSON.stringify({fixture:'dense-26-plan-page',rpcCalls:f.calls.length,d1Invocations:invocations,batchedRowsRead:read,storedRelevantEvents:1820,returnedEvents:64}));
 });
 it('uses indexed bounded rowid seeks rather than a history scan or OFFSET',async()=>{

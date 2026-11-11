@@ -12,7 +12,7 @@ import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { EmptyState, PageSkeleton } from '@/components/ui/States'
 import { WalletButton, useUsdcBalance } from '@/components/wallet/WalletButton'
-import { checkoutAvailability, checkoutWindows, assertCheckoutPreparation, checkoutDue, checkoutSubscription } from './model'
+import { checkoutAvailability, checkoutActionsPaused, checkoutPauseMessage, checkoutWindows, assertCheckoutPreparation, checkoutDue, checkoutSubscription } from './model'
 
 function Checkout({checkout:c,token,invoice}:{checkout:ChainCheckout;token:string;invoice:boolean}) {
  const {address,chainId}=useAccount(),balance=useUsdcBalance()
@@ -21,8 +21,11 @@ function Checkout({checkout:c,token,invoice}:{checkout:ChainCheckout;token:strin
  const [now,setNow]=useState(()=>Date.now())
  useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(timer)},[])
  const availability=checkoutAvailability(c,now)
- const windows=useQuery({queryKey:['checkout-windows',c.planKey,c.configuration.genesisHash],queryFn:()=>checkoutWindows(c),enabled:!availability,retry:false,staleTime:0})
- const subscription=useQuery({queryKey:['checkout-subscription',c.id,c.subscriptionKey],queryFn:()=>checkoutSubscription(c),enabled:!availability,retry:false})
+ const actionsPaused=checkoutActionsPaused(c.configuration)
+ const pauseMessage=checkoutPauseMessage(c.configuration)
+ const canReadChain=c.configuration.configured&&(!availability||actionsPaused)
+ const windows=useQuery({queryKey:['checkout-windows',c.planKey,c.configuration.genesisHash],queryFn:()=>checkoutWindows(c),enabled:canReadChain,retry:false,staleTime:0})
+ const subscription=useQuery({queryKey:['checkout-subscription',c.id,c.subscriptionKey],queryFn:()=>checkoutSubscription(c),enabled:canReadChain,retry:false})
  const existing=Boolean(subscription.data&&subscription.data.status!==0)
  const wrongNetwork=Boolean(address&&chainId!==5042002)
  const due=checkoutDue(c,existing)
@@ -53,15 +56,16 @@ function Checkout({checkout:c,token,invoice}:{checkout:ChainCheckout;token:strin
   <Card className="h-fit min-w-0 space-y-5 p-6">
    <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-lg font-semibold text-fg">Review & subscribe</h2><WalletButton compact /></div>
    <p className="text-xs text-dim">{c.configuration.mode==='local'?'Local Arc simulation — not mainnet funds.':'Arc Testnet · chain 5042002'}</p>
+   {pauseMessage&&<p role="status" className="rounded-lg border border-line p-3 text-sm text-caution">{pauseMessage}</p>}
    <dl className="flex justify-between gap-3 text-sm"><dt className="text-dim">Due today</dt><dd className="num break-all text-fg">{displayUsdc(due)} USDC + gas</dd></dl>
-   {availability&&<p role="status" className="rounded-lg border border-line p-3 text-sm text-caution">{availability}</p>}
+   {availability&&availability!==pauseMessage&&<p role="status" className="rounded-lg border border-line p-3 text-sm text-caution">{availability}</p>}
    {wrongNetwork&&<p role="alert" className="text-sm text-caution">Wrong network. Switch to Arc Testnet (5042002), then ensure the wallet uses the same RPC world shown here.</p>}
    {short&&<p role="alert" className="text-sm text-caution">Insufficient USDC. Add funds for the exact payment and native USDC gas.</p>}
-   {!availability&&windows.isPending&&<p className="text-sm text-dim">Loading live contract terms…</p>}
+   {canReadChain&&windows.isPending&&<p className="text-sm text-dim">Loading live contract terms…</p>}
    {subscription.isError&&<p role="alert" className="text-sm text-caution">Subscription state could not be verified. <button className="underline" onClick={()=>void subscription.refetch()}>Retry state</button></p>}
    {windows.isError&&<div role="alert" className="text-sm text-caution">Contract terms could not be verified. <button className="underline" onClick={()=>void windows.refetch()}>Retry terms</button></div>}
    {!availability&&<label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-dim"><input type="checkbox" className="mt-1 size-4 accent-cyan" checked={consent} onChange={e=>setConsent(e.target.checked)} /><span>I accept the displayed plan, payout, arbitrator and exact escrow windows. I authorize only {displayUsdc(due)} USDC now. No recurring mandate is created.</span></label>}
-   {address&&!tx.verifiedWallet&&!availability&&<Button variant="secondary" className="w-full" loading={tx.busy} disabled={wrongNetwork} onClick={()=>void tx.signIn()}>Sign in with this wallet</Button>}
+   {address&&!tx.verifiedWallet&&<Button variant="secondary" className="w-full" loading={tx.busy} disabled={wrongNetwork} onClick={()=>void tx.signIn()}>Sign in with this wallet</Button>}
    <Button size="lg" className="w-full" loading={tx.busy} disabled={Boolean(availability)||wrongNetwork||short||!address||!tx.verifiedWallet||!consent||!windows.data||subscription.isPending||subscription.isError||!canSubmit(tx.state.phase)} onClick={()=>void pay()}>{existing?'Approve exact amount & renew':c.trialDays>0?'Start trial':'Approve exact amount & subscribe'}</Button>
    <TransactionStatus state={tx.state} error={tx.error} busy={tx.busy} onSync={()=>void tx.sync(target(prepared??c))} onResume={()=>void tx.resume()} />
    {tx.state.phase==='confirmed-indexing-pending'&&!prepared?.paymentId&&!c.paymentId&&c.trialDays===0&&<p className="text-xs text-dim">Confirmation is retained. Open the wallet-owned portal to verify this payment; never submit this checkout again.</p>}

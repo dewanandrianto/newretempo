@@ -2,6 +2,8 @@ import { env as testEnv } from 'cloudflare:test'
 import { describe, expect, it } from 'vitest'
 import { createWorkerApp } from '../src/index'
 import type { WorkerBindings } from '../src/types'
+import { configuredConfiguration, enabledConfiguration } from '../src/chain/client'
+import type { ChainConfiguration } from '../../shared/chain'
 import { actorKey, chargeKeys, serverReference } from '../src/chain/keys'
 import { overlay } from '../src/chain/projections'
 import { encodeAbiParameters, keccak256 } from 'viem'
@@ -11,7 +13,18 @@ describe('public chain bridge in workerd', () => {
   it('returns disabled configuration without inventing deployment addresses', async () => {
     const response = await app.request('http://local/api/chain/config', {}, env)
     expect(response.status).toBe(200)
-    expect(await response.json()).toMatchObject({ configured: false, manager: null, escrow: null, mode: 'disabled' })
+    expect(await response.json()).toMatchObject({ configured: false, manager: null, escrow: null, managerPaused: null, escrowPaused: null, mode: 'disabled' })
+  })
+  it('keeps read-only verification available while financial preparation fails closed on paused or unknown state', async () => {
+    const base: ChainConfiguration = { chainId:5042002, mode:'testnet', configured:true, rpcUrl:'https://rpc.blockdaemon.testnet.arc.io/', explorerUrl:'https://explorer.testnet.arc.io', manager:'0x3333333333333333333333333333333333333333', escrow:'0x4444444444444444444444444444444444444444', managerPaused:true, escrowPaused:true, usdc:'0x3600000000000000000000000000000000000000', usdcDecimals:6, startBlock:'1' }
+    const bridge = (managerPaused:boolean|null, escrowPaused:boolean|null) => ({ CHAIN:{fetch:()=>Promise.resolve(Response.json({...base,managerPaused,escrowPaused}))} }) as unknown as WorkerBindings
+    const paused = bridge(true,true)
+    expect(await configuredConfiguration(paused)).toMatchObject({configured:true,managerPaused:true,escrowPaused:true})
+    await expect(enabledConfiguration(paused)).rejects.toThrow('paused or pause state is unavailable')
+    await expect(enabledConfiguration(bridge(null,false))).rejects.toThrow('paused or pause state is unavailable')
+    await expect(enabledConfiguration(bridge(true,false))).rejects.toThrow('paused or pause state is unavailable')
+    await expect(enabledConfiguration(bridge(false,true))).rejects.toThrow('paused or pause state is unavailable')
+    await expect(enabledConfiguration(bridge(false,false))).resolves.toMatchObject({configured:true,managerPaused:false,escrowPaused:false})
   })
   it('requires authentication for sync and tenant snapshots', async () => {
     expect((await app.request('http://local/api/chain/sync', { method: 'POST', headers: { Origin: 'https://app.test', 'X-Requested-With': 'retempo' } }, env)).status).toBe(401)

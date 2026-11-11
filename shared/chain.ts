@@ -6,7 +6,7 @@ export type ChainValues = Record<string, ChainValue>
 
 export interface ChainConfiguration {
   chainId: 5042002
-  mode: 'disabled' | 'local' | 'mainnet' | 'testnet'
+  mode: 'disabled' | 'local' | 'testnet'
   configured: boolean
   rpcUrl: string
   explorerUrl: string
@@ -14,6 +14,8 @@ export interface ChainConfiguration {
   usdcDecimals: 6
   manager: ChainAddress | null
   escrow: ChainAddress | null
+  managerPaused: boolean | null
+  escrowPaused: boolean | null
   startBlock: string | null
   genesisHash?: ChainHash
   managerCodeHash?: ChainHash

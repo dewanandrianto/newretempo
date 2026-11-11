@@ -14,8 +14,8 @@ import type {
   Subscription,
 } from '@shared/types'
 
-/** Where a response came from. UI must label anything that is not 'live'. */
-export type DataSource = 'demo' | 'live'
+/** Live-only data provenance; no demo provider is supported. */
+export type DataSource = 'live'
 
 export interface Sourced<T> {
   data: T
@@ -23,8 +23,8 @@ export interface Sourced<T> {
 }
 
 /**
- * Billing read model. Phase 1 ships a demo implementation; Phase 2 adds an
- * HTTP implementation backed by PostgreSQL behind the same interface.
+ * Billing read model backed by live account records and verified chain data.
+ * When records do not exist, callers should render an empty state.
  */
 export interface BillingService {
   getOverview(): Promise<Sourced<DashboardOverview>>

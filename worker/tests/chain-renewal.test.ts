@@ -9,7 +9,7 @@ const env = testEnv as unknown as WorkerBindings
 const app = createWorkerApp()
 const merchant = '0x1111111111111111111111111111111111111111'
 const zero = '0x0000000000000000000000000000000000000000'
-const config: ChainConfiguration = { chainId:5042002, mode:'local', configured:true, rpcUrl:'http://127.0.0.1:8545', explorerUrl:'', manager:'0x3333333333333333333333333333333333333333', escrow:'0x4444444444444444444444444444444444444444', usdc:'0x3600000000000000000000000000000000000000', usdcDecimals:6, startBlock:'0' }
+const config: ChainConfiguration = { chainId:5042002, mode:'local', configured:true, rpcUrl:'http://127.0.0.1:8545', explorerUrl:'', manager:'0x3333333333333333333333333333333333333333', escrow:'0x4444444444444444444444444444444444444444', managerPaused:false, escrowPaused:false, usdc:'0x3600000000000000000000000000000000000000', usdcDecimals:6, startBlock:'0' }
 let org: string, customer: string, plan: string, sub: string, invoice: string, token: string
 let bindings: ChainBinding[], projections: ChainProjection[]
 // Only the private service is a fixture; HTTP, migrations and guarded DB run in workerd/D1.

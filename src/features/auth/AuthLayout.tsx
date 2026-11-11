@@ -36,7 +36,7 @@ export function AuthLayout({ children, wide = false }: { children: ReactNode; wi
               ))}
             </ul>
           </div>
-          <p className="text-xs text-faint">Phase 1 preview. Testnet only. No mainnet funds are ever touched.</p>
+          <p className="text-xs text-faint">Phase 1 preview. Arc Testnet only. No mainnet funds are ever touched.</p>
         </div>
       </aside>
       <main className="flex flex-col px-5 py-8 sm:px-10">

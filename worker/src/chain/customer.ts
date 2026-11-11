@@ -47,6 +47,7 @@ export async function customerSnapshotPage(c:C){
  if(tenants.results.length>20)throw unavailable('Customer history exceeds the supported tenant capacity','customer_snapshot_capacity')
  const orgIds=tenants.results.map(t=>t.org_id), token=historyToken(c)
  const state=await privateRequest<ChainSnapshot>(c.env,'/v1/customer-snapshot',{orgIds,wallets:addresses,...(token?{pageToken:token}:{})})
+ if(!state.configuration.configured||!state.configuration.manager||!state.configuration.escrow)throw unavailable('Contract deployment is not configured','chain_unavailable')
  const owned=state.bindings.filter(b=>b.customer&&addresses.includes(b.customer))
  const plans=new Set(owned.map(b=>b.orgId+':'+b.planKey))
  if(state.bindings.some(b=>!orgIds.includes(b.orgId)||!(owned.includes(b)||b.kind==='plan'&&plans.has(b.orgId+':'+b.key))) || state.projections.some(p=>!state.bindings.some(b=>b.orgId===p.orgId&&(b.recordId===p.recordId||b.key===p.key))))throw unavailable('Customer snapshot ownership mismatch','chain_unavailable')

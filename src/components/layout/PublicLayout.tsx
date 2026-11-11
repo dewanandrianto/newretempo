@@ -74,14 +74,6 @@ const footerColumns = [
     ],
   },
   {
-    title: 'Documentation',
-    links: [
-      { label: 'Arc documentation', href: 'https://docs.arc.io', external: true },
-      { label: 'Circle developer docs', href: 'https://developers.circle.com', external: true },
-      { label: 'Arc Testnet explorer', href: 'https://explorer.testnet.arc.io', external: true },
-    ],
-  },
-  {
     title: 'Get started',
     links: [
       { label: 'Create account', to: '/signup' },
@@ -97,7 +89,7 @@ function Footer() {
   return (
     <footer className="border-t border-line bg-panel/60">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(2,1fr)]">
           <div>
             <Logo />
             <p className="mt-4 max-w-xs text-sm text-dim">Onchain Subscription &amp; Payment Infrastructure. USDC billing for SaaS, built for Arc.</p>
@@ -129,8 +121,7 @@ function Footer() {
           ))}
         </div>
         <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 text-xs text-faint sm:flex-row sm:justify-between">
-          <p>&copy; 2026 RETEMPO. Phase 1 interface preview on Arc Testnet. No smart contracts are deployed.</p>
-          <p>Demo figures are sample data, not verified onchain activity.</p>
+          <p>&copy; 2026 RETEMPO. Phase 1 interface preview on Arc Testnet. Payment and settlement actions remain paused.</p>
         </div>
       </div>
     </footer>

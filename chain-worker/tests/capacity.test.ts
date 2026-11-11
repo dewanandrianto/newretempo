@@ -67,8 +67,8 @@ it.each([26,27])('preflights %i unique plan getters against the whole request bu
  f.calls=[];
  const response=await handle(request('snapshot',{orgId:'getters'}),e,f.transport);
  expect(response.status).toBe(count===26?200:503);
- if(count===27){expect(await response.json()).toMatchObject({error:expect.stringContaining('Snapshot getter capacity exceeded')});expect(f.calls.length).toBe(11);}
- else {expect((await response.json() as {projections:unknown[]}).projections).toHaveLength(26);expect(f.calls.length).toBe(40);}
+ if(count===27){expect(await response.json()).toMatchObject({error:expect.stringContaining('Snapshot getter capacity exceeded')});expect(f.calls.length).toBe(13);}
+ else {expect((await response.json() as {projections:unknown[]}).projections).toHaveLength(26);expect(f.calls.length).toBe(42);}
 });
 it('refuses oversized binding collections instead of returning a truncated snapshot', async()=>{
  const e=environment(),f=new Fixture();
@@ -98,7 +98,7 @@ it('batches existing-event reads and counts actual D1 invocations independently 
   expect(await response.json()).toMatchObject({processedEvents:16});
   expect(f.calls.filter(m=>m==='eth_getTransactionReceipt')).toHaveLength(1);
   expect(invocations).toBe(6);
-  expect(f.calls.length).toBe(16);
+  expect(f.calls.length).toBe(18);
   expect(invocations+f.calls.length).toBeLessThanOrEqual(50);
   console.info(JSON.stringify({fixture:'sixteen-events-one-transaction',d1Invocations:invocations,rpcCalls:f.calls.length,combinedInvocations:invocations+f.calls.length}));
 });
@@ -118,18 +118,19 @@ it('fits sparse event blocks into a request budget by scanning a smaller complet
   expect(BigInt(body.cursor.blockNumber)).toBeLessThan(32n);
   expect(body.processedEvents).toBe(Number(body.cursor.blockNumber));
   expect(body.cursor.blockNumber).toBe('8');
-  expect(f.calls.length).toBe(39);
-  expect(f.calls.length).toBeLessThanOrEqual(40);
+  expect(f.calls.length).toBe(41);
+  expect(f.calls.length).toBeLessThanOrEqual(42);
   expect(Number(response.headers.get('x-chain-rpc-calls'))).toBe(f.calls.length);
   console.info(JSON.stringify({fixture:'sparse-sixteen-event-blocks',rpcCalls:f.calls.length,cursor:body.cursor.blockNumber,processedEvents:body.processedEvents}));
 });
 it('caps RPC calls before transport and exposes whole-request configuration counts', async () => {
   const f = new Fixture(), rpc = new Rpc(settings.ARC_RPC_URL, f.transport);
-  for (let i = 0; i < 40; i++) await rpc.call('eth_chainId', []);
+  for (let i = 0; i < 42; i++) await rpc.call('eth_chainId', []);
   await expect(rpc.call('eth_chainId', [])).rejects.toThrow('RPC request budget exceeded');
-  expect(f.calls).toHaveLength(40);
+  expect(f.calls).toHaveLength(42);
   const response = await handle(new Request('https://private/v1/config'), environment(), f.transport);
-  expect(response.headers.get('x-chain-rpc-calls')).toBe('10');
+  expect(response.headers.get('x-chain-rpc-calls')).toBe('12');
+  expect(response.headers.get('x-chain-rpc-limit')).toBe('42');
 });
 it('shrinks dense ranges to a fully verified prefix and later refuses the impossible next block', async () => {
   const f = new Fixture(), e = environment(); f.head = '0x20';

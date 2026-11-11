@@ -21,6 +21,8 @@ export class Fixture {
   getters: Record<string, unknown> = {};
   badReceipt = false;
   badHash = false;
+  managerPaused = true;
+  escrowPaused = true;
   calls: string[] = [];
   head = '0x1';
   transport: typeof fetch = async (input, init) => {
@@ -37,7 +39,7 @@ export class Fixture {
     };
     switch (q.method) {
       case 'eth_chainId':
-        result = '0x13b2';
+        result = '0x4cef52';
         break;
       case 'eth_getCode':
         result = '0x60016000';
@@ -89,12 +91,20 @@ export class Fixture {
               abi: abi as Abi,
               data: c.data
             });
-            if (!(decoded.functionName in this.getters)) throw Error('unhandled getter ' + decoded.functionName);
-            result = encodeFunctionResult({
-              abi: abi as Abi,
-              functionName: decoded.functionName,
-              result: this.getters[decoded.functionName]
-            });
+            if (decoded.functionName === 'paused') {
+              result = encodeFunctionResult({
+                abi: abi as Abi,
+                functionName: decoded.functionName,
+                result: c.to === escrow ? this.escrowPaused : this.managerPaused
+              });
+            } else {
+              if (!(decoded.functionName in this.getters)) throw Error('unhandled getter ' + decoded.functionName);
+              result = encodeFunctionResult({
+                abi: abi as Abi,
+                functionName: decoded.functionName,
+                result: this.getters[decoded.functionName]
+              });
+            }
           }
           break;
         }

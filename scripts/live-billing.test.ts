@@ -12,7 +12,7 @@ import type { ApiInvoice, ApiSubscription } from '../shared/types'
 import { buildLiveEscrow, buildLiveDisputes, buildLiveLedger, buildLiveOverview, type LiveBillingRecords } from '../src/services/billing/chainMappers'
 
 const empty: ChainSnapshot = {
-  configuration: { chainId: 5042002, mode: 'disabled', configured: false, rpcUrl: 'https://rpc.testnet.arc.io', explorerUrl: 'https://explorer.testnet.arc.io', usdc: '0x3600000000000000000000000000000000000000', usdcDecimals: 6, manager: null, escrow: null, startBlock: null },
+  configuration: { chainId: 5042002, mode: 'disabled', configured: false, rpcUrl: 'https://rpc.testnet.arc.io', explorerUrl: 'https://explorer.testnet.arc.io', usdc: '0x3600000000000000000000000000000000000000', usdcDecimals: 6, manager: null, escrow: null, managerPaused: null, escrowPaused: null, startBlock: null },
   cursor: null, bindings: [], events: [], projections: [],
 }
 const records: LiveBillingRecords = { orgId: 'org-1', plans: [], subscriptions: [], invoices: [], escrows: [] }

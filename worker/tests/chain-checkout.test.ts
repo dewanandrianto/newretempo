@@ -7,7 +7,7 @@ import type { ChainBinding, ChainConfiguration, ChainPlanPreparation, ChainCheck
 const env = testEnv as unknown as WorkerBindings
 const app = createWorkerApp()
 const merchant = '0x1111111111111111111111111111111111111111', buyer = '0x2222222222222222222222222222222222222222', zero = '0x0000000000000000000000000000000000000000'
-const config: ChainConfiguration = { chainId:5042002, mode:'local', configured:true, rpcUrl:'http://127.0.0.1:8545', explorerUrl:'', manager:'0x3333333333333333333333333333333333333333', escrow:'0x4444444444444444444444444444444444444444', usdc:'0x3600000000000000000000000000000000000000', usdcDecimals:6, startBlock:'0' }
+const config: ChainConfiguration = { chainId:5042002, mode:'local', configured:true, rpcUrl:'http://127.0.0.1:8545', explorerUrl:'', manager:'0x3333333333333333333333333333333333333333', escrow:'0x4444444444444444444444444444444444444444', managerPaused:false, escrowPaused:false, usdc:'0x3600000000000000000000000000000000000000', usdcDecimals:6, startBlock:'0' }
 let org: string, customer: string, plan: string, sub: string, invoice: string, user: string, token: string, bindings: ChainBinding[], projections: ChainProjection[], events: VerifiedChainEvent[], failBindings: boolean, crossTenantSnapshot: boolean
 let crossWalletSnapshot = false
 // Explicit service fixture, NOT a real chain verifier; DB and HTTP run in workerd.
@@ -28,6 +28,7 @@ async function req(path: string, method='GET', body?: unknown, authenticated=tru
 }
 beforeEach(async()=>{
  org=crypto.randomUUID(); customer=crypto.randomUUID(); plan=crypto.randomUUID(); sub=crypto.randomUUID(); invoice=crypto.randomUUID(); user=crypto.randomUUID(); token=crypto.randomUUID().replaceAll('-','').repeat(2);bindings=[];projections=[];events=[];failBindings=false;crossTenantSnapshot=false;crossWalletSnapshot=false
+ config.managerPaused=false;config.escrowPaused=false
  await env.DB.prepare("DELETE FROM wallets WHERE purpose='login' AND address=?").bind(merchant).run()
  await env.DB.prepare('INSERT INTO users(id,display_name) VALUES (?,?)').bind(user,'Merchant').run()
  await env.DB.prepare('INSERT INTO sessions(id,user_id,token_hash,auth_method,idle_expires_at,expires_at) VALUES (?,?,?,?,?,?)').bind(crypto.randomUUID(),user,await hmac(env.SESSION_SECRET,token),'siwe','2099-01-01T00:00:00.000Z','2099-01-01T00:00:00.000Z').run()
@@ -112,6 +113,15 @@ it('returns only verified-wallet-owned portal bindings, projections and events',
  expect(result.bindings.some(b=>b.kind==='subscription'&&b.customer===buyer)).toBe(true)
  expect(result.bindings.every(b=>b.customer===buyer||b.kind==='plan')).toBe(true)
 })
+it('does not prepare plans or checkout capabilities when either contract is paused',async()=>{
+ config.managerPaused=true;config.escrowPaused=true
+ const planPreparation=await prep()
+ expect(planPreparation.status).toBe(503)
+ expect((await env.DB.prepare('SELECT COUNT(*) AS n FROM chain_plan_terms WHERE org_id=?').bind(org).first<{n:number}>())?.n).toBe(0)
+ const checkout=await req(`orgs/${org}/chain/checkouts`,'POST',{subscriptionId:sub})
+ expect(checkout.status).toBe(503)
+ expect((await env.DB.prepare('SELECT COUNT(*) AS n FROM chain_checkouts WHERE org_id=?').bind(org).first<{n:number}>())?.n).toBe(0)
+})
 it('rejects caller-supplied sync logs and endpoints',async()=>{
  expect((await req('chain/sync','POST',{logs:[],rpcUrl:'https://attacker.test',status:'paid'})).status).toBe(422)
 })
@@ -193,4 +203,3 @@ it('issues hashed expiring capability, rejects guessed ids and keeps checkout pr
  await env.DB.prepare('UPDATE chain_checkouts SET expires_at=? WHERE id=?').bind('2020-01-01T00:00:00.000Z',link.checkout.id).run()
  expect((await req(`public/checkouts/${link.token}`,'GET',undefined,false)).status).toBe(404)
 })
-

@@ -32,6 +32,7 @@ interface RpcReceipt {
   logs: RpcLog[];
 }
 const hex = (n: bigint): Hex => `0x${n.toString(16)}`;
+const MAX_SYNC_BLOCKS = 256n;
 const quantity = (v: unknown): bigint => {
   if (typeof v !== 'string' || !/^0x(0|[1-9a-f][0-9a-f]*)$/i.test(v)) throw Error('Invalid RPC quantity');
   return BigInt(v);
@@ -81,7 +82,8 @@ export async function sync(env: Env, c: ChainConfiguration, rpc: Rpc): Promise<C
     const from = cursor ? BigInt(cursor.blockNumber) + 1n : BigInt(c.startBlock!);
     const head = quantity(await rpc.call('eth_blockNumber', []));
     if (head < from) return result();
-    let to = head < from + 31n ? head : from + 31n;
+    const maxScanTo = from + MAX_SYNC_BLOCKS - 1n;
+    let to = head < maxScanTo ? head : maxScanTo;
     const allowedTopics = [...new Set([...managerAbi, ...escrowAbi].filter(e => e.type === 'event').map(e => String(topicsFor({
       abi: [e],
       eventName: e.name
@@ -158,10 +160,10 @@ export async function sync(env: Env, c: ChainConfiguration, rpc: Rpc): Promise<C
       if (JSON.stringify(encodedTopics) !== JSON.stringify(log.topics) || encodedData !== log.data) throw Error('Noncanonical ABI log');
       const timestamp = new Date(Number(quantity(block.timestamp) * 1000n)).toISOString();
       const normalized: ChainValues = Object.fromEntries(Object.entries(args).map(([k, v]) => [k, typeof v === 'boolean' ? v : typeof v === 'string' ? v.toLowerCase() : String(v)]));
-      const id = `5042:${log.transactionHash}:${index}`;
+      const id = `5042002:${log.transactionHash}:${index}`;
       const event: VerifiedChainEvent = {
         id,
-        chainId: 5042,
+        chainId: 5042002,
         address: log.address.toLowerCase() as Hex,
         blockNumber: n.toString(),
         blockHash: log.blockHash,
@@ -222,4 +224,3 @@ export async function sync(env: Env, c: ChainConfiguration, rpc: Rpc): Promise<C
     await env.CHAIN_DB.prepare('UPDATE runtime SET lease=NULL,lease_until=0 WHERE id=1 AND lease=?').bind(token).run();
   }
 }
-

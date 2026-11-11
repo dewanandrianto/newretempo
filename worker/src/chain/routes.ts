@@ -3,7 +3,7 @@ import { readBody } from '../http'
 import type { WorkerApp } from '../types'
 import { requireWorkerAuth, requireWorkerOrg } from '../auth/guards'
 import { consumeRateLimit } from '../auth/rateLimits'
-import { configuration, snapshot, sync, enabledConfiguration, walletSnapshot } from './client'
+import { configuration, snapshot, sync, configuredConfiguration, enabledConfiguration, walletSnapshot } from './client'
 import { preparePlan, verifiedWallet, address } from './plans'
 import { badRequest } from '../errors'
 import { createCheckout, publicCheckout } from './checkouts'
@@ -27,7 +27,10 @@ export function registerChainRoutes(app: WorkerApp) {
   app.get('/api/customer/chain/snapshot', customerSnapshot)
   app.get('/api/customer/chain/snapshot/pages', customerSnapshotPage)
   app.post('/api/public/checkouts/:token/prepare', prepareCheckout)
-  app.post('/api/orgs/:orgId/chain/checkouts', createCheckout)
+  app.post('/api/orgs/:orgId/chain/checkouts', async c => {
+    await enabledConfiguration(c.env)
+    return createCheckout(c)
+  })
   app.get('/api/public/checkouts/:token', publicCheckout)
   app.get('/api/public/invoices/:token', publicCheckout)
   app.post('/api/orgs/:orgId/chain/plans/:planId/prepare', preparePlan)
@@ -36,7 +39,7 @@ export function registerChainRoutes(app: WorkerApp) {
     const auth = requireWorkerAuth(c)
     await readBody(c, z.object({}).strict())
     await consumeRateLimit(c.env.DB, `chain:sync:${auth.userId}`, 5, 60000)
-    await enabledConfiguration(c.env)
+    await configuredConfiguration(c.env)
     return c.json(await sync(c.env))
   })
   app.get('/api/orgs/:orgId/chain/snapshot', async c => {

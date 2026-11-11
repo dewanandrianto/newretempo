@@ -6,6 +6,7 @@ import { disabledConfiguration } from '../src/chain/client'
 import type { WorkerBindings } from '../src/types'
 
 const bindings = env as unknown as WorkerBindings
+const readOnlyConfiguration={...disabledConfiguration,configured:true,mode:'testnet' as const,manager:'0x3333333333333333333333333333333333333333',escrow:'0x4444444444444444444444444444444444444444',managerPaused:true,escrowPaused:true}
 
 test('refuses excess customer tenant fanout before service requests rather than truncating financial history', async () => {
   const user = crypto.randomUUID(), token = randomToken()
@@ -27,7 +28,7 @@ test('refuses excess customer tenant fanout before service requests rather than 
   let calls = 0
   const service = { fetch: (request: Request) => {
     calls++
-    return Promise.resolve(Response.json(new URL(request.url).pathname === '/v1/config' ? disabledConfiguration : { configuration: disabledConfiguration, cursor: null, bindings: [], events: [], projections: [] }))
+    return Promise.resolve(Response.json(new URL(request.url).pathname === '/v1/config' ? readOnlyConfiguration : { configuration: readOnlyConfiguration, cursor: null, bindings: [], events: [], projections: [] }))
   } } as Fetcher
   const request = async () => createWorkerApp().request('https://app.test/api/customer/chain/snapshot', { headers: { Cookie: `retempo_session=${token}` } }, { ...bindings, CHAIN: service })
   const response = await request()

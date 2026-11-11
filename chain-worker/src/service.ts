@@ -24,7 +24,7 @@ export interface RpcBudget { calls: number }
 export class OversizedRpcResponseError extends Error {}
 export class Rpc {
   constructor(readonly url: string, readonly transport: typeof fetch, readonly budget: RpcBudget = { calls: 0 }) {}
-  get remaining(): number { return 40 - this.budget.calls; }
+  get remaining(): number { return 42 - this.budget.calls; }
   async call<T = unknown>(method: string, params: unknown[]): Promise<T> {
     if (this.remaining <= 0) throw new CapacityError('RPC request budget exceeded; complete verification unavailable.');
     this.budget.calls++;
@@ -85,15 +85,17 @@ export class Rpc {
 }
 export async function configuration(env: Env, transport: typeof fetch, budget?: RpcBudget): Promise<ChainConfiguration> {
   const disabled: ChainConfiguration = {
-    chainId: 5042,
+    chainId: 5042002,
     mode: 'disabled',
     configured: false,
     rpcUrl: '',
-    explorerUrl: 'https://explorer.arc.io',
+    explorerUrl: 'https://explorer.testnet.arc.io',
     usdc: USDC,
     usdcDecimals: 6,
     manager: null,
     escrow: null,
+    managerPaused: null,
+    escrowPaused: null,
     startBlock: null
   };
   if (!env.APP_ENV || !env.ARC_RPC_URL || !env.ARC_MANAGER_ADDRESS || !env.ARC_ESCROW_ADDRESS || !env.ARC_START_BLOCK) return {
@@ -103,13 +105,14 @@ export async function configuration(env: Env, transport: typeof fetch, budget?: 
   if (!address.test(env.ARC_MANAGER_ADDRESS) || !address.test(env.ARC_ESCROW_ADDRESS) || !uint.test(env.ARC_START_BLOCK) || env.ARC_MANAGER_ADDRESS.toLowerCase() === env.ARC_ESCROW_ADDRESS.toLowerCase()) throw Error('Invalid deployment configuration');
   const url = new URL(env.ARC_RPC_URL);
   const local = ['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname);
-  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.search || url.hash || !local && url.href !== 'https://rpc.mainnet.arc.io/' || local && !['development', 'test'].includes(env.APP_ENV)) throw Error('Unsafe RPC configuration');
+  const officialTestnetRpc = ['https://rpc.testnet.arc.io/', 'https://rpc.blockdaemon.testnet.arc.io/'].includes(url.href);
+  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.search || url.hash || !local && (env.APP_ENV !== 'production' || !officialTestnetRpc) || local && !['development', 'test'].includes(env.APP_ENV)) throw Error('Unsafe RPC configuration');
   const expected = [env.ARC_EXPECTED_GENESIS_HASH, env.ARC_EXPECTED_MANAGER_CODE_HASH, env.ARC_EXPECTED_ESCROW_CODE_HASH];
   if (!local && expected.some(value => !value || !hash.test(value))) throw Error('Production identity pins are required');
   const rpc = new Rpc(url.href, transport, budget),
     manager = env.ARC_MANAGER_ADDRESS.toLowerCase() as Hex,
     escrow = env.ARC_ESCROW_ADDRESS.toLowerCase() as Hex;
-  if (BigInt(await rpc.call<Hex>('eth_chainId', [])) !== 5042n) throw Error('Chain mismatch');
+  if (BigInt(await rpc.call<Hex>('eth_chainId', [])) !== 5042002n) throw Error('Chain mismatch');
   const genesis = await rpc.call<{
     hash: Hex;
   }>('eth_getBlockByNumber', ['0x0', false]);
@@ -128,13 +131,20 @@ export async function configuration(env: Env, transport: typeof fetch, budget?: 
     }]
   }] as const;
   if (Number(await rpc.read(USDC, decimalsAbi, 'decimals')) !== 6) throw Error('Token decimals mismatch');
+  const [managerPaused, escrowPaused] = await Promise.all([
+    rpc.read(manager, managerAbi, 'paused'),
+    rpc.read(escrow, escrowAbi, 'paused')
+  ]);
+  if (typeof managerPaused !== 'boolean' || typeof escrowPaused !== 'boolean') throw Error('Invalid contract pause state');
   return {
     ...disabled,
     configured: true,
-    mode: local ? 'local' : 'mainnet',
+    mode: local ? 'local' : 'testnet',
     rpcUrl: url.href,
     manager,
     escrow,
+    managerPaused,
+    escrowPaused,
     startBlock: env.ARC_START_BLOCK,
     genesisHash: genesis.hash,
     managerCodeHash: keccak256(codes[0]),
@@ -150,7 +160,7 @@ export async function handle(request: Request, env: Env, transport: typeof fetch
   const budget: RpcBudget = { calls: 0 };
   const response = await handleRequest(request, env, transport, budget);
   response.headers.set('x-chain-rpc-calls', String(budget.calls));
-  response.headers.set('x-chain-rpc-limit', '40');
+  response.headers.set('x-chain-rpc-limit', '42');
   return response;
 }
 async function handleRequest(request: Request, env: Env, transport: typeof fetch, budget: RpcBudget): Promise<Response> {

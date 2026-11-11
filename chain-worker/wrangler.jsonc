@@ -1,11 +1,31 @@
 {
-  "$schema": "../node_modules/wrangler/config-schema.json",
-  "name": "retempo-chain",
-  "main": "src/index.ts",
-  "compatibility_date": "2026-11-08",
-  "workers_dev": false,
-  "preview_urls": false,
-  "routes": [],
-  "vars": { "ARC_SYNC_CRON_ENABLED": "false" },
-  "d1_databases": [{ "binding": "CHAIN_DB", "database_name": "retempo-chain", "migrations_dir": "migrations", "remote": false }]
+	"$schema": "../node_modules/wrangler/config-schema.json",
+	"name": "retempo-chain",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-11-08",
+	"workers_dev": false,
+	"preview_urls": false,
+	"routes": [],
+	"vars": {
+		"APP_ENV": "production",
+		"ARC_SYNC_CRON_ENABLED": "true",
+		"ARC_RPC_URL": "https://rpc.blockdaemon.testnet.arc.io",
+		"ARC_MANAGER_ADDRESS": "0x83426CFF6bEf85058eBb7f20FcED0a9965e73e25",
+		"ARC_ESCROW_ADDRESS": "0x0b862d1E56fD6303e303C55e7337961DF479E747",
+		"ARC_START_BLOCK": "71784115",
+		"ARC_EXPECTED_GENESIS_HASH": "0xe20e653af4441e8c6088e172b129d56420139824400477287b46e7101ae2bb1f",
+		"ARC_EXPECTED_MANAGER_CODE_HASH": "0x2d05a1f24ba9e4adac70652f8d599a293e78de7cf01e41dd7e5ab14721f00aa8",
+		"ARC_EXPECTED_ESCROW_CODE_HASH": "0x73ce4dae40ea49a11d2a274df2effcd23e1e24f58d532f47b61ede03eff476c9"
+	},
+	"triggers": {
+		"crons": ["* * * * *"]
+	},
+	"d1_databases": [
+		{
+			"binding": "CHAIN_DB",
+			"database_name": "retempo-chain-testnet",
+			"migrations_dir": "migrations",
+			"database_id": "926a656c-74e2-489b-af2e-ec17ddb56ee1"
+		}
+	]
 }
