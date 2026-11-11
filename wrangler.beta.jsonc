@@ -13,9 +13,9 @@
   },
   "vars": {
     "APP_ENV": "production",
-    "APP_ORIGINS": "https://retempo-beta.retempo.workers.dev",
-    "SIWE_DOMAIN": "retempo-beta.retempo.workers.dev",
-    "SIWE_URI": "https://retempo-beta.retempo.workers.dev",
+    "APP_ORIGINS": "https://retempo.xyz,https://api.retempo.xyz",
+    "SIWE_DOMAIN": "retempo.xyz",
+    "SIWE_URI": "https://retempo.xyz",
     "SIWE_CHAIN_ID": "5042002",
     "EMAIL_MODE": "disabled",
     "COOKIE_SECURE": "true",

@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createHttpApp, readBody } from '../src/http'
 import { stableHash } from '../src/common'
 import { scrubMetadata } from '../src/audit'
+import { randomToken } from '../src/auth/crypto'
 import type { WorkerBindings } from '../src/types'
 
 const bindings = {
@@ -27,6 +28,24 @@ describe('Workers HTTP boundary', () => {
   test('rejects a cross-origin state change', async () => {
     const response = await send('POST', '{"value":"x"}', { Origin: 'https://evil.test', 'X-Requested-With': 'retempo', 'Content-Type': 'application/json' })
     expect(response.status).toBe(403)
+  })
+  test('production accepts only exact UI/API origins and still requires the CSRF header', async () => {
+    const origins = 'https://retempo.xyz,https://api.retempo.xyz'
+    const production: WorkerBindings = {
+      ...bindings, APP_ENV: 'production', SESSION_SECRET: randomToken(), APP_ORIGINS: origins,
+      SIWE_DOMAIN: 'retempo.xyz', SIWE_URI: 'https://retempo.xyz', SIWE_CHAIN_ID: '5042002',
+      EMAIL_MODE: 'disabled', COOKIE_SECURE: 'true', REQUIRE_VERIFIED_EMAIL: 'true',
+    }
+    const request = (origin: string, csrf = true) => app.request('https://api.retempo.xyz/api/probe', {
+      method: 'POST',
+      headers: { Origin: origin, ...(csrf ? { 'X-Requested-With': 'retempo' } : {}), 'Content-Type': 'application/json' },
+      body: '{"value":"test"}',
+    }, production)
+    expect((await request('https://retempo.xyz')).status).toBe(200)
+    expect((await request('https://api.retempo.xyz')).status).toBe(200)
+    expect((await request('https://retempo.xyz.attacker.example')).status).toBe(403)
+    expect((await request('https://retempo-beta.retempo.workers.dev')).status).toBe(403)
+    expect((await request('https://retempo.xyz', false)).status).toBe(403)
   })
   test('requires the custom CSRF header even on an allowed origin', async () => {
     expect((await send('POST', '{"value":"x"}', { Origin: 'https://app.test', 'Content-Type': 'application/json' })).status).toBe(403)
