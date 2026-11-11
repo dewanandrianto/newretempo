@@ -25,7 +25,7 @@ export function configuredReader(configuration:ChainConfiguration) {
 }
 export function createRetempoClient(configuration:ChainConfiguration,wallet:WalletClient):RetempoClient {
  const reader=configuredReader(configuration)
- if(!wallet.account)throw new Error('Connect a wallet before continuing.')
+ if(!wallet.account)throw new Error('Sign in to continue with your wallet.')
  const account=wallet.account.address
  const provider=createPublicClient({transport:custom(wallet.transport,{retryCount:0})})
  const io:ChainIO={

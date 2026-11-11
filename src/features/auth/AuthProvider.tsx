@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import type { LoginInput, OrganizationInput, Session, SignUpInput } from '@shared/types'
 import { auth } from '@/services/auth'
@@ -10,11 +10,13 @@ type Status = 'loading' | 'ready'
 interface AuthContextValue {
   status: Status
   session: Session | null
+  sessionRevision: number
   privyEnabled: boolean
   signUp: (input: SignUpInput) => Promise<{ verificationEmailSent: boolean }>
   logIn: (input: LoginInput) => Promise<Session>
   logInWithPrivy: (accessToken: string) => Promise<Session>
   linkPrivyAccount: (accessToken: string) => Promise<void>
+  verifyPrivyWalletAccess: (accessToken: string) => Promise<{ allowed: boolean }>
   requestWalletChallenge: (address: `0x${string}`) => Promise<{ message: string }>
   verifyWalletSignature: (input: { message: string; signature: `0x${string}` }) => Promise<Session>
   createOrganization: (input: OrganizationInput) => Promise<Session>
@@ -23,68 +25,209 @@ interface AuthContextValue {
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
+const AUTH_SYNC_CHANNEL = 'retempo-auth-session'
+const AUTH_SYNC_STORAGE_KEY = 'retempo.auth-session-changed'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<Status>('loading')
   const [session, setSession] = useState<Session | null>(null)
+  const [sessionRevision, setSessionRevision] = useState(0)
   const queryClient = useQueryClient()
   const runtimeConfig = useRuntimeAuthConfig()
   const logoutPrivy = usePrivyLogout()
+  const channelRef = useRef<BroadcastChannel | null>(null)
+  const syncVersionRef = useRef(0)
+  const signOutRequestVersionRef = useRef<number | null>(null)
+  const sessionRef = useRef<Session | null>(null)
+  const initialReadyRef = useRef(false)
+  const pendingRefreshRef = useRef(false)
+  const refreshFromAnotherTabRef = useRef<(() => Promise<void>) | null>(null)
+  const initialLoadVersionRef = useRef(0)
 
   // Keeps the API layer's organization scope in lockstep with the session.
   const commit = useCallback((next: Session | null) => {
     setActiveOrg(next?.organization ? { id: next.organization.id, name: next.organization.name } : null)
+    sessionRef.current = next
     setSession(next)
     return next
   }, [])
 
+  const notifySessionChanged = useCallback(() => {
+    channelRef.current?.postMessage('session-changed')
+    try {
+      window.localStorage.setItem(AUTH_SYNC_STORAGE_KEY, `${Date.now()}-${Math.random()}`)
+    } catch {
+      // BroadcastChannel remains the primary path when local storage is unavailable.
+    }
+  }, [])
+
+  const commitAuthenticated = useCallback((next: Session) => {
+    syncVersionRef.current += 1
+    setSessionRevision((revision) => revision + 1)
+    queryClient.clear()
+    commit(next)
+    setStatus('ready')
+    notifySessionChanged()
+    return next
+  }, [commit, notifySessionChanged, queryClient])
+
   useEffect(() => {
-    let cancelled = false
+    const requestVersion = ++initialLoadVersionRef.current
+    const sessionVersion = syncVersionRef.current
     auth
       .loadSession()
-      .then((s) => {
-        if (!cancelled) commit(s)
+      .then((current) => {
+        if (
+          initialLoadVersionRef.current === requestVersion &&
+          sessionVersion === syncVersionRef.current &&
+          !pendingRefreshRef.current
+        ) commit(current)
       })
       .catch(() => {
-        if (!cancelled) commit(null)
+        if (
+          initialLoadVersionRef.current === requestVersion &&
+          sessionVersion === syncVersionRef.current &&
+          !pendingRefreshRef.current
+        ) commit(null)
       })
       .finally(() => {
-        if (!cancelled) setStatus('ready')
+        if (initialLoadVersionRef.current === requestVersion) {
+          initialReadyRef.current = true
+          setStatus('ready')
+          if (pendingRefreshRef.current) {
+            pendingRefreshRef.current = false
+            void refreshFromAnotherTabRef.current?.()
+          }
+        }
       })
     return () => {
-      cancelled = true
+      if (initialLoadVersionRef.current === requestVersion) initialLoadVersionRef.current += 1
     }
   }, [commit])
+
+  const refreshFromAnotherTab = useCallback(async () => {
+    if (signOutRequestVersionRef.current !== null) return
+    if (!initialReadyRef.current) {
+      pendingRefreshRef.current = true
+      return
+    }
+    const version = ++syncVersionRef.current
+    const previousScope = `${sessionRef.current?.user.id ?? ''}\u0000${sessionRef.current?.organization?.id ?? ''}`
+    setSessionRevision((revision) => revision + 1)
+    setStatus('loading')
+    try {
+      const next = await auth.loadSession()
+      if (version !== syncVersionRef.current) return
+      const nextScope = `${next?.user.id ?? ''}\u0000${next?.organization?.id ?? ''}`
+      if (previousScope !== nextScope) queryClient.clear()
+      if (version === syncVersionRef.current) commit(next)
+    } catch {
+      // A network/server error is not proof that the existing session is invalid.
+    } finally {
+      if (version === syncVersionRef.current) setStatus('ready')
+    }
+  }, [commit, queryClient])
+
+  useEffect(() => {
+    refreshFromAnotherTabRef.current = refreshFromAnotherTab
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === AUTH_SYNC_STORAGE_KEY) void refreshFromAnotherTab()
+    }
+    const onChannelMessage = (event: MessageEvent<unknown>) => {
+      if (event.data === 'session-changed') void refreshFromAnotherTab()
+    }
+    const onFocus = () => {
+      if (document.visibilityState === 'visible') void refreshFromAnotherTab()
+    }
+    const channel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel(AUTH_SYNC_CHANNEL)
+    channelRef.current = channel
+    channel?.addEventListener('message', onChannelMessage)
+    window.addEventListener('storage', onStorage)
+    window.addEventListener('focus', onFocus)
+    return () => {
+      if (refreshFromAnotherTabRef.current === refreshFromAnotherTab) refreshFromAnotherTabRef.current = null
+      channel?.removeEventListener('message', onChannelMessage)
+      channel?.close()
+      if (channelRef.current === channel) channelRef.current = null
+      window.removeEventListener('storage', onStorage)
+      window.removeEventListener('focus', onFocus)
+    }
+  }, [refreshFromAnotherTab])
 
   const value = useMemo<AuthContextValue>(
     () => ({
       status,
       session,
+      sessionRevision,
       privyEnabled: runtimeConfig.enabled,
       signUp: async (input) => {
         const res = await auth.signUp(input)
-        commit(res.session)
+        commitAuthenticated(res.session)
         return { verificationEmailSent: res.verificationEmailSent }
       },
-      logIn: async (input) => commit(await auth.logIn(input)) as Session,
-      logInWithPrivy: async (accessToken) => commit(await auth.logInWithPrivy(accessToken)) as Session,
+      logIn: async (input) => commitAuthenticated(await auth.logIn(input)),
+      logInWithPrivy: async (accessToken) => commitAuthenticated(await auth.logInWithPrivy(accessToken)),
       linkPrivyAccount: (accessToken) => auth.linkPrivyAccount(accessToken),
+      verifyPrivyWalletAccess: (accessToken) => auth.verifyPrivyWalletAccess(accessToken),
       requestWalletChallenge: (address) => auth.requestWalletChallenge(address),
-      verifyWalletSignature: async (input) => commit(await auth.verifyWalletSignature(input)) as Session,
-      createOrganization: async (input) => commit(await auth.createOrganization(input)) as Session,
-      refresh: async () => commit(await auth.loadSession()),
+      verifyWalletSignature: async (input) => commitAuthenticated(await auth.verifyWalletSignature(input)),
+      createOrganization: async (input) => {
+        if (signOutRequestVersionRef.current !== null) throw new Error('Sign-out is in progress.')
+        const requestVersion = ++syncVersionRef.current
+        const created = await auth.createOrganization(input)
+        if (requestVersion !== syncVersionRef.current) {
+          if (signOutRequestVersionRef.current !== null) throw new Error('Sign-out is in progress.')
+          const current = sessionRef.current
+          if (!current || current.user.id !== created.user.id) throw new Error('Session changed during organization setup.')
+          return current
+        }
+        queryClient.clear()
+        commit(created)
+        notifySessionChanged()
+        return created
+      },
+      refresh: async () => {
+        if (signOutRequestVersionRef.current !== null) throw new Error('Sign-out is in progress.')
+        const requestVersion = ++syncVersionRef.current
+        try {
+          const next = await auth.loadSession()
+          if (requestVersion !== syncVersionRef.current) return sessionRef.current
+          const current = sessionRef.current
+          const currentScope = `${current?.user.id ?? ''}\u0000${current?.organization?.id ?? ''}`
+          const nextScope = `${next?.user.id ?? ''}\u0000${next?.organization?.id ?? ''}`
+          if (currentScope !== nextScope) {
+            queryClient.clear()
+            setSessionRevision((revision) => revision + 1)
+          }
+          return commit(next)
+        } catch (error) {
+          if (requestVersion !== syncVersionRef.current) return sessionRef.current
+          throw error
+        }
+      },
       signOut: async () => {
+        const requestVersion = ++syncVersionRef.current
+        signOutRequestVersionRef.current = requestVersion
+        setSessionRevision((revision) => revision + 1)
         try {
           await auth.signOut()
         } finally {
-          try { await logoutPrivy() } finally {
-            queryClient.clear() // never keep one account's data in memory for the next
-            commit(null)
+          try {
+            if (requestVersion === syncVersionRef.current) await logoutPrivy()
+          } finally {
+            if (requestVersion === syncVersionRef.current) {
+              syncVersionRef.current += 1
+              queryClient.clear() // never keep one account's data in memory for the next
+              commit(null)
+              setStatus('ready')
+              notifySessionChanged()
+            }
+            if (signOutRequestVersionRef.current === requestVersion) signOutRequestVersionRef.current = null
           }
         }
       },
     }),
-    [status, session, commit, queryClient, runtimeConfig.enabled, logoutPrivy],
+    [status, session, sessionRevision, commit, commitAuthenticated, queryClient, runtimeConfig.enabled, logoutPrivy, notifySessionChanged],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

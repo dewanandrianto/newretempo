@@ -2,10 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronDown, LogOut, Menu, Settings } from 'lucide-react'
 import { useAuth } from '@/features/auth/AuthProvider'
-import { blockchain } from '@/services/blockchain'
 import { initials } from '@/lib/format'
-import { WalletButton } from '@/components/wallet/WalletButton'
-import { Badge } from '@/components/ui/Badge'
 
 export function Topbar({ onMenu }: { onMenu: () => void }) {
   const { session, signOut } = useAuth()
@@ -44,12 +41,7 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
         <p className="truncate text-sm font-medium text-fg">{org}</p>
         <p className="hidden text-xs text-faint sm:block">Merchant workspace</p>
       </div>
-      <Badge tone="cyan" className="ml-1 hidden md:inline-flex">
-        <span className="size-1.5 rounded-full bg-cyan" />
-        {blockchain.network.name}
-      </Badge>
       <div className="ml-auto flex items-center gap-2">
-        <WalletButton compact />
         <div className="relative" ref={ref}>
           <button
             type="button"

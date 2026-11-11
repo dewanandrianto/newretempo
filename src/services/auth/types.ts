@@ -10,6 +10,7 @@ export interface AuthService {
   logIn(input: LoginInput): Promise<Session>
   logInWithPrivy(accessToken: string): Promise<Session>
   linkPrivyAccount(accessToken: string): Promise<void>
+  verifyPrivyWalletAccess(accessToken: string): Promise<{ allowed: boolean }>
   privyLinkStatus(): Promise<{ enabled: boolean; linked: boolean }>
   signOut(): Promise<void>
   /** Step 1 of Sign-In with Ethereum: the server returns the exact message to sign. */

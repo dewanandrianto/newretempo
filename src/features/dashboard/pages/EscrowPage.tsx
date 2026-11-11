@@ -80,7 +80,7 @@ export default function EscrowPage() {
       <div className="space-y-4">
         <MerchantEscrowControls />
         <Card>
-          <CardHeader title="Escrow contract" description={`Network: ${blockchain.network.name}`} action={<ContractStatus />} />
+          <CardHeader title="Escrow contract" description="Verified contract settings for this workspace" action={<ContractStatus />} />
           <CardBody>
             <p className="max-w-2xl text-sm text-dim">
               Balances and claimable amounts come from contract getters at the verified indexed block, not estimated vesting.

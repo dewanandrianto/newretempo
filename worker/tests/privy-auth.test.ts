@@ -181,6 +181,32 @@ async function insertUser(email='legacy@example.test') {
     expect(await db.prepare('SELECT user_id FROM privy_identities WHERE privy_user_id=?').bind(did).first('user_id')).toBe(firstUser)
   })
 
+  it('allows wallet management only when the verified Privy DID matches the active RETEMPO account',async()=>{
+    const firstUser=await insertUser('wallet-owner@example.test'),secondUser=await insertUser('other-owner@example.test')
+    const firstSession=await app().request(`https://app.test/test/password-session/${firstUser}`,{method:'POST'},await testBindings())
+    const secondSession=await app().request(`https://app.test/test/password-session/${secondUser}`,{method:'POST'},await testBindings())
+    const firstToken=await signedToken(),firstDid=(await import('jose')).decodeJwt(firstToken).sub as string
+    expect((await request('privy/link',{method:'POST',accessToken:firstToken,cookie:cookieOf(firstSession)})).status).toBe(200)
+
+    const allowed=await request('privy/wallet-access',{method:'POST',accessToken:firstToken,cookie:cookieOf(firstSession)})
+    expect(allowed.status).toBe(200)
+    await expect(allowed.json()).resolves.toEqual({allowed:true})
+
+    const otherSession=await request('privy/wallet-access',{method:'POST',accessToken:firstToken,cookie:cookieOf(secondSession)})
+    expect(otherSession.status).toBe(200)
+    await expect(otherSession.json()).resolves.toEqual({allowed:false})
+
+    const unlinkedToken=await signedToken()
+    const unlinked=await request('privy/wallet-access',{method:'POST',accessToken:unlinkedToken,cookie:cookieOf(firstSession)})
+    expect(unlinked.status).toBe(200)
+    await expect(unlinked.json()).resolves.toEqual({allowed:false})
+
+    expect((await request('privy/wallet-access',{method:'POST',accessToken:firstToken})).status).toBe(401)
+    expect((await request('privy/wallet-access',{method:'POST',cookie:cookieOf(firstSession)})).status).toBe(401)
+    expect(await db.prepare('SELECT user_id FROM privy_identities WHERE privy_user_id=?').bind(firstDid).first('user_id')).toBe(firstUser)
+    expect(await db.prepare('SELECT count(*) AS n FROM users WHERE id IN (?,?)').bind(firstUser,secondUser).first<number>('n')).toBe(2)
+  })
+
   it('rejects a synthetic verifier key outside test mode before any request can use it',async()=>{
     const invalid=await testBindings({APP_ENV:'production',PRIVY_TEST_VERIFICATION_KEY:(await keysPromise).publicSpki})
     expect(()=>validateBindings(invalid)).toThrow()

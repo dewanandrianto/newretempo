@@ -1,5 +1,6 @@
 import { useCallback, type ReactNode } from 'react'
 import { PrivyProvider, usePrivy } from '@privy-io/react-auth'
+import { configuredArcTestnet } from '@/services/blockchain/chainConfig'
 import { PrivyLogoutContext } from './privyRuntimeContext'
 
 function PrivySessionBridge({ children }: { children: ReactNode }) {
@@ -16,7 +17,9 @@ export default function PrivyEnabledRuntime({ appId, children }: { appId: string
       appId={appId}
       config={{
         loginMethods: ['email', 'google', 'twitter', 'wallet'],
-        embeddedWallets: { ethereum: { createOnLogin: 'off' } },
+        defaultChain: configuredArcTestnet,
+        supportedChains: [configuredArcTestnet],
+        embeddedWallets: { ethereum: { createOnLogin: 'users-without-wallets' } },
       }}
     >
       <PrivySessionBridge>{children}</PrivySessionBridge>

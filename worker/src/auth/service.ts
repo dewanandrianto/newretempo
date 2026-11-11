@@ -35,6 +35,11 @@ async function findPrivyUser(c:C,privyUserId:string) {
   return c.env.DB.prepare(`SELECT p.user_id,u.status FROM privy_identities p JOIN users u ON u.id=p.user_id WHERE p.privy_user_id=?`)
     .bind(privyUserId).first<{user_id:string;status:string}>()
 }
+export async function privyWalletAccessMatches(c:C,userId:string,privyUserId:string):Promise<boolean> {
+  const match=await c.env.DB.prepare(`SELECT 1 AS matched FROM privy_identities p JOIN users u ON u.id=p.user_id
+    WHERE p.privy_user_id=? AND p.user_id=? AND u.status='active'`).bind(privyUserId,userId).first<{matched:number}>()
+  return Boolean(match)
+}
 async function recordPrivyLogin(c:C,userId:string) {
   const now=new Date().toISOString()
   await c.env.DB.batch([

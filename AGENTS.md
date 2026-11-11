@@ -23,9 +23,9 @@ Deployed contracts (Arc Testnet, chain ID 5042002; both paused): `RetempoEscrow`
 ## Tech Stack
 
 - Frontend: React 18, Vite, TypeScript, Tailwind CSS
-- Web3: wagmi v2, viem v2, ConnectKit
+- Web3: wagmi v2, viem v2, Privy React SDK and Privy wagmi adapter
 - Contracts: Solidity 0.8.28 + Foundry. Sources in `contracts/`, tests in `contracts/test/`. Build with `bun run contracts:build` (`forge build`), test with `bun run contracts:test` (isolated local Forge wrapper). Compile cache isolation alone does not isolate persisted invariant counterexamples. Keep the configured run/depth limits and all invariant/coverage assertions intact.
-- Wallet: injected (MetaMask, etc.)
+- Wallet: Privy-managed embedded wallets; external wallets are selected inside the Privy sign-in flow. Keep the injected connector only for legacy SIWE recovery when Privy is disabled.
 - Chain: Arc Testnet (Chain ID: 5042002, imported from `viem/chains`)
 - Token: USDC (6 decimals) (Address: 0x3600000000000000000000000000000000000000, Chain: Arc Testnet)
 - Toasts: Sonner

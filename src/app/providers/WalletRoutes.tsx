@@ -1,16 +1,24 @@
 import { Outlet } from 'react-router-dom'
-import { WagmiProvider } from 'wagmi'
-import { ConnectKitProvider } from 'connectkit'
-import { config } from '@/config'
+import { WagmiProvider as PrivyWagmiProvider } from '@privy-io/wagmi'
+import { WagmiProvider as LegacyWagmiProvider } from 'wagmi'
+import { config, legacyConfig } from '@/config'
+import { useRuntimeAuthConfig } from '@/features/auth/privyRuntimeContext'
 
-// This stable layout preserves the real wallet context across all application routes.
-// The public landing page has no wallet consumers and does not download the wallet SDK.
+// The public landing page has no wallet consumers and does not download this route chunk.
 export default function WalletRoutes() {
-  return (
-    <WagmiProvider config={config}>
-      <ConnectKitProvider>
+  const runtimeAuth = useRuntimeAuthConfig()
+
+  if (runtimeAuth.enabled) {
+    return (
+      <PrivyWagmiProvider config={config}>
         <Outlet />
-      </ConnectKitProvider>
-    </WagmiProvider>
+      </PrivyWagmiProvider>
+    )
+  }
+
+  return (
+    <LegacyWagmiProvider config={legacyConfig}>
+      <Outlet />
+    </LegacyWagmiProvider>
   )
 }

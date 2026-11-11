@@ -16,7 +16,7 @@ function EscrowActions({binding:b,configuration:c,snapshot}:{binding:ChainBindin
  const {address}=useAccount(),tx=useRetempoTransactions(c,`escrow-read:${b.key}`,snapshot)
  const [amount,setAmount]=useState(''),[evidence,setEvidence]=useState(''),[consent,setConsent]=useState(false)
  const query=useQuery({queryKey:['merchant-chain','escrow',b.key,address,c.genesisHash],queryFn:async()=>{const sdk=tx.client();const [escrow,free,claimable,now]=await Promise.all([sdk.getEscrow(b.key),sdk.read<bigint>('escrow','freeBalanceOf',[b.key]),sdk.read<bigint>('escrow','claimableAmount',[b.key]),sdk.timestamp()]);return {escrow,free,claimable,now}},enabled:Boolean(address),retry:false,refetchInterval:10000})
- if(!address)return <p className="text-sm text-dim">Connect the permitted merchant or arbitrator wallet.</p>
+ if(!address)return <p className="text-sm text-dim">Sign in with the permitted merchant or arbitrator wallet to continue.</p>
  if(query.isPending)return <p className="text-sm text-dim">Reading live escrow permissions…</p>
  if(query.isError)return <p role="alert" className="text-sm text-caution">{query.error.message}</p>
  const {escrow:e,free,claimable,now}=query.data,p=merchantEscrowPermissions(e,address,now)

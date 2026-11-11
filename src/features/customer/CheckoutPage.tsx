@@ -13,8 +13,11 @@ import { Button } from '@/components/ui/Button'
 import { EmptyState, PageSkeleton } from '@/components/ui/States'
 import { WalletButton, useUsdcBalance } from '@/components/wallet/WalletButton'
 import { checkoutAvailability, checkoutActionsPaused, checkoutPauseMessage, checkoutWindows, assertCheckoutPreparation, checkoutDue, checkoutSubscription } from './model'
+import { PrivyAuthButtonLazy } from '@/features/auth/PrivyAuthButtonLazy'
+import { useRuntimeAuthConfig } from '@/features/auth/privyRuntimeContext'
 
 function Checkout({checkout:c,token,invoice}:{checkout:ChainCheckout;token:string;invoice:boolean}) {
+ const {enabled:privyEnabled}=useRuntimeAuthConfig()
  const {address,chainId}=useAccount(),balance=useUsdcBalance()
  const tx=useRetempoTransactions(c.configuration,`invoice-payment:${c.subscriptionId}:${c.invoiceId}`)
  const [consent,setConsent]=useState(false),[prepared,setPrepared]=useState<ChainCheckout>()
@@ -55,17 +58,18 @@ function Checkout({checkout:c,token,invoice}:{checkout:ChainCheckout;token:strin
   </Card>
   <Card className="h-fit min-w-0 space-y-5 p-6">
    <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-lg font-semibold text-fg">Review & subscribe</h2><WalletButton compact /></div>
-   <p className="text-xs text-dim">{c.configuration.mode==='local'?'Local preview. No payment is processed.':'Configured payment network'}</p>
+   <p className="text-xs text-dim">{c.configuration.mode==='local'?'Local preview. No payment is processed.':'Payment setup for this link'}</p>
    {pauseMessage&&<p role="status" className="rounded-lg border border-line p-3 text-sm text-caution">{pauseMessage}</p>}
    <dl className="flex justify-between gap-3 text-sm"><dt className="text-dim">Due today</dt><dd className="num break-all text-fg">{displayUsdc(due)} USDC + gas</dd></dl>
    {availability&&availability!==pauseMessage&&<p role="status" className="rounded-lg border border-line p-3 text-sm text-caution">{availability}</p>}
-   {wrongNetwork&&<p role="alert" className="text-sm text-caution">Wrong network. Switch your wallet to the network used for this invoice before continuing.</p>}
+   {wrongNetwork&&<p role="alert" className="text-sm text-caution">This wallet cannot be used for this invoice. Select the appropriate wallet and try again.</p>}
    {short&&<p role="alert" className="text-sm text-caution">Insufficient USDC. Add funds for the exact payment and native USDC gas.</p>}
    {canReadChain&&windows.isPending&&<p className="text-sm text-dim">Loading live contract terms…</p>}
    {subscription.isError&&<p role="alert" className="text-sm text-caution">Subscription state could not be verified. <button className="underline" onClick={()=>void subscription.refetch()}>Retry state</button></p>}
    {windows.isError&&<div role="alert" className="text-sm text-caution">Contract terms could not be verified. <button className="underline" onClick={()=>void windows.refetch()}>Retry terms</button></div>}
    {!availability&&<label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-dim"><input type="checkbox" className="mt-1 size-4 accent-cyan" checked={consent} onChange={e=>setConsent(e.target.checked)} /><span>I accept the displayed plan, payout, arbitrator and exact escrow windows. I authorize only {displayUsdc(due)} USDC now. No recurring mandate is created.</span></label>}
-   {address&&!tx.verifiedWallet&&<Button variant="secondary" className="w-full" loading={tx.busy} disabled={wrongNetwork} onClick={()=>void tx.signIn()}>Sign in with this wallet</Button>}
+   {!address&&privyEnabled&&<div className="space-y-3 rounded-xl border border-line bg-midnight/50 p-4"><p className="text-sm leading-relaxed text-dim">Choose a sign-in method to continue. Signing in does not authorize a payment.</p><PrivyAuthButtonLazy mode="wallet" /></div>}
+   {address&&!tx.verifiedWallet&&<Button variant="secondary" className="w-full" loading={tx.busy} disabled={wrongNetwork} onClick={()=>void tx.signIn()}>Verify wallet with a one-time message</Button>}
    <Button size="lg" className="w-full" loading={tx.busy} disabled={Boolean(availability)||wrongNetwork||short||!address||!tx.verifiedWallet||!consent||!windows.data||subscription.isPending||subscription.isError||!canSubmit(tx.state.phase)} onClick={()=>void pay()}>{existing?'Approve exact amount & renew':c.trialDays>0?'Start trial':'Approve exact amount & subscribe'}</Button>
    <TransactionStatus state={tx.state} error={tx.error} busy={tx.busy} onSync={()=>void tx.sync(target(prepared??c))} onResume={()=>void tx.resume()} />
    {tx.state.phase==='confirmed-indexing-pending'&&!prepared?.paymentId&&!c.paymentId&&c.trialDays===0&&<p className="text-xs text-dim">Confirmation is retained. Open the wallet-owned portal to verify this payment; never submit this checkout again.</p>}

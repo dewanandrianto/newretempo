@@ -3,9 +3,10 @@ import { lazy, Suspense } from 'react'
 const PrivyAuthButton = lazy(() => import('./PrivyAuthButton').then((module) => ({ default: module.PrivyAuthButton })))
 
 type Props = {
-  mode: 'login' | 'link'
+  mode: 'login' | 'link' | 'wallet'
   redirectTo?: string
   onLinked?: () => void
+  onWalletReady?: () => void
 }
 
 export function PrivyAuthButtonLazy(props: Props) {

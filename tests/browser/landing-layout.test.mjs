@@ -22,37 +22,31 @@ before(async () => {
 after(async () => { await browser?.close() })
 
 for (const width of [320, 360, 390, 768, 1440]) {
-  test(`landing fits a ${width}px viewport and keeps code scrolling inside its panel`, async () => {
+  test(`landing fits a ${width}px viewport without horizontal overflow or placeholder data`, async () => {
     const page = await browser.newPage({ viewport: { width, height: 900 }, reducedMotion: 'reduce' })
     const errors = []
     page.on('pageerror', (error) => errors.push(error.message))
     try {
       await page.goto(baseUrl, { waitUntil: 'networkidle' })
-      await page.getByRole('heading', { name: 'Subscription billing that settles in USDC.' }).waitFor()
-      const developers = page.locator('#developers')
-      await developers.scrollIntoViewIfNeeded()
-      const dimensions = await page.evaluate(() => {
-        const section = document.querySelector('#developers')
-        const pre = section.querySelector('pre')
-        const panel = pre.parentElement
-        return {
-          viewport: innerWidth,
-          document: document.documentElement.scrollWidth,
-          sectionRight: section.getBoundingClientRect().right,
-          panelRight: panel.getBoundingClientRect().right,
-          panelWidth: panel.clientWidth,
-          preWidth: pre.clientWidth,
-          preScrollWidth: pre.scrollWidth,
-          preOverflow: getComputedStyle(pre).overflowX,
-          codeText: pre.textContent,
-        }
-      })
+      await page.getByRole('heading', { name: 'Subscription billing, made clearer.' }).waitFor()
+      await page.locator('#features').waitFor()
+      await page.locator('#developers').scrollIntoViewIfNeeded()
+      const dimensions = await page.evaluate(() => ({
+        viewport: innerWidth,
+        document: document.documentElement.scrollWidth,
+        sections: [...document.querySelectorAll('main section')].map((section) => ({
+          id: section.id,
+          left: section.getBoundingClientRect().left,
+          right: section.getBoundingClientRect().right,
+        })),
+        hasPlaceholderCode: Boolean(document.querySelector('#developers pre')),
+        pageText: document.querySelector('main')?.innerText ?? '',
+      }))
       if (evidenceDir) await page.screenshot({ path: path.join(evidenceDir, `landing-${width}.png`) })
       assert.ok(dimensions.document <= dimensions.viewport, `Page overflow: ${JSON.stringify(dimensions)}`)
-      assert.ok(dimensions.panelRight <= dimensions.viewport, `Code panel exceeds viewport: ${JSON.stringify(dimensions)}`)
-      assert.ok(dimensions.preWidth <= dimensions.panelWidth, 'Code viewport must fit its panel')
-      assert.match(dimensions.preOverflow, /auto|scroll/, 'Long code must remain horizontally scrollable, not clipped')
-      assert.match(dimensions.codeText, /customerEmail: 'billing@example.com'/, 'Code content must not be removed to hide overflow')
+      assert.ok(dimensions.sections.every((section) => section.left >= 0 && section.right <= dimensions.viewport), `A section exceeds the viewport: ${JSON.stringify(dimensions.sections)}`)
+      assert.equal(dimensions.hasPlaceholderCode, false, 'Landing must not display placeholder SDK or business code')
+      assert.doesNotMatch(dimensions.pageText, /billing@example\.com|Local Arc Wallet/i, 'Landing must not display fictitious business or provider labels')
       assert.deepEqual(errors, [], 'Landing must not raise uncaught JavaScript errors')
     } finally {
       await page.close()

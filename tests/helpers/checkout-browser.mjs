@@ -120,11 +120,8 @@ export async function checkoutInBrowser({ base, arc, token, escrowId, customerCo
     page.on('pageerror', error => errors.push(error.message))
     await page.goto(`${base}/checkout/${token}`, { waitUntil: 'domcontentloaded' })
     await page.getByRole('heading', { name: /Verified Local Service/ }).waitFor({ timeout: 20_000 })
-    const connect = page.getByRole('button', { name: 'Connect wallet', exact: true }).first()
-    if (await connect.isVisible()) {
-      await connect.click()
-      await page.getByText(/Local Arc Wallet|MetaMask|Injected/, { exact: true }).first().click({ timeout: 15_000 })
-    }
+    const connect = page.getByRole('button', { name: 'Connect test wallet', exact: true }).first()
+    if (await connect.isVisible()) await connect.click()
     const signIn = page.getByRole('button', { name: 'Sign in with this wallet', exact: true })
     if (await signIn.isVisible()) await signIn.click()
     await page.getByRole('checkbox').check()

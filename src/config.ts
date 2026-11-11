@@ -1,18 +1,27 @@
-import { http, createConfig } from 'wagmi'
-import { arcTestnet } from 'viem/chains'
+import { createConfig as createPrivyConfig } from '@privy-io/wagmi'
+import { createConfig as createLegacyConfig, http } from 'wagmi'
 import { injected } from 'wagmi/connectors'
+import { arcRpcUrl, configuredArcTestnet } from '@/services/blockchain/chainConfig'
 import { registerChain } from './tracing'
 
-// Use the official Arc-listed Testnet RPC that passed the read-only preflight.
-const arcRpcUrl = 'https://rpc.blockdaemon.testnet.arc.io'
-const configuredArcTestnet = {
-  ...arcTestnet,
-  name: 'Configured network',
-  rpcUrls: { ...arcTestnet.rpcUrls, default: { ...arcTestnet.rpcUrls.default, http: [arcRpcUrl] } },
-}
-registerChain(arcTestnet.id, arcRpcUrl)
-export const config = createConfig({
- chains: [configuredArcTestnet],
- connectors: [injected()],
- transports: { [arcTestnet.id]: http(arcRpcUrl) },
+registerChain(configuredArcTestnet.id, arcRpcUrl)
+
+// Privy manages the connected wallet; wagmi supplies the application's chain hooks.
+export const config = createPrivyConfig({
+  chains: [configuredArcTestnet],
+  transports: { [configuredArcTestnet.id]: http(arcRpcUrl) },
 })
+
+// Preserve the old SIWE recovery connector only if the server-side Privy flag is off.
+const legacyConnectors = [injected()]
+export const legacyConfig = createLegacyConfig({
+  chains: [configuredArcTestnet],
+  connectors: legacyConnectors,
+  transports: { [configuredArcTestnet.id]: http(arcRpcUrl) },
+})
+
+declare module 'wagmi' {
+  interface Register {
+    config: typeof config
+  }
+}

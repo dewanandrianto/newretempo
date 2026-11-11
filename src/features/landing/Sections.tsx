@@ -39,7 +39,7 @@ export function Features() {
 }
 
 const betaStatus = [
-  { title: 'Limited preview', body: 'Wallet connections are restricted to the configured network.' },
+  { title: 'Limited preview', body: 'Wallet access is available after you sign in.' },
   { title: 'Payments paused', body: 'Payment, escrow release, and settlement actions are disabled.' },
   { title: 'Verified records only', body: 'Transaction status appears only when supported by verified chain data.' },
   { title: 'Empty by default', body: 'When no real account or verified chain records exist, the app displays an empty state.' },
@@ -126,7 +126,7 @@ const devPoints = [
   { icon: Code2, title: 'SDK examples', body: 'No SDK examples are published in this beta.' },
   { icon: Webhook, title: 'Webhooks', body: 'No webhook delivery endpoints are available yet.' },
   { icon: ShieldCheck, title: 'Verified state', body: 'Transaction views use verified chain data or an empty state.' },
-  { icon: Repeat, title: 'Network settings', body: 'Wallet connections use a restricted configuration.' },
+  { icon: Repeat, title: 'Wallet settings', body: 'Wallet actions follow your account security settings.' },
 ]
 
 export function Developers() {

@@ -18,15 +18,15 @@ export function PrivyLinkPanel() {
 
   return (
     <Card>
-      <CardHeader title="Privy sign-in" description="Add email OTP, Google, X, and external-wallet sign-in to this existing account." />
+      <CardHeader title="Sign-in methods" description="Link another RETEMPO sign-in to this existing account." />
       <CardBody className="space-y-3">
-        <p className="text-sm text-dim">Linking requires this signed-in RETEMPO session and a valid Privy session. RETEMPO does not merge accounts based on matching email addresses.</p>
+        <p className="text-sm text-dim">Linking must start from this signed-in RETEMPO account. Matching email addresses never merge or link accounts automatically.</p>
         {status.isPending ? (
           <p className="text-sm text-faint" role="status">Checking linked sign-in…</p>
         ) : status.isError ? (
           <p className="text-sm text-negative" role="alert">Could not check the linked sign-in status. Refresh the page and try again.</p>
         ) : status.data?.linked ? (
-          <p className="text-sm font-medium text-positive">A Privy sign-in is linked to this account.</p>
+          <p className="text-sm font-medium text-positive">A RETEMPO sign-in is linked to this account.</p>
         ) : starting ? (
           <PrivyAuthButtonLazy mode="link" onLinked={() => {
             setStarting(false)
@@ -34,7 +34,7 @@ export function PrivyLinkPanel() {
           }} />
         ) : (
           <Button type="button" variant="secondary" className="w-full" onClick={() => setStarting(true)}>
-            Link a Privy sign-in
+            Link a sign-in
           </Button>
         )}
       </CardBody>

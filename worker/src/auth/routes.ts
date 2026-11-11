@@ -2,7 +2,7 @@ import { z } from 'zod'
 import type { Context } from 'hono'
 import type { WorkerApp, WorkerContext } from '../types'
 import { readBody } from '../http'
-import { authenticatePassword, authenticatePrivy, linkPrivyIdentity, registerUser, requestPasswordReset, resendVerification, resetPassword, verifyEmail } from './service'
+import { authenticatePassword, authenticatePrivy, linkPrivyIdentity, privyWalletAccessMatches, registerUser, requestPasswordReset, resendVerification, resetPassword, verifyEmail } from './service'
 import { establishSession, expireCookie, revokeSession } from './sessions'
 import { issueChallenge, verifyChallenge } from './siwe'
 import { linkWalletToUser, loginWithWallet } from './walletAuth'
@@ -25,7 +25,7 @@ function readPrivyBearer(c:Context<WorkerContext>):string {
   if (!match || match[1].length>8192) throw unauthorized('Privy sign-in failed')
   return match[1]
 }
-async function verifiedPrivyIdentity(c:Context<WorkerContext>,purpose:'login'|'link') {
+async function verifiedPrivyIdentity(c:Context<WorkerContext>,purpose:'login'|'link'|'wallet_access') {
   if (!isPrivyAuthEnabled(c.env)) throw unavailable('Privy authentication is not enabled','privy_not_enabled')
   await consumeRateLimit(c.env.DB,`privy:${purpose}:ip:${c.get('ip')}`,30,15*60000)
   return verifyPrivyAccessToken(c.env,readPrivyBearer(c))
@@ -61,6 +61,10 @@ export function registerAuthRoutes(app:WorkerApp):void {
     const auth=requireWorkerAuth(c),identity=await verifiedPrivyIdentity(c,'link')
     await linkPrivyIdentity(c,auth.userId,identity.privyUserId)
     return c.json({ok:true})
+  })
+  app.post('/api/auth/privy/wallet-access',async c=> {
+    const auth=requireWorkerAuth(c),identity=await verifiedPrivyIdentity(c,'wallet_access')
+    return c.json({allowed:await privyWalletAccessMatches(c,auth.userId,identity.privyUserId)})
   })
   app.post('/api/auth/logout',async c=> {
     const auth=c.get('auth')

@@ -41,7 +41,7 @@ function PublishPlanForm({plan}:{plan:Plan}) {
  if(!c?.configured)return <p role="alert" className="text-sm text-caution">{chain.configuration.error?.message??c?.reason??'Onchain publishing is disabled.'}</p>
  return <div className="space-y-4" data-testid={`publish-plan-${plan.id}`}>
   <WalletButton compact />
-  <p className="text-xs text-dim">{c.mode==='local'?'Local preview. No payment is processed.':'Configured payment network'}</p>
+  <p className="text-xs text-dim">{c.mode==='local'?'Local preview. No payment is processed.':'Payment setup for this workspace'}</p>
   {pauseMessage&&<p role="status" className="text-sm text-caution">{pauseMessage}</p>}
   {published?<p role="status" className="text-sm text-cyan">This plan is published in the verified backend.</p>:<>
    {!prepared?<>

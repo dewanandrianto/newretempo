@@ -55,6 +55,8 @@ export const apiAuthService: AuthService = {
     await postWithBearer('/auth/privy/link', accessToken)
   },
 
+  verifyPrivyWalletAccess: (accessToken) => postWithBearer<{ allowed: boolean }>('/auth/privy/wallet-access', accessToken),
+
   privyLinkStatus: () => get<{ enabled: boolean; linked: boolean }>('/auth/privy/status'),
 
   async signOut() {

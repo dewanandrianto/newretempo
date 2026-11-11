@@ -25,7 +25,6 @@ export default defineConfig({
       'wagmi/connectors',
       'viem',
       'viem/chains',
-      'connectkit',
       'framer-motion',
       'react-router-dom',
       'lucide-react',

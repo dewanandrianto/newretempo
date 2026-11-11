@@ -83,7 +83,7 @@ export class RetempoClient {
  private async ownedSubscription(key:Hash,allowMerchant=false):Promise<SubscriptionState> {
   const s=await this.getSubscription(key)
   const merchant=allowMerchant?(await this.getPlan(s.planKey)).merchant:''
-  if(!same(s.customer,this.io.account)&&!same(merchant,this.io.account))throw new Error('Connect the permitted subscription wallet.')
+  if(!same(s.customer,this.io.account)&&!same(merchant,this.io.account))throw new Error('Use the permitted subscription wallet to continue.')
   return s
  }
  async renew(key:Hash,expected:ChainCheckout,windows:EscrowWindows,write:WriteTransaction):Promise<void> {

@@ -5,7 +5,6 @@ import { useAccount } from 'wagmi'
 import { LogOut, ShieldCheck, Trash2 } from 'lucide-react'
 import { useAuth } from '@/features/auth/AuthProvider'
 import { roleCan, ROLE_REASON } from '@/features/auth/permissions'
-import { blockchain } from '@/services/blockchain'
 import { merchant } from '@/services/merchant/api'
 import { shortAddress } from '@/lib/format'
 import { Badge } from '@/components/ui/Badge'
@@ -14,11 +13,12 @@ import { Card, CardBody, CardHeader } from '@/components/ui/Card'
 import { TextField } from '@/components/ui/Field'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { Skeleton } from '@/components/ui/States'
-import { WalletButton, useUsdcBalance } from '@/components/wallet/WalletButton'
+import { useUsdcBalance } from '@/components/wallet/WalletButton'
 import { ConfirmAction, CreateDialog, useMerchantMutation } from '../actions'
 import { FormFooter } from '../forms/shared'
 import { MembersCard } from '../MembersCard'
 import { PrivyLinkPanel } from '@/features/auth/PrivyLinkPanel'
+import { EmbeddedWalletSettingsLazy } from '@/features/auth/PrivyWalletFeatureLazy'
 
 function ProfileCard() {
   const { session, refresh } = useAuth()
@@ -102,7 +102,7 @@ function PayoutCard() {
     <Card>
       <CardHeader
         title="Payout wallets"
-        description={`${blockchain.network.name} USDC`}
+        description="USDC payout addresses"
         action={
           canEdit && (
             <CreateDialog label="Add wallet" title="Add a payout wallet">
@@ -134,10 +134,9 @@ function PayoutCard() {
         )}
         <div className="flex items-center justify-between gap-3 rounded-xl border border-line bg-midnight/50 p-3">
           <div>
-            <p className="text-xs text-faint">Connected wallet</p>
-            <p className="num text-sm font-medium text-fg">{address ? (isLoading ? 'Reading balance...' : `${formatted ?? '0.00'} USDC`) : 'Not connected'}</p>
+            <p className="text-xs text-faint">Active wallet</p>
+            <p className="num text-sm font-medium text-fg">{address ? `${shortAddress(address)} · ${isLoading ? 'Reading balance…' : `${formatted ?? '0.00'} USDC`}` : 'Available after sign-in'}</p>
           </div>
-          <WalletButton compact />
         </div>
       </CardBody>
     </Card>
@@ -145,7 +144,7 @@ function PayoutCard() {
 }
 
 export default function SettingsPage() {
-  const { session, signOut } = useAuth()
+  const { session, signOut, privyEnabled } = useAuth()
   const navigate = useNavigate()
   return (
     <>
@@ -156,13 +155,14 @@ export default function SettingsPage() {
         <div className="xl:col-span-2">
           <MembersCard />
         </div>
-        <PrivyLinkPanel />
+        {privyEnabled && <PrivyLinkPanel />}
+        {privyEnabled && <div className="xl:col-span-2"><EmbeddedWalletSettingsLazy /></div>}
         <Card>
           <CardHeader title="Security" />
           <CardBody className="space-y-4">
             <div className="flex gap-3 text-sm text-dim">
               <ShieldCheck className="mt-0.5 size-4 shrink-0 text-cyan" />
-              <p>RETEMPO never asks for or stores private keys or seed phrases. Your wallet signs everything. Your role here is <span className="text-fg">{session?.role}</span>.</p>
+              <p>RETEMPO never asks for or stores private keys or recovery phrases. Anyone with an exported key can control its wallet. Your role here is <span className="text-fg">{session?.role}</span>.</p>
             </div>
             <p className="text-xs text-faint">
               Signed in {session?.user.email ? `as ${session.user.email}` : 'with a wallet'}. Sessions are server-side and expire automatically.

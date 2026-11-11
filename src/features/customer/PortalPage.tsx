@@ -9,6 +9,8 @@ import { Card } from '@/components/ui/Card'
 import { EmptyState, PageSkeleton } from '@/components/ui/States'
 import { SubscriptionCard } from './SubscriptionCard'
 import { EscrowCard, CreditCard } from './EscrowCard'
+import { PrivyAuthButtonLazy } from '@/features/auth/PrivyAuthButtonLazy'
+import { useRuntimeAuthConfig } from '@/features/auth/privyRuntimeContext'
 
 function WalletRecords({snapshot}:{snapshot:ChainSnapshot}) {
  const {address}=useAccount()
@@ -25,6 +27,7 @@ function WalletRecords({snapshot}:{snapshot:ChainSnapshot}) {
 }
 export default function PortalPage() {
  const {address,chainId}=useAccount()
+ const {enabled:privyEnabled}=useRuntimeAuthConfig()
  const config=useQuery({queryKey:['chain-configuration'],queryFn:chainApi.configuration,retry:false})
  const tx=useRetempoTransactions(config.data,'portal-auth')
  const snapshot=useQuery({queryKey:['customer-chain',address],queryFn:chainApi.customerSnapshot,enabled:Boolean(config.data?.configured&&tx.verifiedWallet),retry:false,refetchInterval:15000})
@@ -34,7 +37,7 @@ export default function PortalPage() {
 		 {config.isError&&<Card className="space-y-3 p-5"><p role="alert" className="text-caution">{config.error.message}</p><Button onClick={()=>void config.refetch()}>Retry configuration</Button></Card>}
        {config.data&&!config.data.configured&&<EmptyState title="Deployment disabled" description={config.data.reason??'No verified payment deployment is configured. No transaction can be sent.'} />}
        {config.data?.mode==='local'&&<p className="rounded-xl border border-caution/30 p-3 text-sm text-caution">Local preview. Payments cannot be processed.</p>}
-       {config.data?.configured&&!tx.verifiedWallet&&<Card className="space-y-4 p-6"><h2 className="text-lg text-fg">Verify your wallet to view billing</h2><p className="text-sm text-dim">Connect the customer wallet, then sign a one-time Sign-In with Ethereum challenge.</p>{address&&chainId!==5042002&&<p className="text-sm text-caution">Switch to the configured network before signing.</p>}<Button disabled={!address||chainId!==5042002} loading={tx.busy} onClick={()=>void tx.signIn()}>Sign in with wallet</Button>{tx.error&&<p role="alert" className="text-sm text-caution">{tx.error}</p>}</Card>}
+       {config.data?.configured&&!tx.verifiedWallet&&<Card className="space-y-4 p-5 sm:p-6"><h2 className="text-lg text-fg">{address?'Verify your wallet to view billing':'Sign in to access billing'}</h2><p className="text-sm leading-relaxed text-dim">{address?'Sign a one-time message to prove control of this wallet. This does not authorize spending.':'Choose a sign-in method to continue. Signing in does not authorize spending.'}</p>{!address&&privyEnabled&&<PrivyAuthButtonLazy mode="wallet" />} {address&&chainId!==5042002&&<p className="text-sm text-caution">This wallet is not ready to verify billing. Select a supported wallet and try again.</p>}{address&&<Button disabled={chainId!==5042002} loading={tx.busy} onClick={()=>void tx.signIn()}>Verify wallet with a one-time message</Button>}{tx.error&&<p role="alert" className="text-sm text-caution">{tx.error}</p>}</Card>}
 		 {tx.verifiedWallet&&snapshot.isPending&&config.data?.configured&&<PageSkeleton />}
 		 {tx.verifiedWallet&&snapshot.isError&&<Card className="space-y-3 p-5"><p role="alert" className="text-sm text-caution">{snapshot.error.message}</p><Button onClick={()=>void snapshot.refetch()}>Retry wallet-owned records</Button></Card>}
 	 {tx.verifiedWallet&&snapshot.data&&<WalletRecords snapshot={snapshot.data} />}
