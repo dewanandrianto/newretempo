@@ -33,7 +33,7 @@ export function validateBindings(env: WorkerBindings): void {
   if (env.COOKIE_SECURE !== undefined && env.COOKIE_SECURE !== 'true') unsafe()
   if (env.REQUIRE_VERIFIED_EMAIL !== undefined && env.REQUIRE_VERIFIED_EMAIL !== 'true') unsafe()
   if (env.EMAIL_MODE !== 'disabled' && env.EMAIL_MODE !== 'delivery') unsafe()
-  if (env.EMAIL_MODE === 'delivery' && !env.MAILER) unsafe()
+  if (env.EMAIL_MODE === 'delivery' && !env.MAILER && !env.RESEND_API_KEY) unsafe()
   const ttl = boundedHours(env.SESSION_TTL_HOURS, 168, 168)
   if (boundedHours(env.SESSION_IDLE_HOURS, 24, 24) > ttl) unsafe()
 }

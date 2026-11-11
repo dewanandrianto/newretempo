@@ -24,6 +24,8 @@ export interface WorkerBindings {
   SESSION_IDLE_HOURS?: string
   /** Only a real delivery adapter may enable production email. Never expose test tokens. */
   MAILER?: Fetcher
+  /** Resend credential supplied only through Worker secret storage, never plaintext vars. */
+  RESEND_API_KEY?: string
 }
 
 export interface AuthRequest {

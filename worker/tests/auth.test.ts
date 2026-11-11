@@ -53,7 +53,7 @@ describe('Workers authentication API', () => {
     expect((await req('me', undefined, cookieOf(fresh))).status).toBe(401)
   })
   it('fails closed without a delivery adapter', async () => {
-    const response = await req('register', { email: 'closed@example.test', name: 'Test', password: 'a strong password 923' }, undefined, { MAILER: undefined })
+    const response = await req('register', { email: 'closed@example.test', name: 'Test', password: 'a strong password 923' }, undefined, { MAILER: undefined, RESEND_API_KEY: 're_test_not_enabled' })
     expect(response.status).toBe(503)
     expect(await db.prepare('SELECT id FROM users WHERE email=?').bind('closed@example.test').first()).toBeNull()
   })

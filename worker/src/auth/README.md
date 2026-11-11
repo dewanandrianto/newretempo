@@ -12,15 +12,15 @@ The legacy Bun Argon2 format is deliberately not treated as PBKDF2-compatible. N
 
 ## Email adapter
 
-There is no public test-token endpoint and no outgoing-link logging. Tests inject a `MAILER` Fetcher that captures JSON bodies locally. A real adapter receives a private POST to `https://mailer.internal/send`:
+There is no public test-token endpoint and no outgoing-link logging. Tests inject a `MAILER` Fetcher or stub `fetch`; no test contacts a provider. The Resend adapter makes a POST only to `https://api.resend.com/emails`, using `RESEND_API_KEY` as an Authorization Bearer secret and sending from `RETEMPO <no-reply@auth.retempo.xyz>`. Do not add the key or enable `EMAIL_MODE=delivery` before the sender domain is verified.
 
 ```json
 {"to":"user@example.test","kind":"verify_email","subject":"Verify your RETEMPO email","link":"https://app.example/verify-email#ONE_TIME_TOKEN"}
 ```
 
-The adapter must return a 2xx response only after accepting delivery. `kind` is `verify_email` or `reset_password`; the latter uses `/reset-password#TOKEN`. Tokens are only in fragments in outgoing links and only HMAC hashes are persisted. Failure or an exception retires the undelivered token without logging provider errors. Registration/resend responses preserve the existing sent booleans; forgot-password always returns the existing generic response.
+This JSON is the optional `MAILER` service-binding contract and must return 2xx only after accepting delivery. `kind` is `verify_email` or `reset_password`; the latter uses `/reset-password#TOKEN`. Tokens are only in fragments in outgoing links and only HMAC hashes are persisted. Failure or an exception retires the undelivered token without logging provider errors or response bodies. Registration/resend responses preserve the existing sent booleans; forgot-password always returns the existing generic response.
 
-Absent `MAILER` or `EMAIL_MODE=disabled` fails closed with `email_not_configured`. Production also rejects `EMAIL_MODE=test`; a production binding must use a real delivery adapter and leave this optional mode unset. No email provider is configured by this implementation.
+`EMAIL_MODE=disabled` always fails closed. Production requires explicit `EMAIL_MODE=delivery` with either a real `MAILER` binding or the Resend secret, and rejects test mode. Enable delivery only after the sender domain is verified and the provider secret is installed.
 
 ## Database and sessions
 

@@ -17,7 +17,7 @@
     "SIWE_DOMAIN": "retempo.xyz",
     "SIWE_URI": "https://retempo.xyz",
     "SIWE_CHAIN_ID": "5042002",
-    "EMAIL_MODE": "disabled",
+    "EMAIL_MODE": "delivery",
     "COOKIE_SECURE": "true",
     "REQUIRE_VERIFIED_EMAIL": "true"
   },

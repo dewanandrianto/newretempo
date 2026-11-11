@@ -17,6 +17,9 @@ describe('production configuration fails closed before authentication or D1', ()
   test('accepts a complete HTTPS wallet-only configuration', async () => {
     expect((await health()).status).toBe(200)
   })
+  test('accepts explicit delivery mode with a Resend credential', async () => {
+    expect((await health({ EMAIL_MODE: 'delivery', RESEND_API_KEY: 're_test_only_fixture' })).status).toBe(200)
+  })
   test.each([
     ['local secret', { SESSION_SECRET: 'retempo-local-test-pepper-not-for-production-00000000' }],
     ['repeated secret', { SESSION_SECRET: 'a'.repeat(64) }],

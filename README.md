@@ -59,8 +59,9 @@ The legacy reference is available through `bun run api:legacy`, `bun run db:lega
 - `APP_ENV`: `development`, `test`, or `production`.
 - `APP_ORIGINS`: exact permitted origins; production requires HTTPS.
 - `SIWE_DOMAIN`, `SIWE_URI`, `SIWE_CHAIN_ID`: exact accepted sign-in identity. Signing a challenge sends no transaction.
-- `EMAIL_MODE=disabled`: default locally. Email registration/reset fail with `503 email_not_configured` without a delivery adapter.
-- `MAILER`: optional Fetcher service binding implementing the internal email delivery contract. Tests inject a capture adapter. Production needs a real adapter and must not use `EMAIL_MODE=test`; the current disabled mode must be removed when configuring real delivery.
+- `EMAIL_MODE=disabled`: default locally. The beta uses explicit `EMAIL_MODE=delivery` for Resend.
+- `MAILER`: optional Fetcher service binding for the internal email delivery contract. Alternatively, explicit `EMAIL_MODE=delivery` can use `RESEND_API_KEY`, which must be stored as a Worker secret, never as a plaintext config variable.
+- Resend sends from `no-reply@auth.retempo.xyz`; verify the sender domain in Resend before enabling delivery. Tests use fake adapters and never contact the provider.
 - Session cookie, verification and timeout settings are documented in the Worker source and phase report.
 
 New Worker passwords use Web Crypto PBKDF2-SHA256 with 600,000 iterations. Imported legacy Bun Argon2 hashes are not silently treated as compatible: affected users would require a controlled reset migration. No existing PostgreSQL data was imported or deleted.

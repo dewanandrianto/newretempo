@@ -2,9 +2,11 @@ import type { Context } from 'hono'
 import type { WorkerContext } from '../types'
 import { unavailable, unauthorized } from '../errors'
 import { hmac, randomToken } from './crypto'
+import { sendResendEmail } from './resendMailer'
 export type EmailTokenPurpose = 'verify_email' | 'reset_password'
 export function assertMailer(c:Context<WorkerContext>): void {
-  if (!c.env.MAILER || c.env.EMAIL_MODE === 'disabled' || (c.env.APP_ENV === 'production' && c.env.EMAIL_MODE === 'test')) throw unavailable('Email delivery is not configured on this server', 'email_not_configured')
+  const hasResend = c.env.EMAIL_MODE === 'delivery' && Boolean(c.env.RESEND_API_KEY)
+  if ((!c.env.MAILER && !hasResend) || c.env.EMAIL_MODE === 'disabled' || (c.env.APP_ENV === 'production' && c.env.EMAIL_MODE === 'test')) throw unavailable('Email delivery is not configured on this server', 'email_not_configured')
 }
 export async function sendLink(c:Context<WorkerContext>,userId:string,email:string,purpose:EmailTokenPurpose):Promise<boolean> {
   assertMailer(c)
@@ -16,7 +18,10 @@ export async function sendLink(c:Context<WorkerContext>,userId:string,email:stri
   const base=(c.env.APP_ORIGINS.split(',')[0]?.trim()||c.env.SIWE_URI).replace(/\/$/,'')
   const link=`${base}${purpose==='verify_email'?'/verify-email':'/reset-password'}#${token}`
   try {
-    const response=await c.env.MAILER!.fetch(new Request('https://mailer.internal/send',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({to:email,kind:purpose,subject:purpose==='verify_email'?'Verify your RETEMPO email':'Reset your RETEMPO password',link})}))
+    const message={to:email,kind:purpose,subject:purpose==='verify_email'?'Verify your RETEMPO email':'Reset your RETEMPO password',link}
+    const response=c.env.MAILER
+      ? await c.env.MAILER.fetch(new Request('https://mailer.internal/send',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(message)}))
+      : await sendResendEmail(c.env.RESEND_API_KEY!,message)
     if (response.ok) return true
   } catch { /* Never log adapter errors, which may include the token or message body. */ }
   await c.env.DB.prepare('UPDATE email_tokens SET used_at=? WHERE id=? AND used_at IS NULL').bind(new Date().toISOString(),id).run()
