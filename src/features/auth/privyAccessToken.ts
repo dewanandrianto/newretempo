@@ -1,6 +1,24 @@
 export type PrivyCompletionMode = 'login' | 'link' | 'wallet'
 export type PrivyAccessTokenErrorCode = 'privy_not_ready' | 'privy_not_authenticated' | 'token_missing' | 'token_fetch_failed'
 
+export type PrivyLoginSelection = {
+  loginMethod: string | null
+  /** Linked-account metadata is optional and is never used as wallet-control proof. */
+  loginAccount?: unknown
+}
+
+const SUPPORTED_PRIVY_LOGIN_METHODS = new Set(['email', 'google', 'twitter', 'siwe', 'wallet'])
+
+export function resolvePrivyLoginSelection(
+  selection: PrivyLoginSelection | null | undefined,
+): { kind: 'continue' } | { kind: 'invalid'; code: 'login_selection_invalid' } {
+  if (!selection) return { kind: 'invalid', code: 'login_selection_invalid' }
+  if (selection.loginMethod === null || SUPPORTED_PRIVY_LOGIN_METHODS.has(selection.loginMethod)) {
+    return { kind: 'continue' }
+  }
+  return { kind: 'invalid', code: 'login_selection_invalid' }
+}
+
 export class PrivyAccessTokenError extends Error {
   constructor(readonly code: PrivyAccessTokenErrorCode) {
     super('Could not retrieve the Privy sign-in token.')

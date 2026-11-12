@@ -1,13 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useLogin, usePrivy, useWallets, type LinkedAccountWithMetadata } from '@privy-io/react-auth'
-import { useSetActiveWallet } from '@privy-io/wagmi'
-import { useSignMessage } from 'wagmi'
-import { isAddress } from 'viem'
+import { useLogin, usePrivy } from '@privy-io/react-auth'
 import { useNavigate } from 'react-router-dom'
 import { ApiError } from '@/services/api/client'
 import { Button } from '@/components/ui/Button'
 import { useAuth } from './AuthProvider'
-import { canFinalizePrivyCompletion, getAuthenticatedPrivyAccessToken, PrivyAccessTokenError } from './privyAccessToken'
+import { canFinalizePrivyCompletion, getAuthenticatedPrivyAccessToken, PrivyAccessTokenError, resolvePrivyLoginSelection } from './privyAccessToken'
 
 type Props = {
   mode: 'login' | 'link' | 'wallet'
@@ -18,18 +15,12 @@ type Props = {
 
 type LoginSelection = {
   loginMethod: string | null
-  selectedAddress?: string
 }
 
-type Address = `0x${string}`
 const METHODS = ['email', 'google', 'twitter', 'wallet'] as const
 
-function selectionForCompletion(selection: { loginMethod: string | null; loginAccount: LinkedAccountWithMetadata | null }): LoginSelection {
-  const account = selection.loginAccount
-  const selectedAddress = account && 'address' in account && typeof account.address === 'string'
-    ? account.address
-    : undefined
-  return { loginMethod: selection.loginMethod, selectedAddress }
+function selectionForCompletion(selection: { loginMethod: string | null }): LoginSelection {
+  return { loginMethod: selection.loginMethod }
 }
 
 // Temporary sign-in diagnostics expose only an allowlisted code, never raw errors or tokens.
@@ -40,7 +31,7 @@ const SAFE_PRIVY_ERROR_CODES = new Set([
   'privy_request_gate', 'rate_limited', 'unauthorized', 'forbidden',
   'not_found', 'conflict', 'network_error', 'internal_error',
   'privy_not_ready', 'privy_not_authenticated', 'privy_auth_state_timeout',
-  'wallet_selection_invalid', 'login_completion_failed',
+  'login_selection_invalid', 'login_completion_failed',
 ])
 
 function safeDiagnosticCode(error: unknown, fallback: string): string {
@@ -54,61 +45,15 @@ function safeDiagnosticCode(error: unknown, fallback: string): string {
 
 export function PrivyAuthButton({ mode, redirectTo, onLinked, onWalletReady }: Props) {
   const { ready, authenticated, getAccessToken, logout } = usePrivy()
-  const { wallets } = useWallets()
-  const { setActiveWallet } = useSetActiveWallet()
-  const { signMessageAsync } = useSignMessage()
-  const { logInWithPrivy, linkPrivyAccount, requestWalletChallenge, verifyWalletSignature } = useAuth()
+  const { logInWithPrivy, linkPrivyAccount } = useAuth()
   const navigate = useNavigate()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string>()
   const [switchRequired, setSwitchRequired] = useState(false)
-  const [pendingWalletAddress, setPendingWalletAddress] = useState<Address>()
   const [completionPending, setCompletionPending] = useState(false)
   const completionSelection = useRef<LoginSelection | undefined>(undefined)
   const requested = useRef(false)
   const handled = useRef(false)
-  const signingWallet = useRef(false)
-
-  const signInWithWallet = useCallback(async (address: Address) => {
-    setBusy(true)
-    setError(undefined)
-    try {
-      const { message } = await requestWalletChallenge(address)
-      const signature = await signMessageAsync({ message, account: address })
-      const session = await verifyWalletSignature({ message, signature })
-      await navigate(session.organization ? (redirectTo ?? '/app') : '/onboarding', { replace: true })
-    } catch {
-      setError('Wallet sign-in was cancelled or could not be verified. Please try again.')
-      setPendingWalletAddress(undefined)
-    } finally {
-      setBusy(false)
-      signingWallet.current = false
-    }
-  }, [navigate, redirectTo, requestWalletChallenge, signMessageAsync, verifyWalletSignature])
-
-  useEffect(() => {
-    if (!pendingWalletAddress || signingWallet.current) return
-    const wallet = wallets.find((item) => item.type === 'ethereum' && item.address.toLowerCase() === pendingWalletAddress.toLowerCase())
-    if (!wallet) return
-    signingWallet.current = true
-    void setActiveWallet(wallet)
-      .then(() => signInWithWallet(pendingWalletAddress))
-      .catch(() => {
-        setError('The selected wallet could not be prepared. Please try again.')
-        setPendingWalletAddress(undefined)
-        signingWallet.current = false
-      })
-  }, [pendingWalletAddress, setActiveWallet, signInWithWallet, wallets])
-
-  useEffect(() => {
-    if (!pendingWalletAddress) return
-    const timer = window.setTimeout(() => {
-      if (signingWallet.current) return
-      setError('The selected wallet did not become ready. Please try again.')
-      setPendingWalletAddress(undefined)
-    }, 15000)
-    return () => window.clearTimeout(timer)
-  }, [pendingWalletAddress])
 
   const complete = useCallback(async (selection?: LoginSelection) => {
     if (!requested.current || handled.current) return
@@ -121,15 +66,12 @@ export function PrivyAuthButton({ mode, redirectTo, onLinked, onWalletReady }: P
         onWalletReady?.()
         return
       }
-      const selectedAddress = selection?.selectedAddress
-      if (mode === 'login' && (selection?.loginMethod === 'wallet' || selectedAddress)) {
-        const address = selectedAddress
-        if (!address || !isAddress(address)) {
-          fallbackDiagnostic = 'wallet_selection_invalid'
-          throw new Error('No wallet address was selected')
+      if (mode === 'login') {
+        const resolution = resolvePrivyLoginSelection(selection)
+        if (resolution.kind === 'invalid') {
+          fallbackDiagnostic = resolution.code
+          throw new Error('Invalid Privy login completion')
         }
-        setPendingWalletAddress(address)
-        return
       }
       fallbackDiagnostic = 'token_fetch_failed'
       const accessToken = await getAuthenticatedPrivyAccessToken({ ready, authenticated, getAccessToken })
@@ -199,7 +141,7 @@ export function PrivyAuthButton({ mode, redirectTo, onLinked, onWalletReady }: P
 
   const start = () => {
     void (async () => {
-      if (!ready || busy || pendingWalletAddress) return
+      if (!ready || busy) return
       completionSelection.current = undefined
       setCompletionPending(false)
       requested.current = true
@@ -238,7 +180,7 @@ export function PrivyAuthButton({ mode, redirectTo, onLinked, onWalletReady }: P
 
   return (
     <div className="space-y-2">
-      <Button type="button" size="lg" className="w-full" loading={!ready || busy || Boolean(pendingWalletAddress)} onClick={start}>
+      <Button type="button" size="lg" className="w-full" loading={!ready || busy} onClick={start}>
         {mode === 'link'
           ? switchRequired ? 'Switch sign-in and retry' : 'Verify sign-in and link'
           : 'Continue with RETEMPO'}
