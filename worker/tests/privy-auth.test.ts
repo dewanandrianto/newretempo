@@ -125,7 +125,7 @@ async function insertUser(email='legacy@example.test') {
     globalThis.fetch=(input,init)=>{
       successfulFetches++
       const url=input instanceof Request?input.url:input instanceof URL?input.href:input
-      expect(url).toBe(`https://api.privy.io/v1/apps/${APP_ID}/jwks.json`)
+      expect(url).toBe(`https://auth.privy.io/api/v1/apps/${APP_ID}/jwks.json`)
       const headers=new Headers(init?.headers)
       expect(headers.get('privy-app-id')).toBe(APP_ID)
       expect(headers.get('authorization')).toMatch(/^Basic /)
