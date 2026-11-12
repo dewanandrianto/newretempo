@@ -1,5 +1,5 @@
 import { createRemoteJWKSet, errors as joseErrors, importSPKI, jwtVerify, type RemoteJWKSet } from 'jose'
-import { unauthorized, unavailable } from '../errors'
+import { HttpError, unavailable } from '../errors'
 import type { WorkerBindings } from '../types'
 
 const PRIVY_JWKS_API = 'https://auth.privy.io/api'
@@ -44,7 +44,7 @@ export async function verifyPrivyAccessToken(env: WorkerBindings, accessToken: s
     throw unavailable('Privy authentication is not configured', 'privy_not_configured')
   }
   if (accessToken.length < 32 || accessToken.length > 8192 || !/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(accessToken)) {
-    throw unauthorized('Privy sign-in failed')
+    throw new HttpError(401,'token_malformed','Privy sign-in failed')
   }
 
   let verificationKey: CryptoKey | RemoteJWKSet
@@ -73,9 +73,9 @@ export async function verifyPrivyAccessToken(env: WorkerBindings, accessToken: s
       clockTolerance: 5,
     }))
   } catch (error) {
-    if (isInvalidToken(error)) throw unauthorized('Privy sign-in failed')
+    if (isInvalidToken(error)) throw new HttpError(401,'jwt_invalid','Privy sign-in failed')
     // Provider/network/key-fetch failures are not treated as valid identities and are not logged.
-    throw unavailable('Privy authentication is temporarily unavailable', 'privy_unavailable')
+    throw unavailable('Privy authentication is temporarily unavailable', 'jwks_fetch_failed')
   }
 
   const now = Math.floor(Date.now() / 1000)
@@ -87,7 +87,7 @@ export async function verifyPrivyAccessToken(env: WorkerBindings, accessToken: s
       payload.exp <= payload.iat || payload.iat > now + 5 ||
       typeof payload.sid !== 'string' || payload.sid.length < 1 || payload.sid.length > 255 ||
       typeof payload.sub !== 'string' || !/^did:privy:.{1,245}$/.test(payload.sub)) {
-    throw unauthorized('Privy sign-in failed')
+    throw new HttpError(401,'jwt_invalid','Privy sign-in failed')
   }
 
   return { privyUserId: payload.sub }

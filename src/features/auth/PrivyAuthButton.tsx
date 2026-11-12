@@ -4,6 +4,7 @@ import { useSetActiveWallet } from '@privy-io/wagmi'
 import { useSignMessage } from 'wagmi'
 import { isAddress } from 'viem'
 import { useNavigate } from 'react-router-dom'
+import { ApiError } from '@/services/api/client'
 import { Button } from '@/components/ui/Button'
 import { useAuth } from './AuthProvider'
 
@@ -21,6 +22,23 @@ type LoginSelection = {
 
 type Address = `0x${string}`
 const METHODS = ['email', 'google', 'twitter', 'wallet'] as const
+
+// Temporary sign-in diagnostics expose only an allowlisted code, never raw errors or tokens.
+const SAFE_PRIVY_ERROR_CODES = new Set([
+  'privy_not_enabled', 'privy_not_configured', 'configuration_error',
+  'token_missing', 'token_malformed', 'jwt_invalid', 'jwks_fetch_failed',
+  'identity_mapping_failed', 'session_write_failed', 'account_response_failed',
+  'privy_request_gate', 'rate_limited', 'unauthorized', 'forbidden',
+  'not_found', 'conflict', 'network_error', 'internal_error',
+])
+
+function safeDiagnosticCode(error: unknown, fallback: string): string {
+  if (!(error instanceof ApiError)) return fallback
+  if (SAFE_PRIVY_ERROR_CODES.has(error.code)) return error.code
+  return Number.isInteger(error.status) && error.status >= 0 && error.status <= 599
+    ? `server_http_${error.status}`
+    : 'server_error'
+}
 
 export function PrivyAuthButton({ mode, redirectTo, onLinked, onWalletReady }: Props) {
   const { ready, authenticated, getAccessToken, logout } = usePrivy()
@@ -83,6 +101,7 @@ export function PrivyAuthButton({ mode, redirectTo, onLinked, onWalletReady }: P
     handled.current = true
     setBusy(true)
     setError(undefined)
+    let fallbackDiagnostic = 'token_fetch_failed'
     try {
       if (mode === 'wallet') {
         onWalletReady?.()
@@ -98,21 +117,27 @@ export function PrivyAuthButton({ mode, redirectTo, onLinked, onWalletReady }: P
         return
       }
       const accessToken = await getAccessToken()
-      if (!accessToken) throw new Error('Missing Privy access token')
+      if (!accessToken) {
+        fallbackDiagnostic = 'token_missing'
+        throw new Error('Missing Privy access token')
+      }
+      fallbackDiagnostic = mode === 'login' ? 'client_session_failed' : 'client_link_failed'
       if (mode === 'login') {
         const session = await logInWithPrivy(accessToken)
+        fallbackDiagnostic = 'client_navigation_failed'
         await navigate(session.organization ? (redirectTo ?? '/app') : '/onboarding', { replace: true })
       } else {
         await linkPrivyAccount(accessToken)
         onLinked?.()
       }
-    } catch {
+    } catch (error) {
       handled.current = false
       requested.current = false
       setSwitchRequired(mode === 'link')
+      const code = safeDiagnosticCode(error, fallbackDiagnostic)
       setError(mode === 'link'
-        ? 'Could not link this sign-in. It may already be linked to another RETEMPO account.'
-        : 'Could not verify your sign-in. Please try again.')
+        ? `Could not link this sign-in. It may already be linked to another RETEMPO account. [${code}]`
+        : `Could not verify your sign-in. Please try again. [${code}]`)
     } finally {
       setBusy(false)
     }

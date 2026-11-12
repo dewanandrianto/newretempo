@@ -11,7 +11,7 @@ import { loadWorkerAccount } from './account'
 import { consumeRateLimit } from './rateLimits'
 import { audit } from './audit'
 import { isPrivyAuthEnabled, verifyPrivyAccessToken } from './privy'
-import { unauthorized, unavailable } from '../errors'
+import { HttpError, unavailable } from '../errors'
 export { loadWorkerAccount } from './account'
 const email=z.string().trim().toLowerCase().max(254).pipe(z.email())
 const address=z.string().trim().regex(/^0x[0-9a-fA-F]{40}$/,'Enter a valid wallet address')
@@ -21,8 +21,10 @@ const loginBody=z.object({email,password:z.string().min(1).max(128)})
 const nonceBody=z.object({address})
 const verifyBody=z.object({message:z.string().min(1).max(2000),signature:z.string().min(1).max(300)})
 function readPrivyBearer(c:Context<WorkerContext>):string {
-  const match=/^Bearer ([A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)$/.exec(c.req.header('authorization')??'')
-  if (!match || match[1].length>8192) throw unauthorized('Privy sign-in failed')
+  const authorization=c.req.header('authorization')
+  if (!authorization) throw new HttpError(401,'token_missing','Privy sign-in failed')
+  const match=/^Bearer ([A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)$/.exec(authorization)
+  if (!match || match[1].length>8192) throw new HttpError(401,'token_malformed','Privy sign-in failed')
   return match[1]
 }
 async function verifiedPrivyIdentity(c:Context<WorkerContext>,purpose:'login'|'link'|'wallet_access') {
@@ -54,8 +56,19 @@ export function registerAuthRoutes(app:WorkerApp):void {
   })
   app.post('/api/auth/privy/login',async c=> {
     const identity=await verifiedPrivyIdentity(c,'login')
-    await establishSession(c,await authenticatePrivy(c,identity.privyUserId))
-    return c.json(await accountResponse(c))
+    const proof=await authenticatePrivy(c,identity.privyUserId).catch(error=>{
+      if (error instanceof HttpError) throw error
+      throw unavailable('Could not resolve the Privy account','identity_mapping_failed')
+    })
+    await establishSession(c,proof).catch(error=>{
+      if (error instanceof HttpError) throw error
+      throw unavailable('Could not create a RETEMPO session','session_write_failed')
+    })
+    const account=await accountResponse(c).catch(error=>{
+      if (error instanceof HttpError) throw error
+      throw unavailable('Could not load the RETEMPO account','account_response_failed')
+    })
+    return c.json(account)
   })
   app.post('/api/auth/privy/link',async c=> {
     const auth=requireWorkerAuth(c),identity=await verifiedPrivyIdentity(c,'link')

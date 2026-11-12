@@ -6,6 +6,7 @@ import { establishSession, resolveAuth } from '../src/auth/sessions'
 import { registerAuthRoutes } from '../src/auth/routes'
 import { registerCatalogRoutes } from '../src/catalog/routes'
 import { validateBindings } from '../src/config'
+import { createHttpApp } from '../src/http'
 import { HttpError } from '../src/errors'
 import type { WorkerBindings, WorkerContext } from '../src/types'
 
@@ -40,6 +41,11 @@ function app() {
   })
   return a
 }
+function guardedApp() {
+  const a=createHttpApp({resolveAuth})
+  registerAuthRoutes(a)
+  return a
+}
 async function request(path:string,options:{method?:string;accessToken?:string;cookie?:string;extra?:Partial<WorkerBindings>}={}) {
   const headers:Record<string,string>={...(options.accessToken?{authorization:`Bearer ${options.accessToken}`}:{}) ,...(options.cookie?{cookie:options.cookie}:{})}
   return app().request(`https://app.test/api/auth/${path}`,{method:options.method??'GET',headers},await testBindings(options.extra))
@@ -69,6 +75,20 @@ async function insertUser(email='legacy@example.test') {
     expect(await response.json()).toEqual({enabled:false,appId:null})
     const login=await request('privy/login',{method:'POST',accessToken:await signedToken(),extra:{PRIVY_AUTH_ENABLED:'false'}})
     expect(login.status).toBe(503)
+  })
+
+  it('returns fixed diagnostics through the real origin and CSRF middleware',async()=>{
+    const url='https://app.test/api/auth/privy/login'
+    const blocked=await guardedApp().request(url,{method:'POST',headers:{origin:'https://app.test'}},await testBindings())
+    expect(blocked.status).toBe(403)
+    expect(await blocked.json()).toMatchObject({error:{code:'privy_request_gate'}})
+
+    const missing=await guardedApp().request(url,{method:'POST',headers:{origin:'https://app.test','x-requested-with':'retempo'}},await testBindings())
+    expect(missing.status).toBe(401)
+    expect(await missing.json()).toMatchObject({error:{code:'token_missing'}})
+
+    const valid=await guardedApp().request(url,{method:'POST',headers:{origin:'https://app.test','x-requested-with':'retempo',authorization:`Bearer ${await signedToken()}`}},await testBindings())
+    expect(valid.status).toBe(200)
   })
 
   it('creates one internal user per signed Privy DID and issues a Privy-labelled session',async()=>{
@@ -110,10 +130,16 @@ async function insertUser(email='legacy@example.test') {
       await signedToken({exp:Math.floor(Date.now()/1000)-20}),
       await signedToken({sub:'not-a-privy-did'}),
     ]
-    for(const accessToken of badTokens) expect((await request('privy/login',{method:'POST',accessToken})).status).toBe(401)
+    for(const accessToken of badTokens) {
+      const rejected=await request('privy/login',{method:'POST',accessToken})
+      expect(rejected.status).toBe(401)
+      expect(await rejected.json()).toMatchObject({error:{code:'jwt_invalid',message:'Privy sign-in failed'}})
+    }
     const valid=await signedToken()
     const damaged=`${valid.slice(0,-3)}abc`
-    expect((await request('privy/login',{method:'POST',accessToken:damaged})).status).toBe(401)
+    const badSignature=await request('privy/login',{method:'POST',accessToken:damaged})
+    expect(badSignature.status).toBe(401)
+    expect(await badSignature.json()).toMatchObject({error:{code:'jwt_invalid',message:'Privy sign-in failed'}})
     const countAfter=await db.prepare('SELECT count(*) AS n FROM users').first<number>('n')
     expect(countAfter).toBe(countBefore)
   })
@@ -144,6 +170,7 @@ async function insertUser(email='legacy@example.test') {
     try {
       const failed=await request('privy/login',{method:'POST',accessToken:await signedToken(),extra:{APP_ENV:'production',PRIVY_TEST_VERIFICATION_KEY:undefined}})
       expect(failed.status).toBe(503)
+      expect(await failed.json()).toMatchObject({error:{code:'jwks_fetch_failed',message:'Privy authentication is temporarily unavailable'}})
       expect(await db.prepare('SELECT count(*) AS n FROM users').first<number>('n')).toBe(before)
     } finally {
       globalThis.fetch=previousFetch

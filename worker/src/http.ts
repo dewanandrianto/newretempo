@@ -96,6 +96,9 @@ export function createHttpApp(options: { resolveAuth: (c: AuthRequest) => Promis
     c.set('ip', c.req.header('CF-Connecting-IP')?.slice(0, 64) || 'local')
     validateBindings(c.env)
     if (UNSAFE.has(c.req.method) && (!originAllowed(c.req.header('Origin') || '', c.env) || c.req.header('X-Requested-With') !== 'retempo')) {
+      if (c.req.method === 'POST' && c.req.path === '/api/auth/privy/login') {
+        throw new HttpError(403, 'privy_request_gate', 'Request origin or CSRF header is not allowed')
+      }
       throw forbidden('Request origin or CSRF header is not allowed')
     }
     c.set('auth', await options.resolveAuth({ env: c.env, req: { header: (name) => c.req.header(name) } }))
