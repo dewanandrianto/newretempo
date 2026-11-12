@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { PublicLayout } from '@/components/layout/PublicLayout'
 import LandingPage from '@/features/landing/LandingPage'
 import NotFoundPage from './NotFoundPage'
@@ -7,7 +7,6 @@ import { RouteBoundary } from './RouteBoundary'
 
 const DashboardLayout = lazy(() => import('@/components/layout/DashboardLayout').then(module => ({ default: module.DashboardLayout })))
 const LoginPage = lazy(() => import('@/features/auth/LoginPage'))
-const SignUpPage = lazy(() => import('@/features/auth/SignUpPage'))
 const OnboardingPage = lazy(() => import('@/features/auth/OnboardingPage'))
 const ForgotPasswordPage = lazy(() => import('@/features/auth/AccountPages').then(module => ({ default: module.ForgotPasswordPage })))
 const ResetPasswordPage = lazy(() => import('@/features/auth/AccountPages').then(module => ({ default: module.ResetPasswordPage })))
@@ -40,7 +39,7 @@ export function AppRoutes() {
 
         <Route element={<WalletRoutes />}>
           <Route path="login" element={<LoginPage />} />
-          <Route path="signup" element={<SignUpPage />} />
+          <Route path="signup" element={<Navigate to="/login" replace />} />
           <Route path="onboarding" element={<OnboardingPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="reset-password" element={<ResetPasswordPage />} />

@@ -53,8 +53,8 @@ export function Hero() {
           Explore a focused preview of recurring billing. Payments and settlement are disabled here; activity appears only when backed by real, verified records.
         </p>
         <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:mt-9 sm:flex-row">
-          <LinkButton to="/signup" size="lg" className="w-full sm:w-auto">
-            Get started <ArrowRight className="size-4" />
+          <LinkButton to="/login" size="lg" className="w-full sm:w-auto">
+            Sign in <ArrowRight className="size-4" />
           </LinkButton>
           <a
             href="#features"

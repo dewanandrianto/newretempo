@@ -172,11 +172,11 @@ export function FinalCta() {
           <div className="absolute inset-x-0 -top-24 mx-auto h-48 w-2/3 rounded-full bg-electric/25 blur-[90px]" />
           <h2 className="display relative text-3xl font-semibold text-fg sm:text-4xl">Explore the preview</h2>
           <p className="relative mx-auto mt-4 max-w-lg text-dim">
-            Create a workspace to review the interface. Payment and settlement actions remain disabled, and no sample business data is seeded.
+            Sign in to explore the preview. Your RETEMPO account is set up automatically the first time you sign in. Payment and settlement actions remain disabled, and no sample business data is seeded.
           </p>
           <div className="relative mt-8 flex justify-center">
-            <LinkButton to="/signup" size="lg">
-              Get Started <ArrowRight className="size-4" />
+            <LinkButton to="/login" size="lg">
+              Sign in to continue <ArrowRight className="size-4" />
             </LinkButton>
           </div>
         </div>

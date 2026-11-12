@@ -25,11 +25,8 @@ function Header() {
           ))}
         </nav>
         <div className="hidden items-center gap-2 md:flex">
-          <LinkButton to="/login" variant="ghost" size="sm">
-            Log in
-          </LinkButton>
-          <LinkButton to="/signup" size="sm">
-            Get Started
+          <LinkButton to="/login" size="sm">
+            Sign in
           </LinkButton>
         </div>
         <button
@@ -51,11 +48,10 @@ function Header() {
               </a>
             ))}
           </nav>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            <LinkButton to="/login" variant="secondary">
-              Log in
+          <div className="mt-3">
+            <LinkButton to="/login" className="w-full">
+              Sign in
             </LinkButton>
-            <LinkButton to="/signup">Get Started</LinkButton>
           </div>
         </div>
       )}
@@ -74,10 +70,9 @@ const footerColumns = [
     ],
   },
   {
-    title: 'Get started',
+    title: 'Access',
     links: [
-      { label: 'Create account', to: '/signup' },
-      { label: 'Log in', to: '/login' },
+      { label: 'Sign in', to: '/login' },
       { label: 'Customer portal', to: '/portal' },
     ],
   },

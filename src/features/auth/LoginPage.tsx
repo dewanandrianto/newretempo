@@ -37,9 +37,9 @@ export default function LoginPage() {
 
   return (
     <AuthLayout>
-      <p className="eyebrow">Welcome back</p>
-      <h1 className="display mt-2 text-3xl font-semibold text-fg sm:text-4xl">Sign in to your workspace</h1>
-      <p className="mt-3 text-sm leading-relaxed text-dim">Access your plans, customers, and settings with one secure sign-in.</p>
+      <p className="eyebrow">Welcome</p>
+      <h1 className="display mt-2 text-3xl font-semibold text-fg sm:text-4xl">Sign in to RETEMPO</h1>
+      <p className="mt-3 text-sm leading-relaxed text-dim">Sign in to continue. Your RETEMPO account is set up automatically the first time you sign in.</p>
 
       {privyEnabled && (
         <div className="mt-7 space-y-3 sm:mt-8">
@@ -79,10 +79,6 @@ export default function LoginPage() {
         </div>
       )}
 
-      <p className="mt-7 text-center text-sm text-dim sm:mt-8">
-        New to RETEMPO?{' '}
-        <Link to="/signup" className="font-medium text-cyan hover:text-cyan-soft">Create an account</Link>
-      </p>
     </AuthLayout>
   )
 }
