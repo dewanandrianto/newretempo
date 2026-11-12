@@ -2,14 +2,14 @@ import { describe, expect, it } from 'vitest'
 import { assertDeployment, assertPlan, verifyWalletWorld } from '../../src/services/blockchain/guards'
 import { configuration, checkout, plan } from './fixtures'
 const h = configuration.genesisHash!
-const rpc = ({ method }: { method: string }) => Promise.resolve(method === 'eth_chainId' ? '0x13b2' : method === 'eth_getBlockByNumber' ? { hash: h } : '0x1234')
+const rpc = ({ method }: { method: string }) => Promise.resolve(method === 'eth_chainId' ? '0x4cef52' : method === 'eth_getBlockByNumber' ? { hash: h } : '0x1234')
 describe('deployment and world guards', () => {
  it('rejects disabled deployment before any provider access', () => { expect(() => assertDeployment({ ...configuration, configured: false })).toThrow(/disabled/i) })
  it('requires all three world proofs', () => { expect(() => assertDeployment({ ...configuration, genesisHash: undefined })).toThrow(/proof/i) })
  it('compares wallet and reader worlds even with identical chain IDs', async () => {
    await expect(verifyWalletWorld(configuration, rpc, rpc)).resolves.toBeUndefined()
    const wrong = async (request: {method: string}) => request.method === 'eth_getBlockByNumber' ? { hash: `0x${'ff'.repeat(32)}` } : rpc(request)
-   await expect(verifyWalletWorld(configuration, rpc, wrong)).rejects.toThrow(/world/i)
+   await expect(verifyWalletWorld(configuration, rpc, wrong)).rejects.toThrow(/verified payment setup/i)
  })
  it('rejects wallet wrong chain or missing code', async () => {
    await expect(verifyWalletWorld(configuration, rpc, () => Promise.resolve('0x1'))).rejects.toThrow()

@@ -8,8 +8,8 @@ function fixture() {
  const sent: ContractCall[]=[]; let currentPlan = {...plan}; let allowance = 0n
  const io: ChainIO = {
   account: owner,
-  reader: ({method}) => Promise.resolve(method==='eth_chainId' ? '0x13b2' : method==='eth_getBlockByNumber' ? {hash: configuration.genesisHash} : '0x1234'),
-  wallet: ({method}) => Promise.resolve(method==='eth_chainId' ? '0x13b2' : method==='eth_getBlockByNumber' ? {hash: configuration.genesisHash} : '0x1234'),
+  reader: ({method}) => Promise.resolve(method==='eth_chainId' ? '0x4cef52' : method==='eth_getBlockByNumber' ? {hash: configuration.genesisHash} : '0x1234'),
+  wallet: ({method}) => Promise.resolve(method==='eth_chainId' ? '0x4cef52' : method==='eth_getBlockByNumber' ? {hash: configuration.genesisHash} : '0x1234'),
   read: call => Promise.resolve(({ getPlan:currentPlan, getSubscription:{customer:owner, planKey:checkout.planKey, status:0, amount:BigInt(checkout.amount)}, subscriptionKey: checkout.planKey, usdc:configuration.usdc, escrow:configuration.escrow, manager:configuration.manager, decimals:6, balanceOf:10n**30n, allowance, responseWindow:86400, resolutionTimeout:172800 }[call.functionName])),
   simulate: () => Promise.resolve(), send: call => {sent.push(call); if(call.functionName==='approve') allowance=call.args[1] as bigint; return Promise.resolve(hash)}, receipt:()=>Promise.resolve('success'),
  }

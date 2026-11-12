@@ -4,10 +4,10 @@ vi.mock('../../src/tracing', () => ({ registerChain: vi.fn() }))
 import { config } from '@/config'
 
 describe('browser wallet RPC defaults', () => {
-  it('pins official Arc primary and the CORS-safe ENS mainnet transport', () => {
-    const arc = config.chains.find(chain => chain.id === 5042)!
-    const mainnet = config.chains.find(chain => chain.id === 1)!
-    expect(config._internal.transports[arc.id]({ chain: arc }).value?.url).toBe('https://rpc.mainnet.arc.io')
-    expect(config._internal.transports[mainnet.id]({ chain: mainnet }).value?.url).toBe('https://cloudflare-eth.com')
+  it('pins the approved Arc Testnet chain and RPC transport', () => {
+    expect(config.chains).toHaveLength(1)
+    const arcTestnet = config.chains.find(chain => chain.id === 5042002)!
+    expect(arcTestnet).toBeDefined()
+    expect(config._internal.transports[arcTestnet.id]({ chain: arcTestnet }).value?.url).toBe('https://rpc.blockdaemon.testnet.arc.io')
   })
 })

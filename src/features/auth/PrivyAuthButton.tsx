@@ -79,7 +79,7 @@ export function PrivyAuthButton({ mode, redirectTo, onLinked, onWalletReady }: P
       if (mode === 'login') {
         const session = await logInWithPrivy(accessToken)
         fallbackDiagnostic = 'client_navigation_failed'
-        await navigate(session.organization ? (redirectTo ?? '/app') : '/onboarding', { replace: true })
+        await navigate(redirectTo ?? (session.organization ? '/app' : '/onboarding'), { replace: true })
       } else {
         await linkPrivyAccount(accessToken)
         onLinked?.()

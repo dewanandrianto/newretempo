@@ -9,7 +9,7 @@ it('requires exact target and successful verified payment event, not just a rece
  expect(projectionProves(snapshot,hash,target)).toBe(false)
  snapshot.projections[0].state='succeeded'
  expect(projectionProves(snapshot,hash,target)).toBe(false)
- snapshot.events=[{id:'event',chainId:5042,address:configuration.manager!,blockNumber:'1',blockHash:hash,transactionHash:hash,transactionIndex:0,logIndex:0,timestamp:'2026-01-01T00:00:00Z',name:'PaymentExecuted',args:{}}]
+ snapshot.events=[{id:'event',chainId:5042002,address:configuration.manager!,blockNumber:'1',blockHash:hash,transactionHash:hash,transactionIndex:0,logIndex:0,timestamp:'2026-01-01T00:00:00Z',name:'PaymentExecuted',args:{}}]
  expect(projectionProves(snapshot,hash,target)).toBe(true)
  expect(projectionProves(snapshot,hash,{...target,key:hash})).toBe(false)
  expect(projectionProves({...snapshot,configuration:{...configuration,genesisHash:hash}},hash,target,configuration)).toBe(false)

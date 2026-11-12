@@ -1,11 +1,17 @@
 import { env as testEnv } from 'cloudflare:test'
+import { Hono } from 'hono'
 import { beforeEach, expect, it } from 'vitest'
 import { createWorkerApp } from '../src/index'
 import { hmac } from '../src/auth/crypto'
-import type { WorkerBindings } from '../src/types'
+import { resolveAuth } from '../src/auth/sessions'
+import { verifyCustomerWallet } from '../src/chain/customerWallet'
+import { HttpError } from '../src/errors'
+import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts'
+import type { WorkerBindings, WorkerContext } from '../src/types'
 import type { ChainBinding, ChainConfiguration, ChainPlanPreparation, ChainCheckout, ChainProjection, VerifiedChainEvent } from '../../shared/chain'
 const env = testEnv as unknown as WorkerBindings
 const app = createWorkerApp()
+const signingWallet = privateKeyToAccount(generatePrivateKey())
 const merchant = '0x1111111111111111111111111111111111111111', buyer = '0x2222222222222222222222222222222222222222', zero = '0x0000000000000000000000000000000000000000'
 const config: ChainConfiguration = { chainId:5042002, mode:'local', configured:true, rpcUrl:'http://127.0.0.1:8545', explorerUrl:'', manager:'0x3333333333333333333333333333333333333333', escrow:'0x4444444444444444444444444444444444444444', managerPaused:false, escrowPaused:false, usdc:'0x3600000000000000000000000000000000000000', usdcDecimals:6, startBlock:'0' }
 let org: string, customer: string, plan: string, sub: string, invoice: string, user: string, token: string, bindings: ChainBinding[], projections: ChainProjection[], events: VerifiedChainEvent[], failBindings: boolean, crossTenantSnapshot: boolean
@@ -23,12 +29,14 @@ const service = { fetch: async (request: Request) => {
  if(path==='/v1/snapshot') return Response.json({configuration:config,cursor:null,bindings:bindings.filter(b=>b.orgId===body.orgId),events,projections:crossTenantSnapshot?projections:projections.filter(p=>p.orgId===body.orgId)})
  return Response.json({configuration:config,cursor:null,processedEvents:0,duplicateEvents:0,busy:false})
 } } as Fetcher
-async function req(path: string, method='GET', body?: unknown, authenticated=true) {
- return app.request('http://local/api/'+path,{method,headers:{Origin:'https://app.test','X-Requested-With':'retempo','content-type':'application/json', ...(authenticated?{cookie:`retempo_session=${token}`}:{})},body:body===undefined?undefined:JSON.stringify(body)}, {...env, CHAIN:service})
+async function req(path: string, method='GET', body?: unknown, authenticated=true, sessionToken=token) {
+ return app.request('http://local/api/'+path,{method,headers:{Origin:'https://app.test','X-Requested-With':'retempo','content-type':'application/json', ...(authenticated?{cookie:`retempo_session=${sessionToken}`}:{})},body:body===undefined?undefined:JSON.stringify(body)}, {...env, CHAIN:service})
 }
 beforeEach(async()=>{
  org=crypto.randomUUID(); customer=crypto.randomUUID(); plan=crypto.randomUUID(); sub=crypto.randomUUID(); invoice=crypto.randomUUID(); user=crypto.randomUUID(); token=crypto.randomUUID().replaceAll('-','').repeat(2);bindings=[];projections=[];events=[];failBindings=false;crossTenantSnapshot=false;crossWalletSnapshot=false
  config.managerPaused=false;config.escrowPaused=false
+ await env.DB.prepare('DELETE FROM wallets WHERE address=?').bind(signingWallet.address.toLowerCase()).run()
+ await env.DB.prepare('DELETE FROM siwe_nonces WHERE address=?').bind(signingWallet.address.toLowerCase()).run()
  await env.DB.prepare("DELETE FROM wallets WHERE purpose='login' AND address=?").bind(merchant).run()
  await env.DB.prepare('INSERT INTO users(id,display_name) VALUES (?,?)').bind(user,'Merchant').run()
  await env.DB.prepare('INSERT INTO sessions(id,user_id,token_hash,auth_method,idle_expires_at,expires_at) VALUES (?,?,?,?,?,?)').bind(crypto.randomUUID(),user,await hmac(env.SESSION_SECRET,token),'siwe','2099-01-01T00:00:00.000Z','2099-01-01T00:00:00.000Z').run()
@@ -39,7 +47,7 @@ beforeEach(async()=>{
  await env.DB.prepare('INSERT INTO products(id,org_id,name) VALUES (?,?,?)').bind(product,org,'Real Product').run()
  await env.DB.prepare('INSERT INTO plans(id,org_id,product_id,name,amount,"interval") VALUES (?,?,?,?,?,?)').bind(plan,org,product,'Real Plan','999999999999999','month').run()
  await env.DB.prepare('INSERT INTO customers(id,org_id,name,email) VALUES (?,?,?,?)').bind(customer,org,'Private Person','private@example.test').run()
- await env.DB.prepare("INSERT INTO wallets(id,purpose,org_id,customer_id,address,chain_id) VALUES (?,'customer',?,?,?,5042002)").bind(crypto.randomUUID(),org,customer,buyer).run()
+ await env.DB.prepare("INSERT INTO wallets(id,purpose,org_id,customer_id,address,chain_id,verified_at,verification_method) VALUES (?,'customer',?,?,?,5042002,?,'siwe')").bind(crypto.randomUUID(),org,customer,buyer,new Date().toISOString()).run()
  await env.DB.prepare('INSERT INTO subscriptions(id,org_id,customer_id,plan_id,amount,"interval") VALUES (?,?,?,?,?,?)').bind(sub,org,customer,plan,'999999999999999','month').run()
  await env.DB.prepare("INSERT INTO invoices(id,org_id,customer_id,subscription_id,number,status,total_amount,line_items,due_at,idempotency_key,request_hash) VALUES (?,?,?,?,?,'open',?,'[]',?,?,?)").bind(invoice,org,customer,sub,'INV-1','999999999999999','2026-12-01T00:00:00.000Z',invoice,'hash').run()
 })
@@ -177,17 +185,88 @@ it('prepares stable payment identities only for the exact verified customer wall
  await prep()
  const link=await (await req(`orgs/${org}/chain/checkouts`,'POST',{subscriptionId:sub,invoiceId:invoice})).json<{token:string}>()
  const path=`public/checkouts/${link.token}/prepare`
+ await env.DB.prepare("UPDATE wallets SET verified_at=NULL,verification_method=NULL WHERE purpose='customer' AND org_id=? AND customer_id=? AND address=?").bind(org,customer,buyer).run()
+ await env.DB.prepare("DELETE FROM wallets WHERE purpose='login' AND address=?").bind(buyer).run()
+ await env.DB.prepare("INSERT INTO wallets(id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042002,?,'siwe')").bind(crypto.randomUUID(),user,buyer,new Date().toISOString()).run()
  expect((await req(path,'POST',{wallet:buyer},false)).status).toBe(401)
  expect((await req(path,'POST',{wallet:buyer})).status).toBe(403)
  expect((await req(path,'POST',{wallet:merchant})).status).toBe(403)
- await env.DB.prepare("DELETE FROM wallets WHERE purpose='login' AND address=?").bind(buyer).run()
- await env.DB.prepare("INSERT INTO wallets(id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042002,?,'siwe')").bind(crypto.randomUUID(),user,buyer,new Date().toISOString()).run()
+ await env.DB.prepare("UPDATE wallets SET verified_at=?,verification_method='siwe' WHERE purpose='customer' AND org_id=? AND customer_id=? AND address=?").bind(new Date().toISOString(),org,customer,buyer).run()
  const r=await req(path,'POST',{wallet:buyer});expect(r.status,await r.clone().text()).toBe(200)
  const first=await r.json<ChainCheckout>();expect(first.paymentId).toBeTruthy();expect(first.customer).toBe(buyer);expect(first.subscriptionKey).toMatch(/^0x[0-9a-f]{64}$/)
  const retry=await req(path,'POST',{wallet:buyer});expect(await retry.json()).toEqual(first)
  expect(bindings.filter(b=>b.kind==='payment').at(-1)).toMatchObject({recordId:first.paymentId,chargeNumber:'1',amount:'999999999999999'})
  expect((await env.DB.prepare('SELECT status FROM payments WHERE id=?').bind(first.paymentId).first())?.status).toBe('pending')
  expect((await req(path,'POST',{wallet:buyer,status:'succeeded',txHash:'0x'+'ab'.repeat(32)})).status).toBe(422)
+})
+it('links only a separately signed customer wallet to the authenticated user and exact checkout',async()=>{
+ await prep()
+ const first=await (await req(`orgs/${org}/chain/checkouts`,'POST',{subscriptionId:sub,invoiceId:invoice})).json<{token:string;checkout:ChainCheckout}>()
+ const second=await (await req(`orgs/${org}/chain/checkouts`,'POST',{subscriptionId:sub,invoiceId:invoice})).json<{token:string;checkout:ChainCheckout}>()
+ const wallet=signingWallet.address.toLowerCase()
+ const statusPath=`public/checkouts/${first.token}/customer-wallet?wallet=${wallet}`
+ expect((await req(statusPath,'GET',undefined,false)).status).toBe(401)
+ expect(await (await req(statusPath)).json()).toMatchObject({linked:false,available:true})
+ expect((await req(`public/checkouts/${first.token}/customer-wallet/nonce`,'POST',{address:merchant})).status).toBe(409)
+ const challengeResponse=await req(`public/checkouts/${first.token}/customer-wallet/nonce`,'POST',{address:wallet})
+ expect(challengeResponse.status,await challengeResponse.clone().text()).toBe(201)
+ const challenge=await challengeResponse.json<{message:string;expiresAt:string}>()
+ expect(challenge.message).toContain(`checkout ${first.checkout.id}`)
+ expect(challenge.message).toContain('does not approve a payment')
+ expect(Date.parse(challenge.expiresAt)).toBeGreaterThan(Date.now())
+ const signature=await signingWallet.signMessage({message:challenge.message})
+ expect((await req(`public/checkouts/${second.token}/customer-wallet/verify`,'POST',{message:challenge.message,signature})).status).toBe(401)
+ expect((await req('auth/siwe/link/verify','POST',{message:challenge.message,signature})).status).toBe(401)
+ const otherUser=crypto.randomUUID(),otherToken=crypto.randomUUID().replaceAll('-','').repeat(2)
+ await env.DB.prepare('INSERT INTO users(id,display_name) VALUES (?,?)').bind(otherUser,'Other account').run()
+ await env.DB.prepare('INSERT INTO sessions(id,user_id,token_hash,auth_method,idle_expires_at,expires_at) VALUES (?,?,?,?,?,?)').bind(crypto.randomUUID(),otherUser,await hmac(env.SESSION_SECRET,otherToken),'siwe','2099-01-01T00:00:00.000Z','2099-01-01T00:00:00.000Z').run()
+ expect((await req(`public/checkouts/${first.token}/customer-wallet/verify`,'POST',{message:challenge.message,signature},true,otherToken)).status).toBe(401)
+ const sameUserToken=crypto.randomUUID().replaceAll('-','').repeat(2)
+ await env.DB.prepare('INSERT INTO sessions(id,user_id,token_hash,auth_method,idle_expires_at,expires_at) VALUES (?,?,?,?,?,?)').bind(crypto.randomUUID(),user,await hmac(env.SESSION_SECRET,sameUserToken),'siwe','2099-01-01T00:00:00.000Z','2099-01-01T00:00:00.000Z').run()
+ expect((await req(`public/checkouts/${first.token}/customer-wallet/verify`,'POST',{message:challenge.message,signature},true,sameUserToken)).status).toBe(401)
+ const verified=await req(`public/checkouts/${first.token}/customer-wallet/verify`,'POST',{message:challenge.message,signature})
+ expect(verified.status,await verified.clone().text()).toBe(200)
+ expect(await verified.json()).toMatchObject({linked:true,address:wallet})
+ expect(await (await req(statusPath)).json()).toMatchObject({linked:true,available:true})
+ expect(await env.DB.prepare("SELECT user_id,verified_at,verification_method FROM wallets WHERE purpose='login' AND address=?").bind(wallet).first()).toMatchObject({user_id:user,verification_method:'siwe'})
+ expect(await env.DB.prepare("SELECT customer_id,verified_at,verification_method FROM wallets WHERE purpose='customer' AND org_id=? AND customer_id=? AND address=?").bind(org,customer,wallet).first()).toMatchObject({customer_id:customer,verification_method:'siwe'})
+ expect((await env.DB.prepare("SELECT count(*) AS n FROM audit_logs WHERE org_id=? AND action='wallet.customer_linked'").bind(org).first<{n:number}>())?.n).toBe(1)
+ expect((await req(`public/checkouts/${first.token}/customer-wallet/verify`,'POST',{message:challenge.message,signature})).status).toBe(401)
+})
+it('rejects an expired customer-wallet challenge without associating the wallet',async()=>{
+ await prep()
+ const link=await (await req(`orgs/${org}/chain/checkouts`,'POST',{subscriptionId:sub,invoiceId:invoice})).json<{token:string}>()
+ const wallet=signingWallet.address.toLowerCase()
+ const challenge=await (await req(`public/checkouts/${link.token}/customer-wallet/nonce`,'POST',{address:wallet})).json<{message:string}>()
+ const nonce=await env.DB.prepare("SELECT nonce FROM siwe_nonces WHERE purpose='link' AND address=? AND user_id=? ORDER BY created_at DESC LIMIT 1").bind(wallet,user).first<{nonce:string}>()
+ expect(nonce).toBeTruthy()
+ await env.DB.prepare('UPDATE siwe_nonces SET expires_at=? WHERE nonce=?').bind('2020-01-01T00:00:00.000Z',nonce!.nonce).run()
+ const signature=await signingWallet.signMessage({message:challenge.message})
+ expect((await req(`public/checkouts/${link.token}/customer-wallet/verify`,'POST',{message:challenge.message,signature})).status).toBe(401)
+ expect(await env.DB.prepare("SELECT id FROM wallets WHERE purpose='customer' AND org_id=? AND customer_id=? AND address=?").bind(org,customer,wallet).first()).toBeNull()
+})
+it.each(['session','checkout'] as const)('fences a stale authenticated customer link after %s invalidation',async boundary=>{
+ await prep()
+ const link=await (await req(`orgs/${org}/chain/checkouts`,'POST',{subscriptionId:sub,invoiceId:invoice})).json<{token:string;checkout:ChainCheckout}>()
+ const wallet=signingWallet.address.toLowerCase()
+ await env.DB.prepare("INSERT INTO wallets(id,purpose,user_id,address,chain_id,verified_at,verification_method) VALUES (?,'login',?,?,5042002,?,'siwe')").bind(crypto.randomUUID(),user,wallet,new Date().toISOString()).run()
+ const challenge=await (await req(`public/checkouts/${link.token}/customer-wallet/nonce`,'POST',{address:wallet})).json<{message:string}>()
+ const signature=await signingWallet.signMessage({message:challenge.message})
+ const gate=new Hono<WorkerContext>()
+ gate.onError((error,c)=>error instanceof HttpError?c.json({error:error.code},error.status as 400):c.json({error:error.message},500))
+ gate.post('/api/public/checkouts/:token/customer-wallet/verify',async c=>{
+  c.set('ip','192.0.2.42');c.set('requestId',crypto.randomUUID())
+  const auth=await resolveAuth(c)
+  if(!auth)throw new Error('Fixture session not authenticated')
+  c.set('auth',auth)
+  if(boundary==='session')await env.DB.prepare('UPDATE sessions SET revoked_at=? WHERE id=?').bind(new Date().toISOString(),auth.sessionId).run()
+  if(boundary==='checkout')await env.DB.prepare('UPDATE chain_checkouts SET expires_at=? WHERE id=?').bind('2000-01-01T00:00:00.000Z',link.checkout.id).run()
+  return verifyCustomerWallet(c)
+ })
+ const response=await gate.request(`http://local/api/public/checkouts/${link.token}/customer-wallet/verify`,{method:'POST',headers:{cookie:`retempo_session=${token}`,'content-type':'application/json'},body:JSON.stringify({message:challenge.message,signature})},{...env,CHAIN:service})
+ expect([403,404],await response.clone().text()).toContain(response.status)
+ expect(await env.DB.prepare("SELECT id FROM wallets WHERE purpose='customer' AND org_id=? AND customer_id=? AND address=?").bind(org,customer,wallet).first()).toBeNull()
+ expect((await env.DB.prepare("SELECT count(*) AS n FROM audit_logs WHERE org_id=? AND action='wallet.customer_linked'").bind(org).first<{n:number}>())?.n).toBe(0)
 })
 it('issues hashed expiring capability, rejects guessed ids and keeps checkout private',async()=>{
  await prep()

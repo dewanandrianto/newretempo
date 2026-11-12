@@ -9,6 +9,7 @@ import { badRequest } from '../errors'
 import { createCheckout, publicCheckout } from './checkouts'
 import { prepareCheckout } from './prepare'
 import { customerSnapshot, customerSnapshotPage } from './customer'
+import { customerWalletStatus, issueCustomerWalletChallenge, verifyCustomerWallet } from './customerWallet'
 export function historyToken(c: { req: { query: (name: string) => string | undefined } }): string | undefined {
   const token = c.req.query('pageToken')
   if (token !== undefined && !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(token)) throw badRequest('Invalid history page token')
@@ -27,6 +28,9 @@ export function registerChainRoutes(app: WorkerApp) {
   app.get('/api/customer/chain/snapshot', customerSnapshot)
   app.get('/api/customer/chain/snapshot/pages', customerSnapshotPage)
   app.post('/api/public/checkouts/:token/prepare', prepareCheckout)
+  app.get('/api/public/checkouts/:token/customer-wallet', customerWalletStatus)
+  app.post('/api/public/checkouts/:token/customer-wallet/nonce', issueCustomerWalletChallenge)
+  app.post('/api/public/checkouts/:token/customer-wallet/verify', verifyCustomerWallet)
   app.post('/api/orgs/:orgId/chain/checkouts', async c => {
     await enabledConfiguration(c.env)
     return createCheckout(c)

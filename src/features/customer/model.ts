@@ -16,6 +16,22 @@ export function checkoutPauseMessage(configuration: ChainConfiguration): string 
 }
 
 export const checkoutDue=(checkout:ChainCheckout,existing:boolean):bigint=>!existing&&checkout.trialDays>0?0n:baseUnits(checkout.amount)
+/** Consent is valid only for the exact account, wallet, payable amount and reviewed terms. */
+export function checkoutConsentIdentity(checkout: ChainCheckout, userId: string, wallet: string, existing: boolean, windows: { responseWindow: number; resolutionTimeout: number }): string {
+ const c = checkout.configuration
+ return JSON.stringify({
+  checkoutId: checkout.id, userId, wallet: wallet.toLowerCase(), existing,
+  merchantName: checkout.merchantName, productName: checkout.productName, planName: checkout.planName, description: checkout.description,
+  amountDue: checkoutDue(checkout, existing).toString(), recurringAmount: checkout.amount,
+  interval: checkout.interval, intervalSeconds: checkout.intervalSeconds, trialDays: checkout.trialDays,
+  escrowDays: checkout.escrowDays, customerMayRefundUnvested: checkout.customerMayRefundUnvested,
+  merchant: checkout.merchant, payout: checkout.payout, arbitrator: checkout.arbitrator,
+  subscriptionId: checkout.subscriptionId, invoiceId: checkout.invoiceId, subscriptionKey: checkout.subscriptionKey,
+  responseWindow: windows.responseWindow, resolutionTimeout: windows.resolutionTimeout,
+  chainId: c.chainId, genesisHash: c.genesisHash, usdc: c.usdc,
+  manager: c.manager, escrow: c.escrow, managerCodeHash: c.managerCodeHash, escrowCodeHash: c.escrowCodeHash,
+ })
+}
 export async function checkoutSubscription(checkout:ChainCheckout):Promise<SubscriptionState|null> {
  if(!checkout.subscriptionKey)return null
  const c=checkout.configuration,reader=configuredReader(c)
