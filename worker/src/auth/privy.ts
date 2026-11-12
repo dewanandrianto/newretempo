@@ -2,7 +2,7 @@ import { createRemoteJWKSet, errors as joseErrors, importSPKI, jwtVerify, type R
 import { unauthorized, unavailable } from '../errors'
 import type { WorkerBindings } from '../types'
 
-const PRIVY_JWKS_API = 'https://auth.privy.io/api'
+const PRIVY_API = 'https://api.privy.io'
 const jwksByEnv = new WeakMap<WorkerBindings, RemoteJWKSet>()
 
 export interface VerifiedPrivyIdentity {
@@ -20,7 +20,7 @@ function remoteJwks(env: WorkerBindings): RemoteJWKSet {
     throw unavailable('Privy authentication is not configured', 'privy_not_configured')
   }
   const authorization = `Basic ${btoa(`${env.PRIVY_APP_ID}:${env.PRIVY_APP_SECRET}`)}`
-  const jwks = createRemoteJWKSet(new URL(`${PRIVY_JWKS_API}/v1/apps/${encodeURIComponent(env.PRIVY_APP_ID)}/jwks.json`), {
+  const jwks = createRemoteJWKSet(new URL(`${PRIVY_API}/v1/apps/${encodeURIComponent(env.PRIVY_APP_ID)}/jwks.json`), {
     headers: { authorization, 'privy-app-id': env.PRIVY_APP_ID, accept: 'application/json' },
     timeoutDuration: 5000,
     cacheMaxAge: 60 * 60 * 1000,
