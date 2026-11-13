@@ -99,7 +99,7 @@ test.each([false, true])('stale authenticated link mutation cannot resurrect log
     const auth = await resolveAuth(c)
     expect(auth).not.toBeNull()
     c.set('auth', auth)
-    const wallet = await verifyChallenge(c, { ...signed, purpose: 'link', userId: f.user })
+    const wallet = await verifyChallenge(c, { ...signed, purpose: 'link', userId: f.user, sessionId: auth!.sessionId })
     await f.reset()
     await linkWalletToUser(c, wallet, f.user)
     return c.json({ ok: true })

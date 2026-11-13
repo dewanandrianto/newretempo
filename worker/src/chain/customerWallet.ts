@@ -38,21 +38,25 @@ function assertDistinctWallet(wallet: string, context: CheckoutWalletContext): v
 }
 
 async function linkedState(c: C, auth: ReturnType<typeof requireWorkerAuth>, context: CheckoutWalletContext, wallet: string) {
-  const [customerWallet, loginWallet, otherCustomer] = await Promise.all([
+  const [customerWallet, loginWallet, otherCustomer, merchantWallet] = await Promise.all([
     c.env.DB.prepare("SELECT customer_id,verified_at,verification_method FROM wallets WHERE purpose='customer' AND org_id=? AND address=? AND chain_id=?")
       .bind(context.row.org_id, wallet, TESTNET_CHAIN_ID).first<{ customer_id: string; verified_at: string | null; verification_method: string | null }>(),
-    c.env.DB.prepare("SELECT user_id,verified_at,verification_method FROM wallets WHERE purpose='login' AND address=? AND chain_id=?")
-      .bind(wallet, TESTNET_CHAIN_ID).first<{ user_id: string; verified_at: string | null; verification_method: string | null }>(),
+    c.env.DB.prepare("SELECT user_id,chain_id,verified_at,verification_method FROM wallets WHERE purpose='login' AND address=?")
+      .bind(wallet).first<{ user_id: string; chain_id: number; verified_at: string | null; verification_method: string | null }>(),
     c.env.DB.prepare("SELECT 1 AS used FROM wallets WHERE purpose='customer' AND org_id=? AND address=? AND chain_id=? AND customer_id<>?")
       .bind(context.row.org_id, wallet, TESTNET_CHAIN_ID, context.detail.customer_id).first<{ used: number }>(),
+    c.env.DB.prepare("SELECT 1 AS used FROM wallets WHERE purpose='payout' AND address=? LIMIT 1")
+      .bind(wallet).first<{ used: number }>(),
   ])
   const linked = Boolean(
     customerWallet?.customer_id === context.detail.customer_id && customerWallet.verified_at && customerWallet.verification_method === 'siwe' &&
+    loginWallet?.chain_id === TESTNET_CHAIN_ID &&
     loginWallet?.user_id === auth.userId && loginWallet.verified_at && loginWallet.verification_method === 'siwe',
   )
   const accountConflict = Boolean(loginWallet && loginWallet.user_id !== auth.userId)
+  const chainConflict = Boolean(loginWallet && loginWallet.user_id === auth.userId && loginWallet.chain_id !== TESTNET_CHAIN_ID)
   const emailNeedsVerification = Boolean(auth.user.email && !auth.user.emailVerified)
-  const reason = emailNeedsVerification ? 'email_verification_required' : otherCustomer ? 'customer_record_in_use' : accountConflict ? 'wallet_in_use' : null
+  const reason = emailNeedsVerification ? 'email_verification_required' : merchantWallet ? 'merchant_wallet' : otherCustomer ? 'customer_record_in_use' : accountConflict || chainConflict ? 'wallet_in_use' : null
   return { linked, available: reason === null, reason }
 }
 
@@ -94,6 +98,7 @@ export async function issueCustomerWalletChallenge(c: C) {
     address: wallet,
     purpose: 'link',
     userId: auth.userId,
+    sessionId: auth.sessionId,
     statement: await customerWalletStatement(context.row.id, auth.sessionId),
   })
   c.header('Cache-Control', 'no-store')
@@ -111,6 +116,7 @@ export async function verifyCustomerWallet(c: C) {
     ...input,
     purpose: 'link',
     userId: auth.userId,
+    sessionId: auth.sessionId,
     statement: await customerWalletStatement(context.row.id, auth.sessionId),
   })
   assertDistinctWallet(wallet.address, context)
@@ -135,11 +141,13 @@ export async function verifyCustomerWallet(c: C) {
         AND EXISTS (SELECT 1 FROM wallets lw WHERE lw.purpose='login' AND lw.address=? AND lw.user_id=? AND lw.chain_id=? AND lw.verified_at IS NOT NULL AND lw.verification_method='siwe')
         AND EXISTS (SELECT 1 FROM chain_checkouts cc WHERE cc.id=? AND cc.org_id=c.org_id AND cc.expires_at>?)
         AND NOT EXISTS (SELECT 1 FROM wallets other WHERE other.purpose='customer' AND other.org_id=c.org_id AND other.address=? AND other.chain_id=? AND other.customer_id<>c.id)
+        AND NOT EXISTS (SELECT 1 FROM wallets payout WHERE payout.purpose='payout' AND payout.address=?)
+        AND NOT EXISTS (SELECT 1 FROM wallets other_login WHERE other_login.purpose='login' AND other_login.address=? AND other_login.user_id<>?)
       ON CONFLICT(org_id,customer_id,address,chain_id) WHERE purpose='customer'
       DO UPDATE SET verified_at=excluded.verified_at,verification_method='siwe',updated_at=excluded.updated_at
       RETURNING id`)
       .bind(walletId, wallet.address, TESTNET_CHAIN_ID, now, now, now, context.row.org_id, context.detail.customer_id,
-        auth.userId, auth.sessionId, now, now, wallet.address, auth.userId, TESTNET_CHAIN_ID, context.row.id, now, wallet.address, TESTNET_CHAIN_ID),
+        auth.userId, auth.sessionId, now, now, wallet.address, auth.userId, TESTNET_CHAIN_ID, context.row.id, now, wallet.address, TESTNET_CHAIN_ID, wallet.address, wallet.address, auth.userId),
     c.env.DB.prepare(`INSERT INTO audit_logs (id,org_id,actor_user_id,actor_type,action,resource_type,resource_id,metadata,ip,user_agent,request_id)
       SELECT ?,?,?,'user','wallet.customer_linked','wallet',?,?,?,?,? WHERE changes()=1`)
       .bind(crypto.randomUUID(), context.row.org_id, auth.userId, wallet.address, JSON.stringify({ customerId: context.detail.customer_id, address: wallet.address, chainId: TESTNET_CHAIN_ID, verification: 'siwe' }), c.get('ip'), c.req.header('user-agent')?.slice(0, 300) ?? null, c.get('requestId')),

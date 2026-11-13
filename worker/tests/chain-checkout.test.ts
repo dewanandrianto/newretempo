@@ -233,6 +233,42 @@ it('links only a separately signed customer wallet to the authenticated user and
  expect((await env.DB.prepare("SELECT count(*) AS n FROM audit_logs WHERE org_id=? AND action='wallet.customer_linked'").bind(org).first<{n:number}>())?.n).toBe(1)
  expect((await req(`public/checkouts/${first.token}/customer-wallet/verify`,'POST',{message:challenge.message,signature})).status).toBe(401)
 })
+it('atomically refuses a customer association if a payout wallet appears after availability was checked',async()=>{
+ await prep()
+ const link=await (await req(`orgs/${org}/chain/checkouts`,'POST',{subscriptionId:sub,invoiceId:invoice})).json<{token:string}>()
+ const wallet=signingWallet.address.toLowerCase()
+ const challenge=await (await req(`public/checkouts/${link.token}/customer-wallet/nonce`,'POST',{address:wallet})).json<{message:string}>()
+ const signature=await signingWallet.signMessage({message:challenge.message})
+ let finalInsertPrepared=false,injected=false
+ const raceDb={
+  prepare(sql:string){
+   if(sql.includes("INSERT INTO wallets (id,purpose,org_id,customer_id,address"))finalInsertPrepared=true
+   return env.DB.prepare(sql)
+  },
+  async batch(statements:Parameters<typeof env.DB.batch>[0]){
+   if(finalInsertPrepared&&!injected){
+    injected=true
+    await env.DB.prepare("INSERT INTO wallets(id,purpose,org_id,address,chain_id) VALUES (?,'payout',?,?,5042002)").bind(crypto.randomUUID(),org,wallet).run()
+   }
+   return env.DB.batch(statements)
+  },
+ } as unknown as WorkerBindings['DB']
+ const gate=new Hono<WorkerContext>()
+ gate.onError((error,c)=>error instanceof HttpError?c.json({error:error.code},error.status as 400):c.json({error:error.message},500))
+ gate.post('/api/public/checkouts/:token/customer-wallet/verify',async c=>{
+  c.set('ip','192.0.2.43');c.set('requestId',crypto.randomUUID())
+  const auth=await resolveAuth(c)
+  if(!auth)throw new Error('Fixture session not authenticated')
+  c.set('auth',auth)
+  return verifyCustomerWallet(c)
+ })
+ const response=await gate.request(`http://local/api/public/checkouts/${link.token}/customer-wallet/verify`,{method:'POST',headers:{cookie:`retempo_session=${token}`,'content-type':'application/json'},body:JSON.stringify({message:challenge.message,signature})},{...env,DB:raceDb,CHAIN:service})
+ expect(injected).toBe(true)
+ expect([403,409],await response.clone().text()).toContain(response.status)
+ expect(await env.DB.prepare("SELECT id FROM wallets WHERE purpose='customer' AND org_id=? AND customer_id=? AND address=?").bind(org,customer,wallet).first()).toBeNull()
+ expect(await env.DB.prepare("SELECT id FROM wallets WHERE purpose='payout' AND org_id=? AND address=?").bind(org,wallet).first()).toBeTruthy()
+ expect((await env.DB.prepare("SELECT count(*) AS n FROM audit_logs WHERE org_id=? AND action='wallet.customer_linked'").bind(org).first<{n:number}>())?.n).toBe(0)
+})
 it('rejects an expired customer-wallet challenge without associating the wallet',async()=>{
  await prep()
  const link=await (await req(`orgs/${org}/chain/checkouts`,'POST',{subscriptionId:sub,invoiceId:invoice})).json<{token:string}>()

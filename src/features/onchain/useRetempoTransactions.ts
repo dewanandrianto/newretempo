@@ -35,16 +35,38 @@ export function useRetempoTransactions(configuration:ChainConfiguration|undefine
   running.current=true;setBusy(true);setError(undefined)
   try{await task()}catch(e){setError(e instanceof Error?e.message:'The request failed.')}finally{running.current=false;setBusy(false)}
  },[])
- const ensureWalletSession=useCallback(async(sdk:RetempoClient)=>{
+ const ensureWalletSession=useCallback(async(sdk:RetempoClient,merchantOrgId?:string)=>{
   await sdk.assertWallet()
-  if(auth.session?.user.wallets.some(w=>w.toLowerCase()===address?.toLowerCase()))return
-  const {message}=await auth.requestWalletChallenge(sdk.io.account)
-  // The configured deployment must also match before SIWE, not only before payments.
+  const startingSession=auth.session
+  const startingContext=merchantOrgId||startingSession?auth.getSessionContext():null
+  if(!merchantOrgId&&startingSession?.user.wallets.some(w=>w.toLowerCase()===address?.toLowerCase()))return
+  if(!wallet)throw new Error('Connect the wallet you want to verify first.')
+  let message:string
+  if(merchantOrgId){
+   if(!startingContext||startingContext.organizationId!==merchantOrgId)throw new Error('Sign in to the current Privy owner account and organization before verifying a merchant wallet.')
+   message=(await auth.requestMerchantWalletChallenge(merchantOrgId,sdk.io.account,startingContext)).message
+  }else if(startingSession){
+   if(!startingContext)throw new Error('Sign in to your existing RETEMPO account before linking this wallet.')
+   message=(await auth.requestWalletLinkChallenge(sdk.io.account,startingContext)).message
+  }else{
+   message=(await auth.requestWalletChallenge(sdk.io.account)).message
+  }
+  // Recheck wallet and chain immediately before requesting the one-time signature.
   await sdk.assertWallet()
-  const signature=await wallet!.signMessage({account:sdk.io.account,message})
-  await auth.verifyWalletSignature({message,signature})
+  if(startingContext)auth.assertSessionContext(startingContext)
+  else if(auth.getSessionContext())throw new Error('Your active RETEMPO session changed during wallet verification. No login switch was attempted; try again.')
+  const signature=await wallet.signMessage({account:sdk.io.account,message})
+  if(startingContext)auth.assertSessionContext(startingContext)
+  else if(auth.getSessionContext())throw new Error('Your active RETEMPO session changed during wallet verification. No login switch was attempted; try again.')
+  if(merchantOrgId&&startingContext)await auth.verifyMerchantWalletSignature(merchantOrgId,{message,signature},startingContext)
+  else if(startingSession&&startingContext)await auth.verifyWalletLinkSignature({message,signature},startingContext)
+  else{
+   if(auth.getSessionContext())throw new Error('Your active RETEMPO session changed during wallet verification. No login switch was attempted; try again.')
+   await auth.verifyWalletSignature({message,signature})
+  }
  },[auth,address,wallet])
- const signIn=useCallback(()=>guarded(async()=>{await ensureWalletSession(client());await queryClient.invalidateQueries({queryKey:['customer-chain']})}),[guarded,ensureWalletSession,client,queryClient])
+ const signIn=useCallback(()=>guarded(async()=>{await ensureWalletSession(client());await queryClient.invalidateQueries()}),[guarded,ensureWalletSession,client,queryClient])
+ const linkMerchantWallet=useCallback((orgId:string)=>guarded(async()=>{await ensureWalletSession(client(),orgId);await queryClient.invalidateQueries()}),[guarded,ensureWalletSession,client,queryClient])
  const sync=useCallback((target:ProjectionTarget)=>guarded(async()=>{
   if(!id)throw new Error('Connect the original wallet to recover this transaction.')
   await runner.verify(id,async hash=>{await chainApi.sync();const snapshot=await loadSnapshot();return projectionProves(snapshot,hash,runner.load(id)?.verification??target,configuration)})
@@ -54,10 +76,12 @@ export function useRetempoTransactions(configuration:ChainConfiguration|undefine
   const pauseMessage=chainActionPauseMessage(configuration)
   if(pauseMessage)throw new Error(pauseMessage)
   const sdk=client();if(!id)throw new Error('Wallet operation identity is missing.')
-  await ensureWalletSession(sdk)
+  await sdk.assertWallet()
+  if(!auth.session)throw new Error('Sign in to RETEMPO before submitting a wallet transaction.')
+  if(!auth.session.user.wallets.some(w=>w.toLowerCase()===sdk.io.account.toLowerCase()))throw new Error('This wallet is not verified for the active RETEMPO account. Link it first; transaction actions will never sign in with a different account.')
   await runner.run(id,(write,remember)=>task(sdk,write,remember))
- }),[guarded,configuration,client,id,ensureWalletSession,runner])
+ }),[guarded,configuration,client,id,auth.session,runner])
  const resume=useCallback(()=>guarded(async()=>{const sdk=client();await sdk.assertWallet();await runner.resume(id,hash=>sdk.io.receipt(hash))}),[guarded,client,id,runner])
  const verifiedWallet=Boolean(address&&auth.session?.user.wallets.some(w=>w.toLowerCase()===address.toLowerCase()))
- return {state:visibleState,busy,error:error??recovered.error,execute,sync,resume,signIn,verifiedWallet,client}
+ return {state:visibleState,busy,error:error??recovered.error,execute,sync,resume,signIn,linkMerchantWallet,verifiedWallet,client}
 }

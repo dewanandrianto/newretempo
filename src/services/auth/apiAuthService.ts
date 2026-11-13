@@ -70,6 +70,18 @@ export const apiAuthService: AuthService = {
     return toSession(await post<AccountResponse>('/auth/siwe/verify', input))
   },
 
+  requestWalletLinkChallenge: (address) => post<{ message: string; expiresAt: string }>('/auth/siwe/link/nonce', { address }),
+
+  async verifyWalletLinkSignature(input) {
+    return toSession(await post<AccountResponse>('/auth/siwe/link/verify', input))
+  },
+
+  requestMerchantWalletChallenge: (orgId, address) => post<{ message: string; expiresAt: string }>(`/orgs/${encodeURIComponent(orgId)}/merchant-wallet/nonce`, { address }),
+
+  async verifyMerchantWalletSignature(orgId, input) {
+    return toSession(await post<AccountResponse>(`/orgs/${encodeURIComponent(orgId)}/merchant-wallet/verify`, input))
+  },
+
   async createOrganization(input) {
     const org = await post<Organization>('/orgs', input)
     sessionStorage.setItem(ACTIVE_ORG_KEY, org.id)

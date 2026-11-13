@@ -10,8 +10,9 @@ import { collectChainPages } from '../../../shared/chainPages'
 const completeSnapshot = (path:string) => collectChainPages(token => get<ChainSnapshot>(path + (token ? `${path.includes('?')?'&':'?'}pageToken=${encodeURIComponent(token)}` : '')))
 export const chainApi = {
 	configuration: () => get<ChainConfiguration>('/chain/config'),
-	checkout: (token:string,invoice=false) => get<ChainCheckout>(`/public/${invoice?'invoices':'checkouts'}/${encodeURIComponent(token)}`),
- customerWalletStatus: (token:string,wallet:Address) => get<{linked:boolean;available:boolean;reason:'merchant_wallet'|'email_verification_required'|'customer_record_in_use'|'wallet_in_use'|null}>(`/public/checkouts/${encodeURIComponent(token)}/customer-wallet?wallet=${encodeURIComponent(wallet)}`),
+	 checkout: (token:string,invoice=false) => get<ChainCheckout>(`/public/${invoice?'invoices':'checkouts'}/${encodeURIComponent(token)}`),
+	 merchantWalletStatus: (orgId:string,wallet:Address) => get<{verified:boolean;available:boolean;reason:'wallet_in_use'|null}>(`/orgs/${encodeURIComponent(orgId)}/merchant-wallet/status?address=${encodeURIComponent(wallet)}`),
+	 customerWalletStatus: (token:string,wallet:Address) => get<{linked:boolean;available:boolean;reason:'merchant_wallet'|'email_verification_required'|'customer_record_in_use'|'wallet_in_use'|null}>(`/public/checkouts/${encodeURIComponent(token)}/customer-wallet?wallet=${encodeURIComponent(wallet)}`),
 	customerWalletChallenge: (token:string,wallet:Address) => post<{message:string;expiresAt:string}|{linked:true;address:Address}>(`/public/checkouts/${encodeURIComponent(token)}/customer-wallet/nonce`,{address:wallet}),
 	verifyCustomerWallet: (token:string,input:{message:string;signature:`0x${string}`}) => post<{linked:true;address:Address}>(`/public/checkouts/${encodeURIComponent(token)}/customer-wallet/verify`,input),
 	prepareCheckout: (token:string,wallet:Address) => post<ChainCheckout>(`/public/checkouts/${encodeURIComponent(token)}/prepare`,{wallet}),

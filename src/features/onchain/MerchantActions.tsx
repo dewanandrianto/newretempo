@@ -22,7 +22,8 @@ export function useMerchantChain() {
  return {orgId,configuration,snapshot,loadSnapshot:()=>chainApi.organizationSnapshot(orgId!)}
 }
 function PublishPlanForm({plan}:{plan:Plan}) {
- const chain=useMerchantChain(),{address}=useAccount(),c=chain.configuration.data
+ const chain=useMerchantChain(),{address,chainId}=useAccount(),c=chain.configuration.data,{session}=useAuth()
+ const merchantWallet=useQuery({queryKey:['merchant-wallet',chain.orgId,address],queryFn:()=>chainApi.merchantWalletStatus(chain.orgId!,address!),enabled:Boolean(session&&chain.orgId&&address&&c?.configured),retry:false})
  const pauseMessage=chainActionPauseMessage(c)
  const tx=useRetempoTransactions(c,`publish:${plan.id}`,chain.loadSnapshot)
  const [payout,setPayout]=useState(address??''),[arbitrator,setArbitrator]=useState(''),[refund,setRefund]=useState(false)
@@ -47,8 +48,10 @@ function PublishPlanForm({plan}:{plan:Plan}) {
    {!prepared?<>
     <label className="block space-y-2 text-sm text-dim"><span>Payout address</span><input className={merchantInput} value={payout} onChange={e=>setPayout(e.target.value)} /></label>
     {plan.escrowDays>0&&<><label className="block space-y-2 text-sm text-dim"><span>Arbitrator address</span><input className={merchantInput} value={arbitrator} onChange={e=>setArbitrator(e.target.value)} /></label><label className="flex gap-3 text-sm text-dim"><input type="checkbox" checked={refund} onChange={e=>setRefund(e.target.checked)} />Allow customer unvested refunds</label></>}
-    {!tx.verifiedWallet&&<Button variant="secondary" disabled={!address} loading={tx.busy} onClick={()=>void tx.signIn()}>Verify merchant wallet</Button>}
-    <Button loading={busy} disabled={chainActionsPaused(c)||!tx.verifiedWallet||!isAddress(payout)||payout===zeroAddress||(plan.escrowDays>0&&(!isAddress(arbitrator)||arbitrator===zeroAddress))} onClick={()=>void prepare()}>Prepare plan publication</Button>
+    {merchantWallet.isError&&<p role="alert" className="text-sm text-caution">{merchantWallet.error.message||'Could not verify this wallet for the current organization. Sign in to its Privy owner account and retry.'}</p>}
+    {merchantWallet.data&&!merchantWallet.data.available&&<p role="alert" className="text-sm text-caution">This wallet is already associated with another account, customer, or merchant workspace.</p>}
+    {!merchantWallet.data?.verified&&<div className="space-y-2"><p className="text-xs leading-relaxed text-dim">This verifies and links the connected wallet to your existing account and this organization. It will not sign in to another account or approve a transaction.</p><Button variant="secondary" disabled={!address||chainId!==5042002||!chain.orgId||merchantWallet.isPending||merchantWallet.isError||!merchantWallet.data?.available} loading={tx.busy} onClick={()=>{if(chain.orgId)void tx.linkMerchantWallet(chain.orgId)}}>Verify merchant wallet</Button></div>}
+    <Button loading={busy} disabled={chainActionsPaused(c)||!merchantWallet.data?.verified||!isAddress(payout)||payout===zeroAddress||(plan.escrowDays>0&&(!isAddress(arbitrator)||arbitrator===zeroAddress))} onClick={()=>void prepare()}>Prepare plan publication</Button>
    </>:<>
     <p className="break-all text-sm text-dim">Publish {displayUsdc(prepared.amount)} USDC every {prepared.intervalSeconds} seconds; trial {prepared.trialSeconds} seconds; grace {prepared.graceSeconds} seconds; linear vesting {prepared.vestDuration} seconds.</p>
     <p className="break-all text-xs text-dim">Merchant: {prepared.merchant}<br />Payout: {prepared.payout}<br />Arbitrator: {prepared.arbitrator}<br />Customer unvested refunds: {prepared.customerMayRefundUnvested?'Enabled':'Disabled'}</p>

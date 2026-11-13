@@ -104,12 +104,12 @@ export function registerAuthRoutes(app:WorkerApp):void {
   app.post('/api/auth/siwe/link/nonce',async c=> {
     const auth=requireWorkerAuth(c),input=await readBody(c,nonceBody)
     await consumeRateLimit(c.env.DB,`siwe:nonce:${c.get('ip')}`,30,10*60000)
-    return c.json(await issueChallenge(c,{...input,purpose:'link',userId:auth.userId}))
+    return c.json(await issueChallenge(c,{...input,purpose:'link',userId:auth.userId,sessionId:auth.sessionId}))
   })
   app.post('/api/auth/siwe/link/verify',async c=> {
     const auth=requireWorkerAuth(c),input=await readBody(c,verifyBody)
     await consumeRateLimit(c.env.DB,`siwe:verify:${c.get('ip')}`,30,10*60000)
-    const wallet=await verifyChallenge(c,{...input,purpose:'link',userId:auth.userId})
+    const wallet=await verifyChallenge(c,{...input,purpose:'link',userId:auth.userId,sessionId:auth.sessionId})
     await linkWalletToUser(c,wallet,auth.userId)
     return c.json(await accountResponse(c))
   })

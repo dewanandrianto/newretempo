@@ -17,6 +17,10 @@ export interface AuthService {
   requestWalletChallenge(address: `0x${string}`): Promise<{ message: string }>
   /** Step 2: the server verifies signature, nonce, domain, URI, chain ID and timestamps. */
   verifyWalletSignature(input: { message: string; signature: `0x${string}` }): Promise<Session>
+  requestWalletLinkChallenge(address: `0x${string}`): Promise<{ message: string; expiresAt: string }>
+  verifyWalletLinkSignature(input: { message: string; signature: `0x${string}` }): Promise<Session>
+  requestMerchantWalletChallenge(orgId: string, address: `0x${string}`): Promise<{ message: string; expiresAt: string }>
+  verifyMerchantWalletSignature(orgId: string, input: { message: string; signature: `0x${string}` }): Promise<Session>
   createOrganization(input: OrganizationInput): Promise<Session>
   verifyEmail(token: string): Promise<void>
   resendVerification(): Promise<boolean>

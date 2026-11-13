@@ -14,6 +14,7 @@ import { conflict, forbidden, notFound } from '../errors'
 import { registerResources } from './resources'
 import { registerMembers } from './members'
 import { registerAssociations } from './associations'
+import { registerMerchantWalletRoutes } from './merchantWallet'
 import { mutate } from './db'
 import { badRequest } from '../errors'
 import { readBody } from '../http'
@@ -33,6 +34,7 @@ export function registerCatalogRoutes(app: WorkerApp): void {
   registerResources(app)
   registerMembers(app)
   registerAssociations(app)
+  registerMerchantWalletRoutes(app)
   app.patch('/api/orgs/:orgId', async c => {
     const { orgId, auth } = await requireWorkerOrg(c, 'org:update')
     const patch = await readBody(c, z.object({ name: text(80, 2).optional(), website: website.optional(), industry: text(60).optional(), country: text(60).optional() }))

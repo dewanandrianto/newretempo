@@ -17,7 +17,7 @@ async function fixture() {
 describe('D1 schema', () => {
   it('contains the complete legacy schema plus database-backed rate limits', async () => {
     const { results } = await db().prepare("SELECT name FROM sqlite_master WHERE type='table'").all<{name:string}>();
-    expect(results.map(r => r.name)).toEqual(expect.arrayContaining(['users','sessions','email_tokens','siwe_nonces','organizations','memberships','products','plans','customers','wallets','subscriptions','mandates','invoices','payments','escrows','transactions','disputes','api_keys','webhooks','webhook_deliveries','audit_logs','rate_limits']));
+    expect(results.map(r => r.name)).toEqual(expect.arrayContaining(['users','sessions','email_tokens','siwe_nonces','merchant_wallet_challenges','organizations','memberships','products','plans','customers','wallets','subscriptions','mandates','invoices','payments','escrows','transactions','disputes','api_keys','webhooks','webhook_deliveries','audit_logs','rate_limits']));
   });
   it('uses a real Drizzle D1 connection with exact text money', async()=>{
     const { createOrm } = await import('../src/db/client');
