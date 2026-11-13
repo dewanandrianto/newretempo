@@ -4,6 +4,7 @@ import { Copy, KeyRound, Wallet } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Card, CardBody, CardHeader } from '@/components/ui/Card'
 import { useAuth } from './AuthProvider'
+import { startOrJoinVersionedRequest, type VersionedRequest } from './PrivyAccessRequest'
 
 type Address = `0x${string}`
 type AccessSnapshot = { key: string; allowed: boolean }
@@ -24,6 +25,7 @@ function useCurrentWalletAccess() {
   const key = `${accountId}\u0000${identityId}`
   const currentKeyRef = useRef(key)
   const requestVersionRef = useRef(0)
+  const accessRequestsRef = useRef(new Map<string, VersionedRequest<boolean>>())
   const mountedRef = useRef(true)
   const [snapshot, setSnapshot] = useState<AccessSnapshot | null>(null)
   const [actionCheck, setActionCheck] = useState<{ key: string; checking: boolean } | null>(null)
@@ -40,53 +42,44 @@ function useCurrentWalletAccess() {
     }
   }, [])
 
-  const verify = useCallback(async () => {
+  const performCheck = useCallback(() => {
     const requestKey = key
-    if (sessionStatus !== 'ready' || !privyReady || !authenticated || !accountId || !identityId) return false
-    const requestVersion = ++requestVersionRef.current
-    setActionCheck({ key: requestKey, checking: true })
-    try {
-      const accessToken = await getAccessToken()
-      if (!accessToken) throw new Error('Missing sign-in token')
-      const result = await verifyPrivyWalletAccess(accessToken)
-      const stillCurrent = mountedRef.current && currentKeyRef.current === requestKey && requestVersionRef.current === requestVersion
-      if (stillCurrent) {
-        setSnapshot({ key: requestKey, allowed: result.allowed })
-      }
-      return stillCurrent && result.allowed
-    } catch {
-      if (mountedRef.current && currentKeyRef.current === requestKey && requestVersionRef.current === requestVersion) {
-        setSnapshot({ key: requestKey, allowed: false })
-      }
-      return false
-    } finally {
-      if (mountedRef.current && currentKeyRef.current === requestKey && requestVersionRef.current === requestVersion) {
-        setActionCheck({ key: requestKey, checking: false })
-      }
-    }
-  }, [accountId, authenticated, getAccessToken, identityId, key, privyReady, sessionStatus, verifyPrivyWalletAccess])
-
-  useEffect(() => {
-    if (sessionStatus === 'loading' || !privyReady || !authenticated || !accountId || !identityId) return
-    const requestVersion = ++requestVersionRef.current
-    void (async () => {
+    if (sessionStatus !== 'ready' || !privyReady || !authenticated || !accountId || !identityId) return Promise.resolve(false)
+    return startOrJoinVersionedRequest(accessRequestsRef.current, requestVersionRef, requestKey, async (requestVersion) => {
       try {
+        if (requestVersionRef.current !== requestVersion) return false
         const accessToken = await getAccessToken()
         if (!accessToken) throw new Error('Missing sign-in token')
         const result = await verifyPrivyWalletAccess(accessToken)
-        if (mountedRef.current && currentKeyRef.current === key && requestVersionRef.current === requestVersion) {
-          setSnapshot({ key, allowed: result.allowed })
-        }
+        const stillCurrent = mountedRef.current && currentKeyRef.current === requestKey && requestVersionRef.current === requestVersion
+        if (stillCurrent) setSnapshot({ key: requestKey, allowed: result.allowed })
+        return stillCurrent && result.allowed
       } catch {
-        if (mountedRef.current && currentKeyRef.current === key && requestVersionRef.current === requestVersion) {
-          setSnapshot({ key, allowed: false })
+        if (mountedRef.current && currentKeyRef.current === requestKey && requestVersionRef.current === requestVersion) {
+          setSnapshot({ key: requestKey, allowed: false })
         }
+        return false
       }
-    })()
-    return () => {
-      if (requestVersionRef.current === requestVersion) requestVersionRef.current += 1
-    }
+    })
   }, [accountId, authenticated, getAccessToken, identityId, key, privyReady, sessionStatus, verifyPrivyWalletAccess])
+
+  const verify = useCallback(async () => {
+    const requestKey = key
+    if (sessionStatus !== 'ready' || !privyReady || !authenticated || !accountId || !identityId) return false
+    setActionCheck({ key: requestKey, checking: true })
+    try {
+      return await performCheck()
+    } finally {
+      if (mountedRef.current && currentKeyRef.current === requestKey) {
+        setActionCheck({ key: requestKey, checking: false })
+      }
+    }
+  }, [accountId, authenticated, identityId, key, performCheck, privyReady, sessionStatus])
+
+  useEffect(() => {
+    if (sessionStatus === 'loading' || !privyReady || !authenticated || !accountId || !identityId) return
+    void performCheck()
+  }, [accountId, authenticated, identityId, key, performCheck, privyReady, sessionStatus])
 
   useEffect(() => {
     const recheckWhenVisible = () => {

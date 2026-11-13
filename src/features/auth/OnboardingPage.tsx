@@ -240,7 +240,7 @@ export default function OnboardingPage() {
         if (payoutAddressToSave && payoutOrigin === 'automatic') {
           const verifyWallet = walletVerifierRef.current
           if (!verifyWallet || !(await verifyWallet()) || !payoutSelectionIsCurrent(expectedUserId, payoutAddressToSave)) {
-            setError('Wallet access changed. Check your payout address again, or clear it and continue without one.')
+            setError('We could not confirm access to the suggested payout wallet, so it was not saved. Sign in to the RETEMPO account linked to that wallet, or retry with the optional payout address left blank.')
             return
           }
         }
